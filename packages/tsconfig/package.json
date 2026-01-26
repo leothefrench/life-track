@@ -1,5 +1,6 @@
 {
-  "name": "life-track",
+  "name": "@life-track/tsconfig",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,8 +9,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "typescript": "^5.9.3"
-  }
+  "license": "ISC"
 }
