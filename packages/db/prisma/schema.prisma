@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  LOYER
+  NOURRITURE
+  VETEMENTS
+  LOISIRS
+  AUTRE
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Stripe
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  isPremium              Boolean   @default(false)
+
+  // Relations
+  expenses      Expense[]
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  title       String
+  amount      Float
+  category    Category
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  
+  // Relation avec l'utilisateur
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
