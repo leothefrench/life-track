@@ -13,15 +13,25 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
-export function ExpenseForm() {
+interface ExpenseformProps {
+  onSuccess?: () => void;
+}
+
+export function ExpenseForm({ onSuccess }: ExpenseformProps) {
   const [loading, setLoading] = useState(false);
 
   async function clientAction(formData: FormData) {
     setLoading(true);
     try {
       await createExpense(formData);
+      toast.success('Dépense ajoutée avec succès !');
+      if (onSuccess) {
+        onSuccess();
+      }
      } catch (error) {
+      toast.error("Une erreur est survenue lors de l'ajout de la dépense.");
       console.error(error);
     } finally {
       setLoading(false);

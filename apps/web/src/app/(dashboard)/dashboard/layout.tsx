@@ -1,7 +1,8 @@
-import { auth } from '@/auth';
+import { auth, signOut } from '@/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
 
 export default async function DashboardLayout({
   children,
@@ -10,14 +11,12 @@ export default async function DashboardLayout({
 }) {
   const session = await auth();
 
-  // Sécurité : Si un malin essaie d'aller sur /dashboard sans être connecté
   if (!session) {
     redirect('/login');
   }
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Barre de navigation unique pour le Dashboard */}
       <nav className="border-b bg-card/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link
@@ -26,18 +25,33 @@ export default async function DashboardLayout({
           >
             Life-Track
           </Link>
+
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground hidden sm:inline-block">
               {session.user?.email}
             </span>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/api/auth/signout">Déconnexion</Link>
-            </Button>
+
+            {/* FORMULAIRE DE DÉCONNEXION */}
+            <form
+              action={async () => {
+                'use server';
+                await signOut({ redirectTo: '/login' });
+              }}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                type="submit"
+                className="text-muted-foreground hover:text-red-500 transition-colors"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Déconnexion
+              </Button>
+            </form>
           </div>
         </div>
       </nav>
 
-      {/* Conteneur principal avec de l'air (padding) */}
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {children}
       </main>

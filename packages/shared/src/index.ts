@@ -14,4 +14,9 @@ export const ExpenseSchema = z.object({
   date: z.coerce.date().default(() => new Date()),
 });
 
+export const DeleteExpenseSchema = z.object({
+  id: z.string().min(1, "L'ID est requis"),
+});
+
 export type Expense = z.infer<typeof ExpenseSchema>;
+export type DeleteExpenseInput = z.infer<typeof DeleteExpenseSchema>;

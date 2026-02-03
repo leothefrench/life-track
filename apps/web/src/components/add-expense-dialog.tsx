@@ -19,8 +19,8 @@ export function AddExpenseDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-full shadow-lg">
-          <Plus className="h-4 w-4" />
+        <Button className="rounded-full bg-gradient-to-br from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white border-none shadow-lg shadow-rose-500/20 transition-all duration-300 hover:scale-105 active:scale-95">
+          <Plus className="h-6 w-6" />
           Dépense
         </Button>
       </DialogTrigger>
@@ -32,7 +32,7 @@ export function AddExpenseDialog() {
             terminé.
           </DialogDescription>
         </DialogHeader>
-        <ExpenseForm />
+        <ExpenseForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

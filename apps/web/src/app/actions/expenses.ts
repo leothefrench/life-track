@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth';
 import { prisma } from '@life-track/db';
-import { ExpenseSchema } from '@life-track/shared';
+import { DeleteExpenseSchema, ExpenseSchema } from '@life-track/shared';
 import { revalidatePath } from 'next/cache';
 
 export async function createExpense(formData: FormData) {
@@ -27,4 +27,22 @@ export async function createExpense(formData: FormData) {
   });
 
   revalidatePath('/');
+}
+
+export async function deleteExpense(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Non autorisé');
+
+  const rawId = formData.get('id');
+
+  const { id } = DeleteExpenseSchema.parse({ id: rawId });
+
+  await prisma.expense.delete({
+    where: {
+      id: id,
+      userId: session.user.id, 
+    },
+  });
+
+  revalidatePath('/dashboard');
 }
