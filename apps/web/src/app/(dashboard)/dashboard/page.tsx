@@ -91,7 +91,7 @@ export default async function DashboardPage() {
                   </p>
                 </div>
                 <div className="ml-2">
-                  <ExpenseActions expenseId={expense.id} />
+                  <ExpenseActions expense={expense} />
                 </div>
               </div>
             ))
