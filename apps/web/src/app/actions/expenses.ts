@@ -70,3 +70,27 @@ export async function updateExpense(id: string, formData: FormData) {
 
   revalidatePath("/dashboard");
 }
+import { Parser } from 'json2csv';
+
+export async function exportExpensesAction() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Non autorisé');
+
+  const expenses = await prisma.expense.findMany({
+    where: { userId: session.user.id },
+    orderBy: { date: 'desc' },
+  });
+
+  const fields = ['title', 'amount', 'category', 'date'];
+  const opts = { fields };
+
+  try {
+    const parser = new Parser(opts);
+    const csv = parser.parse(expenses);
+
+    return { success: true, data: csv };
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: 'Erreur lors de la génération du fichier' };
+  }
+}

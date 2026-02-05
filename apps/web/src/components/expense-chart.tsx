@@ -1,6 +1,6 @@
 'use client';
 
-import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
+import { Pie, PieChart, Cell} from 'recharts';
 import {
   Card,
   CardContent,
@@ -16,12 +16,12 @@ import {
 } from '@/components/ui/chart';
 
 const chartConfig = {
-  amount: { label: 'Montant', color: "transparent" },
-  loyer: { label: 'Loyer', color: 'hsl(var(--chart-1))' },
-  nourriture: { label: 'Nourriture', color: 'hsl(var(--chart-2))' },
-  vetements: { label: 'Vêtements', color: 'hsl(var(--chart-3))' },
-  loisirs: { label: 'Loisirs', color: 'hsl(var(--chart-4))' },
-  autre: { label: 'Autre', color: 'hsl(var(--chart-5))' },
+  amount: { label: 'Montant', color: 'transparent' },
+  loyer: { label: 'Loyer', color: 'var(--chart-1)' },
+  nourriture: { label: 'Nourriture', color: 'var(--chart-2)' },
+  vetements: { label: 'Vêtements', color: 'var(--chart-3)' },
+  loisirs: { label: 'Loisirs', color: 'var(--chart-4)' },
+  autre: { label: 'Autre', color: 'var(--chart-5)' },
 } satisfies ChartConfig;
 
 export function ExpenseChart({ data }: { data: any[] }) {
@@ -38,7 +38,7 @@ export function ExpenseChart({ data }: { data: any[] }) {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <ResponsiveContainer width="100%" height="100%">
+        
             <PieChart>
               <ChartTooltip
                 cursor={false}
@@ -63,7 +63,7 @@ export function ExpenseChart({ data }: { data: any[] }) {
                 ))}
               </Pie>
             </PieChart>
-          </ResponsiveContainer>
+    
         </ChartContainer>
       </CardContent>
     </Card>
