@@ -7,6 +7,7 @@ import { ExpenseActions } from '@/components/expense-actions';
 import { Card, CardContent } from '@/components/ui/card';
 import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
+import { createCustomerPortalSession } from '@/app/actions/stripe';
 
 const CATEGORY_STYLES: Record<string, string> = {
   LOYER: 'bg-blue-500/10 text-blue-500 border-blue-500/20', // Correspond à --chart-1
@@ -58,10 +59,36 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Suivi de vos dépenses.</p>
+          <h1 className="text-3xl font-bold tracking-tight inline-flex items-center gap-3">
+            Dashboard
+            {/* Petit badge de rappel si Premium */}
+            {isPremium && (
+              <span className="text-[10px] bg-amber-400/20 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
+                Pro
+              </span>
+            )}
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Suivi de vos dépenses.
+          </p>
         </div>
-        <AddExpenseDialog />
+
+        <div className="flex items-center gap-3">
+          {/* BOUTON DE GESTION STRIPE (Apparaît seulement si Premium) */}
+          {isPremium && (
+            <form action={createCustomerPortalSession}>
+              <Button
+                variant="outline"
+                size="sm"
+                type="submit"
+                className="h-8 text-[10px] font-bold uppercase tracking-wider"
+              >
+                Gérer mon abonnement
+              </Button>
+            </form>
+          )}
+          <AddExpenseDialog />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

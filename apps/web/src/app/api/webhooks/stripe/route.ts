@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
     await prisma.user.update({
       where: { id: userId },
-      data: { isPremium: true },
+      data: { isPremium: true, stripeCustomerId: session.customer as string },
     });
 
     console.log(`Utilisateur ${userId} est maintenant Premium ! ✅`);

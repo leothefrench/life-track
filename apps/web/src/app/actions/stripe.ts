@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth';
 import { stripe } from '@/lib/stripe';
+import { prisma } from '@life-track/db';
 import { redirect } from 'next/navigation';
 
 export async function createCheckoutSession() {
@@ -30,5 +31,31 @@ export async function createCheckoutSession() {
 
   if (checkoutSession.url) {
     redirect(checkoutSession.url);
+  }
+}
+
+export async function createCustomerPortalSession() {
+  const session = await auth();
+
+  if (!session?.user?.id || !session.user.email) {
+    throw new Error('Non autorisé');
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { stripeCustomerId: true },
+  });
+
+  if (!user?.stripeCustomerId) {
+    throw new Error('Aucun compte client Stripe trouvé.');
+  }
+
+  const portalSession = await stripe.billingPortal.sessions.create({
+    customer: user.stripeCustomerId,
+    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+  });
+
+  if (portalSession.url) {
+    redirect(portalSession.url);
   }
 }
