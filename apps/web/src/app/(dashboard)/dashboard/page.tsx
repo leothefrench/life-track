@@ -17,6 +17,13 @@ const CATEGORY_STYLES: Record<string, string> = {
   AUTRE: 'bg-rose-500/10 text-rose-500 border-rose-500/20', // Correspond à --chart-5
 };
 
+interface CategoryResult {
+  category: "LOYER" | "NOURRITURE" | "VETEMENTS" | "LOISIRS" | "AUTRE";
+  _sum: {
+    amount: number | null;
+  };
+}
+
 export default async function DashboardPage() {
   const session = await auth();
   const userId = session?.user?.id;
@@ -50,10 +57,12 @@ export default async function DashboardPage() {
       })
     : [];
 
-  const chartData = categoriesData.map((item) => ({
-    category: item.category,
-    amount: item._sum.amount || 0,
-  }));
+  const chartData = (categoriesData as unknown as CategoryResult[]).map(
+    (item) => ({
+      category: item.category,
+      amount: item._sum.amount || 0,
+    }),
+  );
 
   return (
     <div className="space-y-8">
