@@ -18,5 +18,14 @@ export const DeleteExpenseSchema = z.object({
   id: z.string().min(1, "L'ID est requis"),
 });
 
+export const RegisterSchema = z.object({
+  name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
+  email: z.string().email('Email invalide'),
+  password: z
+    .string()
+    .min(8, 'Le mot de passe doit faire au moins 8 caractères'),
+});
+
 export type Expense = z.infer<typeof ExpenseSchema>;
 export type DeleteExpenseInput = z.infer<typeof DeleteExpenseSchema>;
+export type RegisterInput = z.infer<typeof RegisterSchema>;

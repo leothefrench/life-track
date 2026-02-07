@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { registerUser } from '@/app/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,14 +12,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-export function LoginForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const isRegistered = searchParams.get('registered') === 'true';
-  const [error, setError] = useState<string | null>(null);
+export function RegisterForm() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,58 +24,56 @@ export function LoginForm() {
     setError(null);
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
-
-    if (result?.error) {
-      setError('Identifiants invalides');
+    try {
+      await registerUser(formData);
+    } catch (err: any) {
+      setError(err.message || 'Une erreur est survenue');
       setLoading(false);
-    } else {
-      router.push('/');
-      router.refresh();
     }
   }
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Connexion</CardTitle>
+        <CardTitle className="text-2xl">Créer un compte</CardTitle>
         <CardDescription>
-          Entrez vos identifiants pour accéder à Life-Track
+          Entrez vos informations pour rejoindre Life-Track
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {isRegistered && (
-            <div className="p-3 mb-4 text-sm font-medium text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-center">
-              Compte créé ! Connectez-vous maintenant.
-            </div>
-          )}
+          <div className="space-y-2">
+            <Label htmlFor="name">Nom complet</Label>
+            <Input id="name" name="name" placeholder="Jean Dupont" required />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder="nom@exemple.com"
+              placeholder="jean@exemple.com"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Mot de passe</Label>
+            <Label htmlFor="password">Mot de passe (8 car. min)</Label>
             <Input id="password" name="password" type="password" required />
           </div>
+
           {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? 'Création en cours...' : "S'inscrire"}
           </Button>
         </form>
+        <div className="mt-4 text-center text-sm">
+          Déjà un compte ?{' '}
+          <Link href="/login" className="underline hover:text-primary">
+            Se connecter
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
