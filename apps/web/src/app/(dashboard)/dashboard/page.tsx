@@ -57,12 +57,10 @@ export default async function DashboardPage() {
       })
     : [];
 
-  const chartData = (categoriesData as unknown as CategoryResult[]).map(
-    (item) => ({
-      category: item.category,
-      amount: item._sum.amount || 0,
-    }),
-  );
+const chartData = (categoriesData as any[]).map((item: { category: string; _sum: { amount: number | null } }) => ({
+  category: item.category,
+  amount: item._sum.amount || 0,
+}));
 
   return (
     <div className="space-y-8">
