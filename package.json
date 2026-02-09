@@ -12,11 +12,12 @@
   "devDependencies": {
     "typescript": "^5.9.3"
   },
-  "pnpm": {
-    "trustedDependencies": [
+"pnpm": {
+    "onlyBuiltDependencies": [
       "prisma",
       "@prisma/client",
       "@prisma/engines",
       "sharp"
     ]
+  }
 }
