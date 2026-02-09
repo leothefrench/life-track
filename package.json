@@ -11,5 +11,12 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.9.3"
-  }
+  },
+  "pnpm": {
+    "trustedDependencies": [
+      "prisma",
+      "@prisma/client",
+      "@prisma/engines",
+      "sharp"
+    ]
 }
