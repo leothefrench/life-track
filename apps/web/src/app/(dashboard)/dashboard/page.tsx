@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
+import { Expense } from '@life-track/shared';
 
 const CATEGORY_STYLES: Record<string, string> = {
   LOYER: 'bg-blue-500/10 text-blue-500 border-blue-500/20', // Correspond à --chart-1
@@ -157,7 +158,7 @@ const chartData = (categoriesData as any[]).map((item: { category: string; _sum:
           <ExportButton />
         </div>
         <div className="divide-y divide-border/20 border rounded-xl overflow-hidden bg-card/20">
-          {expenses.map((expense) => (
+          {expenses.map((expense: Expense) => (
             <div
               key={expense.id}
               className="flex justify-between items-center p-3 hover:bg-card/40 transition-colors"
