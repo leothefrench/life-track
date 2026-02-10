@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
 import { prisma } from '@life-track/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
   const body = await req.text();
   const signature = (await headers()).get('Stripe-Signature') as string;
@@ -10,7 +12,6 @@ export async function POST(req: Request) {
   let event;
 
   try {
-
     event = stripe.webhooks.constructEvent(
       body,
       signature,
