@@ -16,10 +16,12 @@ export default async function DashboardLayout({
     redirect('/login');
   }
 
-   const user = await prisma.user.findUnique({
-    where: { id: session.user?.id },
-    select: { isPremium: true, email: true }
-  });
+  const user = session?.user?.id
+    ? await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { isPremium: true, email: true },
+      })
+    : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -33,7 +35,7 @@ export default async function DashboardLayout({
           </Link>
 
           <div className="flex items-center gap-4">
-              {user?.isPremium && (
+            {user?.isPremium && (
               <span className="text-[10px] bg-gradient-to-r from-amber-400 to-yellow-600 text-black font-black px-2 py-0.5 rounded-full shadow-sm">
                 PREMIUM
               </span>
