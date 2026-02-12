@@ -59,11 +59,6 @@ export default async function DashboardPage() {
       })
     : [];
 
-// const chartData = (categoriesData as any[]).map((item: { category: string; _sum: { amount: number | null } }) => ({
-//   category: item.category,
-//   amount: item._sum.amount || 0,
-// }));
-
 const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => ({
   category: item.category,
   amount: item._sum.amount || 0,
@@ -105,27 +100,32 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="md:col-span-1 bg-card/40 border-border/50 shadow-none h-full flex flex-col items-center justify-center text-center">
-          <CardContent className="p-6">
-            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
-              Total dépensé
-            </p>
-            <div className="flex items-baseline justify-center gap-1">
-              <span className="text-4xl font-bold tracking-tight text-rose-500">
-                {totalSpent.toFixed(2)}
-              </span>
-              <span className="text-xl font-medium text-muted-foreground">
-                €
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-        <div className="md:col-span-1 h-full">
+ <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* COLONNE GAUCHE : On empile le Total et l'IA */}
+        <div className="lg:col-span-1 flex flex-col gap-6">
+          
+          {/* CARTE TOTAL */}
+          <Card className="bg-card/40 border-border/50 shadow-none flex flex-col items-center justify-center text-center py-6">
+            <CardContent className="p-0">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                Total dépensé
+              </p>
+              <div className="flex items-baseline justify-center gap-1">
+                <span className="text-4xl font-bold tracking-tight text-rose-500">
+                  {totalSpent.toFixed(2)}
+                </span>
+                <span className="text-xl font-medium text-muted-foreground">€</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* ASSISTANT IA */}
           <AIAdvisor />
         </div>
 
-        <div className="md:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 h-full flex items-center justify-center">
+        {/* COLONNE DROITE : Le Graphique (prend 2/3 de l'espace) */}
+        <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 h-full flex items-center justify-center min-h-[350px]">
           <div
             className={
               !isPremium
@@ -135,6 +135,7 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
           >
             <ExpenseChart data={chartData} />
           </div>
+          
           {!isPremium && (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
               <div className="bg-background/90 p-6 rounded-2xl border border-border/50 shadow-2xl backdrop-blur-md">
@@ -150,7 +151,7 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
                     size="sm"
                     className="rounded-full px-6 shadow-lg shadow-blue-500/20 bg-blue-600 text-white"
                   >
-                    Passer Premium — 5€
+                    Passer Premium — 9.99€
                   </Button>
                 </form>
               </div>
