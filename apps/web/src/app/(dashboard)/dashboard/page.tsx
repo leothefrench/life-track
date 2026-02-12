@@ -9,6 +9,7 @@ import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
 import { Expense } from '@life-track/shared';
+import { AIAdvisor } from "@/components/ai-advisor";
 
 const CATEGORY_STYLES: Record<string, string> = {
   LOYER: 'bg-blue-500/10 text-blue-500 border-blue-500/20', // Correspond à --chart-1
@@ -58,7 +59,12 @@ export default async function DashboardPage() {
       })
     : [];
 
-const chartData = (categoriesData as any[]).map((item: { category: string; _sum: { amount: number | null } }) => ({
+// const chartData = (categoriesData as any[]).map((item: { category: string; _sum: { amount: number | null } }) => ({
+//   category: item.category,
+//   amount: item._sum.amount || 0,
+// }));
+
+const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => ({
   category: item.category,
   amount: item._sum.amount || 0,
 }));
@@ -99,8 +105,8 @@ const chartData = (categoriesData as any[]).map((item: { category: string; _sum:
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-card/40 border-border/50 shadow-none h-full flex flex-col items-center justify-center text-center">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card className="md:col-span-1 bg-card/40 border-border/50 shadow-none h-full flex flex-col items-center justify-center text-center">
           <CardContent className="p-6">
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
               Total dépensé
@@ -115,6 +121,9 @@ const chartData = (categoriesData as any[]).map((item: { category: string; _sum:
             </div>
           </CardContent>
         </Card>
+        <div className="md:col-span-1 h-full">
+          <AIAdvisor />
+        </div>
 
         <div className="md:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 h-full flex items-center justify-center">
           <div
