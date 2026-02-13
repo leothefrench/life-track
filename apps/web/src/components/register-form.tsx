@@ -56,6 +56,8 @@ export function RegisterForm() {
               name="email"
               type="email"
               placeholder="jean@exemple.com"
+              autoCapitalize="none"
+              autoComplete="email"
               required
             />
           </div>
