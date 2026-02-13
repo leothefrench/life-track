@@ -9,18 +9,18 @@ import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
 import { Expense } from '@life-track/shared';
-import { AIAdvisor } from "@/components/ai-advisor";
+import { AIAdvisor } from '@/components/ai-advisor';
 
 const CATEGORY_STYLES: Record<string, string> = {
-  LOYER: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  NOURRITURE: 'bg-green-500/10 text-green-400 border-green-500/20',
-  VETEMENTS: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-  LOISIRS: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-  AUTRE: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+  LOYER: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
+  NOURRITURE: 'bg-green-500/10 text-green-300 border-green-500/20',
+  VETEMENTS: 'bg-orange-500/10 text-orange-300 border-orange-500/20',
+  LOISIRS: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
+  AUTRE: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
 };
 
 interface CategoryResult {
-  category: "LOYER" | "NOURRITURE" | "VETEMENTS" | "LOISIRS" | "AUTRE";
+  category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
   _sum: {
     amount: number | null;
   };
@@ -59,10 +59,12 @@ export default async function DashboardPage() {
       })
     : [];
 
-const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => ({
-  category: item.category,
-  amount: item._sum.amount || 0,
-}));
+  const chartData = (categoriesData as unknown as CategoryResult[]).map(
+    (item) => ({
+      category: item.category,
+      amount: item._sum.amount || 0,
+    }),
+  );
 
   return (
     <div className="space-y-8">
@@ -100,11 +102,9 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
         </div>
       </div>
 
- <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* COLONNE GAUCHE : On empile le Total et l'IA */}
         <div className="lg:col-span-1 flex flex-col gap-6">
-          
           {/* CARTE TOTAL */}
           <Card className="bg-card/40 border-border/50 shadow-none flex flex-col items-center justify-center text-center py-6">
             <CardContent className="p-0">
@@ -115,7 +115,9 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
                 <span className="text-4xl font-bold tracking-tight text-rose-500">
                   {totalSpent.toFixed(2)}
                 </span>
-                <span className="text-xl font-medium text-muted-foreground">€</span>
+                <span className="text-xl font-medium text-muted-foreground">
+                  €
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -135,7 +137,7 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
           >
             <ExpenseChart data={chartData} />
           </div>
-          
+
           {!isPremium && (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
               <div className="bg-background/90 p-6 rounded-2xl border border-border/50 shadow-2xl backdrop-blur-md">
@@ -162,9 +164,9 @@ const chartData = (categoriesData as unknown as CategoryResult[]).map((item) => 
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
             Historique
-          </h3>
+          </h2>
           <ExportButton />
         </div>
         <div className="divide-y divide-border/20 border rounded-xl overflow-hidden bg-card/20">
