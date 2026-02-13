@@ -11,7 +11,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 text-center space-y-8">
+    <main className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] px-4 text-center space-y-8">
       <h1 className="text-6xl font-extrabold tracking-tighter sm:text-7xl">
         Maîtrisez votre <span className="text-blue-500">budget.</span>
       </h1>
@@ -24,6 +24,6 @@ export default async function Home() {
           <Link href="/login">Commencer maintenant</Link>
         </Button>
       </div>
-    </div>
+    </main>
   );
 }
