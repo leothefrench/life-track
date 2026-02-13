@@ -15,16 +15,13 @@ export default async function Home() {
       <h1 className="text-6xl font-extrabold tracking-tighter sm:text-7xl">
         Maîtrisez votre <span className="text-blue-500">budget.</span>
       </h1>
-      <p className="max-w-[600px] text-muted-foreground text-xl">
+      <p className="max-w-150 text-muted-foreground text-xl">
         Life-Track est la solution la plus simple pour suivre vos dépenses et
         économiser chaque mois.
       </p>
-      <div className="flex gap-4">
+      <div className="flex justify-center">
         <Button size="lg" className="rounded-full px-8" asChild>
           <Link href="/login">Commencer maintenant</Link>
-        </Button>
-        <Button size="lg" variant="outline" className="rounded-full px-8">
-          Voir la démo
         </Button>
       </div>
     </div>
