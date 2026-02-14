@@ -35,7 +35,7 @@ export async function analyzeExpenses() {
   if (stats._count === 0) return "Aucune donnée pour ce mois. Ajoutez vos premières dépenses !";
 
   // 2. On prépare le modèle
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
   // 3. LE PROMPT "CHIRURGICAL" (C'est ici que le prix de 9.99€ se justifie)
   const total = stats._sum.amount || 0;
