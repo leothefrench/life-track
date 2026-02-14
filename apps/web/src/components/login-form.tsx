@@ -30,8 +30,8 @@ export function LoginForm() {
     setError(null);
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    const email = (formData.get('email') as string).trim().toLowerCase();
+    const password = (formData.get('password') as string).trim();
 
     const result = await signIn('credentials', {
       email,

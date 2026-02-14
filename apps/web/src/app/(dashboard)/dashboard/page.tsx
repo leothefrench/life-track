@@ -1,7 +1,8 @@
 import { prisma } from '@life-track/db';
 import { auth } from '@/auth';
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
-import { ExpenseChart } from '@/components/expense-chart';
+// import { ExpenseChart } from '@/components/expense-chart';
+import { DynamicExpenseChart } from '@/components/dynamic-chart';
 import { ExportButton } from '@/components/export-button';
 import { ExpenseActions } from '@/components/expense-actions';
 import { Card, CardContent } from '@/components/ui/card';
@@ -135,7 +136,7 @@ export default async function DashboardPage() {
                 : 'w-full'
             }
           >
-            <ExpenseChart data={chartData} />
+            <DynamicExpenseChart data={chartData} />
           </div>
 
           {!isPremium && (

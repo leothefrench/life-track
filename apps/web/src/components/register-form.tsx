@@ -27,6 +27,14 @@ export function RegisterForm() {
 
     const formData = new FormData(event.currentTarget);
 
+    const email = (formData.get('email') as string).trim().toLowerCase();
+    const name = (formData.get('name') as string).trim();
+    const password = (formData.get('password') as string).trim();
+
+    formData.set('email', email);
+    formData.set('name', name);
+    formData.set('password', password);
+
     try {
       await registerUser(formData);
     } catch (err: any) {
