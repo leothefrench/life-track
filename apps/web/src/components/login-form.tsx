@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export function LoginForm() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     setError(null);
@@ -76,7 +77,19 @@ export function LoginForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Mot de passe</Label>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Mot de passe</Label>
+                {/* LIEN VERS PAGE RESET */}
+                <Link
+                  href="/reset"
+                  className="text-xs text-muted-foreground hover:text-primary underline"
+                >
+                  Mot de passe oublié ?
+                </Link>
+              </div>
+  
+            </div>
             <div className="relative">
               <Input
                 id="password"
