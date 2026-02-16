@@ -1,36 +1,21 @@
 import { prisma } from '@life-track/db';
 import { auth } from '@/auth';
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
-// import { ExpenseChart } from '@/components/expense-chart';
-import { DynamicExpenseChart } from '@/components/dynamic-chart';
-import { ExportButton } from '@/components/export-button';
-import { ExpenseActions } from '@/components/expense-actions';
-import { Card, CardContent } from '@/components/ui/card';
-import { createCheckoutSession } from '@/app/actions/stripe';
-import { Button } from '@/components/ui/button';
+import { DashboardStats } from '@/components/dashboard-stats';
+import { ExpenseList } from '@/components/expense-list';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
-import { Expense } from '@life-track/shared';
-import { AIAdvisor } from '@/components/ai-advisor';
-
-const CATEGORY_STYLES: Record<string, string> = {
-  LOYER: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-  NOURRITURE: 'bg-green-500/10 text-green-300 border-green-500/20',
-  VETEMENTS: 'bg-orange-500/10 text-orange-300 border-orange-500/20',
-  LOISIRS: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
-  AUTRE: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
-};
+import { Button } from '@/components/ui/button';
 
 interface CategoryResult {
   category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
-  _sum: {
-    amount: number | null;
-  };
+  _sum: { amount: number | null };
 }
 
 export default async function DashboardPage() {
   const session = await auth();
   const userId = session?.user?.id;
 
+  // 1. DATA FETCHING (Serveur)
   const user = userId
     ? await prisma.user.findUnique({ where: { id: userId } })
     : null;
@@ -42,16 +27,12 @@ export default async function DashboardPage() {
         orderBy: { date: 'desc' },
       })
     : [];
-
-  const stats = userId
+  const totalStats = userId
     ? await prisma.expense.aggregate({
         where: { userId },
         _sum: { amount: true },
       })
     : null;
-
-  const totalSpent = stats?._sum.amount || 0;
-
   const categoriesData = userId
     ? await prisma.expense.groupBy({
         by: ['category'],
@@ -60,6 +41,8 @@ export default async function DashboardPage() {
       })
     : [];
 
+  // 2. TRANSFORMATIONS
+  const totalSpent = totalStats?._sum.amount || 0;
   const chartData = (categoriesData as unknown as CategoryResult[]).map(
     (item) => ({
       category: item.category,
@@ -67,15 +50,52 @@ export default async function DashboardPage() {
     }),
   );
 
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const dailyExpenses = userId
+    ? await prisma.expense.findMany({
+        where: { userId, date: { gte: sevenDaysAgo } },
+        select: { amount: true, date: true, category: true },
+      })
+    : [];
+
+  const last7DaysData = Array.from({ length: 7 })
+    .map((_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dayExp = dailyExpenses.filter(
+        (e) => new Date(e.date).toDateString() === d.toDateString(),
+      );
+      return {
+        day: d.toLocaleDateString('fr-FR', { weekday: 'short' }),
+        LOYER: dayExp
+          .filter((e) => e.category === 'LOYER')
+          .reduce((sum, e) => sum + e.amount, 0),
+        NOURRITURE: dayExp
+          .filter((e) => e.category === 'NOURRITURE')
+          .reduce((sum, e) => sum + e.amount, 0),
+        VETEMENTS: dayExp
+          .filter((e) => e.category === 'VETEMENTS')
+          .reduce((sum, e) => sum + e.amount, 0),
+        LOISIRS: dayExp
+          .filter((e) => e.category === 'LOISIRS')
+          .reduce((sum, e) => sum + e.amount, 0),
+        AUTRE: dayExp
+          .filter((e) => e.category === 'AUTRE')
+          .reduce((sum, e) => sum + e.amount, 0),
+      };
+    })
+    .reverse();
+
+  // 3. RENDU (Lisible en un coup d'oeil)
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight inline-flex items-center gap-3">
             Dashboard
-            {/* Petit badge de rappel si Premium */}
             {isPremium && (
-              <span className="text-[10px] bg-amber-400/20 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
+              <span className="text-[10px] bg-amber-400/20 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter text-pro">
                 Pro
               </span>
             )}
@@ -84,9 +104,7 @@ export default async function DashboardPage() {
             Suivi de vos dépenses.
           </p>
         </div>
-
         <div className="flex items-center gap-3">
-          {/* BOUTON DE GESTION STRIPE (Apparaît seulement si Premium) */}
           {isPremium && (
             <form action={createCustomerPortalSession}>
               <Button
@@ -103,109 +121,14 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* COLONNE GAUCHE : On empile le Total et l'IA */}
-        <div className="lg:col-span-1 flex flex-col gap-6">
-          {/* CARTE TOTAL */}
-          <Card className="bg-card/40 border-border/50 shadow-none flex flex-col items-center justify-center text-center py-6">
-            <CardContent className="p-0">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
-                Total dépensé
-              </p>
-              <div className="flex items-baseline justify-center gap-1">
-                <span className="text-4xl font-bold tracking-tight text-rose-500">
-                  {totalSpent.toFixed(2)}
-                </span>
-                <span className="text-xl font-medium text-muted-foreground">
-                  €
-                </span>
-              </div>
-            </CardContent>
-          </Card>
+      <DashboardStats
+        totalSpent={totalSpent}
+        last7DaysData={last7DaysData}
+        chartData={chartData}
+        isPremium={isPremium}
+      />
 
-          {/* ASSISTANT IA */}
-          <AIAdvisor />
-        </div>
-
-        {/* COLONNE DROITE : Le Graphique (prend 2/3 de l'espace) */}
-        <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 h-full flex items-center justify-center min-h-[350px]">
-          <div
-            className={
-              !isPremium
-                ? 'blur-[1.5px] opacity-70 pointer-events-none select-none w-full'
-                : 'w-full'
-            }
-          >
-            <DynamicExpenseChart data={chartData} />
-          </div>
-
-          {!isPremium && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              <div className="bg-background/90 p-6 rounded-2xl border border-border/50 shadow-2xl backdrop-blur-md">
-                <p className="font-bold text-sm mb-1 text-foreground">
-                  Analyses Premium
-                </p>
-                <p className="text-[10px] text-muted-foreground mb-4">
-                  Débloquez la répartition par catégorie.
-                </p>
-                <form action={createCheckoutSession}>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    className="rounded-full px-6 shadow-lg shadow-blue-500/20 bg-blue-600 text-white"
-                  >
-                    Passer Premium — 9.99€
-                  </Button>
-                </form>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-            Historique
-          </h2>
-          <ExportButton />
-        </div>
-        <div className="divide-y divide-border/20 border rounded-xl overflow-hidden bg-card/20">
-          {expenses.map((expense: Expense) => (
-            <div
-              key={expense.id}
-              className="flex justify-between items-center p-3 hover:bg-card/40 transition-colors"
-            >
-              <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium leading-none">
-                  {expense.title}
-                </p>
-                <span
-                  className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-extrabold w-fit border ${
-                    CATEGORY_STYLES[expense.category] || CATEGORY_STYLES.AUTRE
-                  }`}
-                >
-                  {expense.category}
-                </span>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <p className="font-bold text-sm">
-                    {expense.amount.toFixed(2)} €
-                  </p>
-                  <p className="text-[9px] text-muted-foreground uppercase">
-                    {new Date(expense.date).toLocaleDateString('fr-FR', {
-                      day: '2-digit',
-                      month: 'short',
-                    })}
-                  </p>
-                </div>
-                <ExpenseActions expense={expense} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ExpenseList expenses={expenses} />
     </div>
   );
 }
