@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
-import { Inter} from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 
-const inter = Inter({ variable: '--font-inter', subsets: ['latin'] });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+});
 
 
 export const metadata: Metadata = {
@@ -19,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${jakarta.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
