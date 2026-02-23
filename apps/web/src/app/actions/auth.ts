@@ -10,7 +10,14 @@ export async function registerUser(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const validatedData = RegisterSchema.parse({ name, email, password });
+  const validation = RegisterSchema.safeParse({ name, email, password });
+
+  if (!validation.success) {
+    const firstError = validation.error.issues[0].message;
+    throw new Error(firstError);
+  }
+
+  const validatedData = validation.data;
 
   const existingUser = await prisma.user.findUnique({
     where: { email: validatedData.email },

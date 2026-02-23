@@ -20,10 +20,14 @@ export const DeleteExpenseSchema = z.object({
 
 export const RegisterSchema = z.object({
   name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
-  email: z.string().email('Email invalide'),
+  email: z.string().email({ message: 'Email invalide' }),
   password: z
     .string()
-    .min(8, 'Le mot de passe doit faire au moins 8 caractères'),
+    .min(8, 'Le mot de passe doit faire au moins 8 caractères')
+    .regex(/[A-Z]/, 'Il faut au moins une majuscule')
+    .regex(/[a-z]/, 'Il faut au moins une minuscule')
+    .regex(/[0-9]/, 'Il faut au moins un chiffre')
+    .regex(/[^A-Za-z0-9]/, 'Il faut au moins un caractère spécial'),
 });
 
 export type Expense = z.infer<typeof ExpenseSchema>;
