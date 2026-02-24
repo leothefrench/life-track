@@ -35,10 +35,10 @@ export function RegisterForm() {
     formData.set('name', name);
     formData.set('password', password);
 
-    try {
-      await registerUser(formData);
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue');
+    const result = await registerUser(formData);
+
+    if (result?.error) {
+      setError(result.error);
       setLoading(false);
     }
   }

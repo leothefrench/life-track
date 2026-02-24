@@ -7,14 +7,14 @@ import { redirect } from 'next/navigation';
 
 export async function registerUser(formData: FormData) {
   const name = formData.get('name') as string;
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
+  const email = (formData.get('email') as string).trim().toLowerCase();
+  const password = (formData.get('password') as string).trim();
 
   const validation = RegisterSchema.safeParse({ name, email, password });
 
+  // AU LIEU DE THROW, ON FAIT UN RETURN
   if (!validation.success) {
-    const firstError = validation.error.issues[0].message;
-    throw new Error(firstError);
+    return { error: validation.error.issues[0].message };
   }
 
   const validatedData = validation.data;
@@ -24,7 +24,7 @@ export async function registerUser(formData: FormData) {
   });
 
   if (existingUser) {
-    throw new Error('Cet email est déjà utilisé.');
+    return { error: 'Cet email est déjà utilisé.' };
   }
 
   const hashedPassword = await bcrypt.hash(validatedData.password, 12);
@@ -37,5 +37,6 @@ export async function registerUser(formData: FormData) {
     },
   });
 
+  // Le redirect doit toujours être à la fin, hors de tout bloc logique
   redirect('/login?registered=true');
 }
