@@ -13,20 +13,21 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  password      String?   // Pour la connexion classique email/mot de passe
+  password      String?
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  // Stripe
   stripeCustomerId       String?   @unique
   stripeSubscriptionId   String?   @unique
   isPremium              Boolean   @default(false)
+  planType               String    @default("FREE")
 
-  // Relations Auth.js
+  // Relations
   accounts      Account[]
   sessions      Session[]
   expenses      Expense[]
+  insights      Insight[]  // Pour stocker les audits de l'IA
 }
 
 model Account {
@@ -57,13 +58,30 @@ model Session {
 }
 
 model Expense {
-  id          String   @id @default(cuid())
-  title       String
-  amount      Float
-  category    Category
-  date        DateTime @default(now())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String   @id @default(cuid())
+  title           String   // Le libellé brut de la banque
+  merchant        String?  // Le nom propre identifié par l'IA (ex: Netflix, EDF)
+  amount          Float
+  category        Category
+  isSubscription  Boolean  @default(false) // Pour isoler les contrats
+  date            DateTime @default(now())
+  
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Insight {
+  id              String   @id @default(cuid())
+  userId          String
+  type            String   // "SAVING" (économie), "DUPLICATE" (doublon), "INFO"
+  title           String   
+  description     String  
+  potentialSaving Float?   
+  affiliateUrl    String? 
+  isDismissed     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Category {
