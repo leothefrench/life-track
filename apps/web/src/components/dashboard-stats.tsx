@@ -1,9 +1,9 @@
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { AIAdvisor } from '@/components/ai-advisor';
 import { DailyBarChart } from '@/components/daily-bar-chart';
 import { DynamicExpenseChart } from '@/components/dynamic-chart';
 import { Button } from '@/components/ui/button';
-import { createCheckoutSession } from '@/app/actions/stripe';
 
 interface DashboardStatsProps {
   totalSpent: number;
@@ -39,11 +39,11 @@ export function DashboardStats({
         <AIAdvisor />
       </div>
 
-      <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 p-4">
+      <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 p-4 min-h-[350px] flex items-center justify-center">
         <div
-          className={`grid grid-cols-1 md:grid-cols-2 gap-4 h-full ${
+          className={`grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full ${
             !isPremium
-              ? 'blur-[2px] opacity-70 pointer-events-none select-none'
+              ? 'blur-[3px] opacity-40 pointer-events-none select-none'
               : ''
           }`}
         >
@@ -52,23 +52,21 @@ export function DashboardStats({
         </div>
 
         {!isPremium && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-            <div className="bg-background/90 p-6 rounded-2xl border border-border/50 shadow-2xl backdrop-blur-md">
-              <p className="font-bold text-sm mb-1 text-foreground">
-                Analyses Premium
+          <div className="absolute inset-0 flex items-center justify-center z-30">
+            <div className="bg-background/90 p-8 rounded-3xl border border-border/50 shadow-2xl backdrop-blur-md max-w-[260px] text-center">
+              <p className="font-bold text-sm mb-2 uppercase tracking-tighter">
+                Analyses Pro
               </p>
-              <p className="text-[10px] text-muted-foreground mb-4">
-                Débloquez vos graphiques détaillés.
+              <p className="text-[11px] text-muted-foreground mb-6">
+                Visualisez vos dépenses et abonnements en détail.
               </p>
-              <form action={createCheckoutSession}>
-                <Button
-                  type="submit"
-                  size="sm"
-                  className="rounded-full px-6 bg-blue-600 text-white"
-                >
-                  Passer Premium — 9.99€
-                </Button>
-              </form>
+              <Button
+                size="sm"
+                className="rounded-full px-8 shadow-lg shadow-blue-500/20 bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 w-full"
+                asChild
+              >
+                <Link href="/pricing">Passer Premium</Link>
+              </Button>
             </div>
           </div>
         )}
