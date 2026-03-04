@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Sparkles, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { analyzeExpenses } from "@/app/actions/ai";
+import { runSmartAudit } from '@/app/actions/ai';
 
 export function AIAdvisor() {
   const [advice, setAdvice] = useState<string | null>(null);
@@ -13,8 +13,8 @@ export function AIAdvisor() {
   const handleAnalyze = async () => {
     setLoading(true);
     try {
-      const result = await analyzeExpenses();
-      setAdvice(result);
+      const result = await runSmartAudit();
+      setAdvice(result.message);
     } catch (error) {
       setAdvice("Désolé, le coach est indisponible pour le moment.");
     } finally {
