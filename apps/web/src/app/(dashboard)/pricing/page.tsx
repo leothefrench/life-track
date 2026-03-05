@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from 'react';
 import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,6 +13,8 @@ import {
 import { Check } from 'lucide-react';
 
 export default function PricingPage() {
+  const [accepted, setAccepted] = useState(false);
+
   const plans = [
     {
       name: 'Mensuel',
@@ -90,6 +95,25 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
+
+              {/* --- LA NOUVELLE CASE À COCHER --- */}
+              <div className="flex items-start gap-3 pt-4 border-t border-border/50">
+                <input
+                  type="checkbox"
+                  id={`terms-${plan.name}`}
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  onChange={(e) => setAccepted(e.target.checked)}
+                />
+                <label
+                  htmlFor={`terms-${plan.name}`}
+                  className="text-[10px] text-muted-foreground leading-tight cursor-pointer"
+                >
+                  Je reconnais que Life-Track fournit un contenu numérique
+                  immédiatement et je renonce expressément à mon droit de
+                  rétractation.
+                </label>
+              </div>
+
               <form action={createCheckoutSession}>
                 <input type="hidden" name="priceId" value={plan.priceId} />
                 <Button
@@ -97,6 +121,7 @@ export default function PricingPage() {
                     plan.highlight ? 'bg-blue-600 hover:bg-blue-700' : ''
                   }`}
                   type="submit"
+                  disabled={!accepted} // LE BOUTON EST BLOQUÉ SI PAS COCHÉ
                 >
                   {plan.buttonText}
                 </Button>
