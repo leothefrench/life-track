@@ -49,7 +49,7 @@ export async function runSmartAudit() {
   const responseText = result.response.text();
 
   // 3. Extraction du JSON (L'IA peut parfois mettre du texte autour)
-  const jsonMatch = responseText.match(/\[.*\]/s);
+  const jsonMatch = responseText.match(/\[[\s\S]*\]/);
   if (!jsonMatch) return { message: "Erreur d'analyse." };
 
   const insights = JSON.parse(jsonMatch[0]);
