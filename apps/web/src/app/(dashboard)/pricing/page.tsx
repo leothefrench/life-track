@@ -20,7 +20,7 @@ export default function PricingPage() {
       name: 'Mensuel',
       price: '9,99€',
       description: 'La flexibilité totale, mois après mois.',
-      priceId: process.env.STRIPE_PREMIUM_PRICE_ID,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID,
       features: [
         'Analyses IA illimitées',
         'Graphiques détaillés',
@@ -34,7 +34,7 @@ export default function PricingPage() {
       name: 'Annuel',
       price: '99€',
       description: 'Le meilleur choix pour transformer vos finances.',
-      priceId: process.env.STRIPE_YEARLY_PRICE_ID,
+      priceId: process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID,
       features: [
         'Tout le plan Mensuel',
         '2 mois offerts',
@@ -96,7 +96,7 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              {/* --- LA NOUVELLE CASE À COCHER --- */}
+              {/* --- CASE À COCHER --- */}
               <div className="flex items-start gap-3 pt-4 border-t border-border/50">
                 <input
                   type="checkbox"
@@ -121,7 +121,7 @@ export default function PricingPage() {
                     plan.highlight ? 'bg-blue-600 hover:bg-blue-700' : ''
                   }`}
                   type="submit"
-                  disabled={!accepted} // LE BOUTON EST BLOQUÉ SI PAS COCHÉ
+                  disabled={!accepted}
                 >
                   {plan.buttonText}
                 </Button>
