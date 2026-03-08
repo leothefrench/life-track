@@ -5,6 +5,7 @@ import { DashboardStats } from '@/components/dashboard-stats';
 import { ExpenseList } from '@/components/expense-list';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
+import { PlaidLink } from '@/components/plaid-link';
 
 interface CategoryResult {
   category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
@@ -105,6 +106,8 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          {isPremium && <PlaidLink />}
+          
           {isPremium && (
             <form action={createCustomerPortalSession}>
               <Button

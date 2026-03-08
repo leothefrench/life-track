@@ -28,6 +28,8 @@ model User {
   sessions      Session[]
   expenses      Expense[]
   insights      Insight[]  // Pour stocker les audits de l'IA
+
+  bankConnections BankConnection[]
 }
 
 model Account {
@@ -100,4 +102,16 @@ model PasswordResetToken {
   createdAt DateTime @default(now())
 
   @@unique([email, token])
+}
+
+model BankConnection {
+  id              String   @id @default(cuid())
+  userId          String
+  accessToken     String   @unique // La clé permanente pour lire les transactions
+  itemId          String   @unique // L'identifiant Plaid de la connexion
+  institutionName String?  // Le nom de la banque (ex: Boursorama)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
