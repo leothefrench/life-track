@@ -6,7 +6,7 @@ import { ExpenseList } from '@/components/expense-list';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import { PlaidLink } from '@/components/plaid-link';
-import { Zap } from 'lucide-react';
+import { SyncButton } from '@/components/sync-button';
 
 interface CategoryResult {
   category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
@@ -114,13 +114,7 @@ export default async function DashboardPage() {
         <div className="flex items-center gap-3">
           {isPremium &&
             (isBankConnected ? (
-              <Button
-                variant="outline"
-                className="gap-2 border-blue-500/20 bg-blue-500/5 text-blue-600"
-              >
-                <Zap className="h-4 w-4" />
-                Synchroniser mes dépenses
-              </Button>
+             <SyncButton />
             ) : (
               <PlaidLink />
             ))}
