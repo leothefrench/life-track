@@ -6,6 +6,7 @@ import { ExpenseList } from '@/components/expense-list';
 import { createCustomerPortalSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import { PlaidLink } from '@/components/plaid-link';
+import { Zap } from 'lucide-react';
 
 interface CategoryResult {
   category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
@@ -18,9 +19,14 @@ export default async function DashboardPage() {
 
   // 1. DATA FETCHING (Serveur)
   const user = userId
-    ? await prisma.user.findUnique({ where: { id: userId } })
+    ? await prisma.user.findUnique({
+        where: { id: userId },
+        include: { bankConnections: true }, // On demande à voir s'il y a une banque liée
+      })
     : null;
+
   const isPremium = user?.isPremium || false;
+  const isBankConnected = (user?.bankConnections?.length || 0) > 0;
 
   const expenses = userId
     ? await prisma.expense.findMany({
@@ -106,8 +112,19 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {isPremium && <PlaidLink />}
-          
+          {isPremium &&
+            (isBankConnected ? (
+              <Button
+                variant="outline"
+                className="gap-2 border-blue-500/20 bg-blue-500/5 text-blue-600"
+              >
+                <Zap className="h-4 w-4" />
+                Synchroniser mes dépenses
+              </Button>
+            ) : (
+              <PlaidLink />
+            ))}
+
           {isPremium && (
             <form action={createCustomerPortalSession}>
               <Button
