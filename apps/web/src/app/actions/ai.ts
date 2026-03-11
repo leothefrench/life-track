@@ -74,3 +74,29 @@ export async function runSmartAudit() {
   revalidatePath('/dashboard');
   return { message: 'Audit terminé avec succès !' };
 }
+
+export async function categorizeTransactions(titles: string[]) {
+  const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
+
+  const prompt = `
+    Agis comme un expert comptable. Voici une liste de libellés de transactions bancaires : ${JSON.stringify(
+      titles,
+    )}.
+    
+    Classe chaque transaction dans l'une de ces catégories UNIQUEMENT : 
+    LOYER, NOURRITURE, VETEMENTS, LOISIRS, AUTRE.
+
+    Réponds uniquement sous forme d'un objet JSON plat où la clé est le libellé exact et la valeur est la catégorie.
+    Exemple : {"Starbucks": "NOURRITURE", "Netflix": "LOISIRS"}
+  `;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = result.response.text();
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    return jsonMatch ? JSON.parse(jsonMatch[0]) : {};
+  } catch (error) {
+    console.error('Erreur catégorisation IA:', error);
+    return {};
+  }
+}

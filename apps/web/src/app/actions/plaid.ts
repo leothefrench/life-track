@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 import { plaidClient } from '@/lib/plaid';
 import { prisma } from '@life-track/db';
 import { Products, CountryCode, LinkTokenCreateRequest } from 'plaid';
+import { categorizeTransactions } from './ai';
 
 export async function createLinkToken() {
   const session = await auth();
@@ -65,23 +66,19 @@ export async function syncTransactions() {
   const session = await auth();
   if (!session?.user?.id) throw new Error('Non autorisé');
 
-  // 1. Récupérer l'accessToken stocké en base
   const connection = await prisma.bankConnection.findFirst({
     where: { userId: session.user.id },
   });
 
   if (!connection) throw new Error('Aucune banque connectée');
 
-  // 2. Définir la période (ex: les 30 derniers jours)
   const now = new Date();
   const start = new Date();
   start.setDate(now.getDate() - 30);
-
-  const startDate = start.toISOString().split('T')[0]; // Format YYYY-MM-DD
+  const startDate = start.toISOString().split('T')[0];
   const endDate = now.toISOString().split('T')[0];
 
   try {
-    // 3. Appeler Plaid pour récupérer les transactions
     const response = await plaidClient.transactionsGet({
       access_token: connection.accessToken,
       start_date: startDate,
@@ -90,9 +87,12 @@ export async function syncTransactions() {
 
     const transactions = response.data.transactions;
 
-    // 4. Enregistrer chaque transaction dans la table Expense
+    // 1. On demande à l'IA de classer les noms
+    const titlesToCategorize = transactions.map((t) => t.name);
+    const categoriesMap = await categorizeTransactions(titlesToCategorize);
+
+    // 2. On enregistre avec la catégorie intelligente
     for (const trx of transactions) {
-      // On vérifie si la dépense n'existe pas déjà (en utilisant le titre et la date comme base simple)
       const existing = await prisma.expense.findFirst({
         where: {
           userId: session.user.id,
@@ -102,19 +102,20 @@ export async function syncTransactions() {
       });
 
       if (!existing) {
+        const suggestedCategory = categoriesMap[trx.name] || 'AUTRE';
+
         await prisma.expense.create({
           data: {
             userId: session.user.id,
             title: trx.name,
-            amount: Math.abs(trx.amount), // Plaid met les dépenses en négatif, on les veut en positif
-            category: 'AUTRE', // On laissera l'IA classer plus tard
+            amount: Math.abs(trx.amount),
+            category: suggestedCategory as any,
             date: new Date(trx.date),
           },
         });
       }
     }
 
-    // 5. Rafraîchir le Dashboard automatiquement
     revalidatePath('/dashboard');
     return { success: true, count: transactions.length };
   } catch (error) {
