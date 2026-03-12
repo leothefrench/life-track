@@ -7,6 +7,7 @@ import { createCustomerPortalSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import { PlaidLink } from '@/components/plaid-link';
 import { SyncButton } from '@/components/sync-button';
+import { InsightCards } from '@/components/insight-cards';
 
 interface CategoryResult {
   category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
@@ -45,6 +46,15 @@ export default async function DashboardPage() {
         by: ['category'],
         where: { userId },
         _sum: { amount: true },
+      })
+    : [];
+
+  // 1. On récupère les audits de l'IA (Insights) qui n'ont pas été ignorés
+  const insights = userId
+    ? await prisma.insight.findMany({
+        where: { userId, isDismissed: false },
+        orderBy: { createdAt: 'desc' },
+        take: 3,
       })
     : [];
 
@@ -112,12 +122,7 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {isPremium &&
-            (isBankConnected ? (
-             <SyncButton />
-            ) : (
-              <PlaidLink />
-            ))}
+          {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
           {isPremium && (
             <form action={createCustomerPortalSession}>
@@ -141,6 +146,8 @@ export default async function DashboardPage() {
         chartData={chartData}
         isPremium={isPremium}
       />
+
+      <InsightCards insights={insights} />
 
       <ExpenseList expenses={expenses} />
     </div>

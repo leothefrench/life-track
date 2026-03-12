@@ -66,7 +66,8 @@ export async function runSmartAudit() {
         title: insight.title,
         description: insight.description,
         potentialSaving: insight.potentialSaving,
-        affiliateUrl: 'https://selectra.info', // On met un lien générique pour l'instant
+        affiliateUrl:
+          insight.type === 'SAVING' ? 'https://selectra.info' : null,
       },
     });
   }
