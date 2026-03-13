@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import { ShieldCheck, Lock, MapPin } from "lucide-react"
 
 export default async function Home() {
   const session = await auth();
@@ -36,6 +37,54 @@ export default async function Home() {
           >
             <Link href="/register">Commencer à économiser</Link>
           </Button>
+        </div>
+      </section>
+
+      <section className="relative z-10 max-w-5xl mx-auto px-6 py-24 border-t border-white/5">
+        {/* Titre de section discret pour le SEO/Lighthouse */}
+        <h2 className="sr-only">Pourquoi nous faire confiance</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="space-y-4">
+            <div className="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+              <Lock className="h-5 w-5 text-blue-500" />
+            </div>
+            <h3 className="text-sm font-bold uppercase tracking-widest text-white">
+              Sécurité Bancaire
+            </h3>
+            <p className="text-sm text-white/50 leading-relaxed">
+              Vos identifiants ne transitent jamais par nos serveurs. Nous
+              utilisons un cryptage de niveau militaire (AES-256) pour protéger
+              vos données.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+              <ShieldCheck className="h-5 w-5 text-emerald-500" />
+            </div>
+            <h3 className="text-sm font-bold uppercase tracking-widest text-white">
+              Vie Privée
+            </h3>
+            <p className="text-sm text-white/50 leading-relaxed">
+              Zéro revente de données. Votre vie financière est privée, et le
+              restera.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="h-10 w-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+              <MapPin className="h-5 w-5 text-purple-500" />
+            </div>
+            <h3 className="text-sm font-bold uppercase tracking-widest text-white">
+              Souveraineté Européenne
+            </h3>
+            <p className="text-sm text-white/50 leading-relaxed">
+              Toutes vos données sont stockées sur des serveurs sécurisés en
+              Europe. Conformité RGPD totale pour une tranquillité d'esprit
+              absolue.
+            </p>
+          </div>
         </div>
       </section>
     </main>
