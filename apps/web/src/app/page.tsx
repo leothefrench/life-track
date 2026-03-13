@@ -3,6 +3,12 @@ import Link from 'next/link';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { ShieldCheck, Lock, MapPin } from "lucide-react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 export default async function Home() {
   const session = await auth();
@@ -23,12 +29,10 @@ export default async function Home() {
             une meilleure vision
           </span>
         </h1>
-
         <p className="max-w-xl text-white/50 text-base md:text-lg mx-auto leading-relaxed text-balance">
           Life-Track utilise l'IA pour analyser vos habitudes et identifier
           chaque euro que vous pouvez économiser
         </p>
-
         <div className="flex justify-center pt-4">
           <Button
             size="lg"
@@ -86,6 +90,49 @@ export default async function Home() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="relative z-10 max-w-3xl mx-auto px-6 py-24">
+        <h2 className="text-2xl font-bold text-center mb-12">
+          Questions fréquentes
+        </h2>
+
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1" className="border-white/10">
+            <AccordionTrigger className="text-sm hover:no-underline">
+              Est-ce que Life-Track peut faire des virements depuis mon compte ?
+            </AccordionTrigger>
+            <AccordionContent className="text-xs text-white/50 leading-relaxed">
+              Absolument pas. Nous utilisons Plaid, le standard mondial de
+              sécurité bancaire. Votre connexion est en lecture seule : nous
+              pouvons voir les transactions pour les analyser, mais il est
+              techniquement impossible pour nous de déplacer votre argent.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-2" className="border-white/10">
+            <AccordionTrigger className="text-sm hover:no-underline">
+              L&apos;IA a-t-elle accès à mon identité réelle ?
+            </AccordionTrigger>
+            <AccordionContent className="text-xs text-white/50 leading-relaxed">
+              Non. Avant d&apos;être analysées par Gemini, vos données sont
+              anonymisées. L&apos;IA voit des montants et des libellés (ex:
+              Starbucks 5€), mais jamais votre nom, votre adresse ou votre
+              numéro de compte.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-3" className="border-white/10">
+            <AccordionTrigger className="text-sm hover:no-underline">
+              Puis-je annuler mon abonnement facilement ?
+            </AccordionTrigger>
+            <AccordionContent className="text-xs text-white/50 leading-relaxed">
+              Oui, à tout moment et en un seul clic depuis votre Dashboard. Il
+              n&apos;y a aucun engagement de durée. Une fois annulé, vous gardez
+              vos accès Premium jusqu&apos;à la fin de la période payée.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </section>
     </main>
   );
