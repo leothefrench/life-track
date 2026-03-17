@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '@life-track/db';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
+import { getAffiliateLink } from '@/lib/affiliates';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
 
@@ -29,18 +30,23 @@ export async function runSmartAudit() {
   const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
   // 2. Le Prompt d'Expert (orienté économies et détection de récurrence)
-  const prompt = `
+const prompt = `
     En tant qu'auditeur financier, analyse ces 90 jours de dépenses : ${JSON.stringify(
       expenses,
     )}.
     
-    1. Identifie les dépenses RÉCURRENTES (abonnements, loyer, factures).
-    2. Pour chaque abonnement, compare avec les prix du marché :
-       - Mobile/Internet : ~15-30€
-       - Streaming : ~10-15€
-       - Électricité : Selon montant
-    3. Génère une liste d'INSIGHTS au format JSON uniquement :
-       [{ "type": "SAVING" | "DUPLICATE" | "INFO", "title": string, "description": string, "potentialSaving": number }]
+    1. Identifie les dépenses RÉCURRENTES.
+    2. Pour chaque économie possible, génère un insight de type "SAVING".
+    
+    IMPORTANT : Pour que mon système de liens fonctionne, tu DOIS inclure l'un des mots-clés suivants dans le "title" ou la "description" de chaque SAVING :
+    - Pour l'électricité/gaz : EDF, TOTAL, ENGIE, ou ÉLECTRICITÉ.
+    - Pour la banque : BANQUE, FRAIS, ou AGIOS.
+    - Pour les assurances : ASSURANCE, MUTUELLE, ou AXA.
+
+    Génère une liste d'INSIGHTS au format JSON uniquement :
+    [{ "type": "SAVING" | "DUPLICATE" | "INFO", "title": string, "description": string, "potentialSaving": number }]
+
+    "Si tu vois une dépense d'énergie (EDF, Total, Engie), génère TOUJOURS un insight même si le prix semble normal."
     
     Réponds uniquement avec le JSON.
   `;
@@ -58,19 +64,25 @@ export async function runSmartAudit() {
   // On nettoie les anciens insights avant pour ne pas doubler les alertes
   await prisma.insight.deleteMany({ where: { userId: session.user.id } });
 
-  for (const insight of insights) {
-    await prisma.insight.create({
-      data: {
-        userId: session.user.id,
-        type: insight.type,
-        title: insight.title,
-        description: insight.description,
-        potentialSaving: insight.potentialSaving,
-        affiliateUrl:
-          insight.type === 'SAVING' ? 'https://selectra.info' : null,
-      },
-    });
-  }
+for (const insight of insights) {
+  
+  const searchText = `${insight.title} ${insight.description}`.toUpperCase();
+  
+  const link = insight.type === 'SAVING'
+    ? getAffiliateLink(searchText)
+    : null;
+
+  await prisma.insight.create({
+    data: {
+      userId: session.user.id,
+      type: insight.type,
+      title: insight.title,
+      description: insight.description,
+      potentialSaving: insight.potentialSaving,
+      affiliateUrl: link,
+    },
+  });
+}
 
   revalidatePath('/dashboard');
   return { message: 'Audit terminé avec succès !' };
