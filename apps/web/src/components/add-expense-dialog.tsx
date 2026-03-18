@@ -19,9 +19,9 @@ export function AddExpenseDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="rounded-full bg-gradient-to-br from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white border-none shadow-lg shadow-rose-500/20 transition-all duration-300 hover:scale-105 active:scale-95">
-          <Plus className="h-6 w-6" />
-          Dépense
+        <Button className="h-8 rounded-lg bg-gradient-to-br from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white border-none shadow-lg shadow-rose-500/20 text-[10px] font-bold uppercase tracking-wider px-4 flex items-center justify-center gap-1.5 transition-all duration-300 hover:scale-105 active:scale-95">
+          <Plus className="h-3.5 w-3.5" />
+          <span>Dépense</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

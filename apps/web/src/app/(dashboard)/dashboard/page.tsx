@@ -107,21 +107,24 @@ export default async function DashboardPage() {
   // 3. RENDU (Lisible en un coup d'oeil)
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight inline-flex items-center gap-3">
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-center justify-between mb-8">
+        {/* BLOC TITRE */}
+        <div className="space-y-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight inline-flex items-center gap-3">
             Dashboard
             {isPremium && (
-              <span className="text-[10px] bg-amber-400/20 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter text-pro">
+              <span className="text-[10px] bg-amber-400/20 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
                 Pro
               </span>
             )}
           </h1>
-          <p className="text-muted-foreground text-sm">
-            Suivi de vos dépenses.
+          <p className="text-muted-foreground text-xs md:text-sm">
+            Suivi de vos dépenses et abonnements.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* BLOC BOUTONS (Responsive) */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
           {isPremium && (
@@ -132,10 +135,11 @@ export default async function DashboardPage() {
                 type="submit"
                 className="h-8 text-[10px] font-bold uppercase tracking-wider"
               >
-                Gérer mon abonnement
+                Abonnement
               </Button>
             </form>
           )}
+
           <AddExpenseDialog />
         </div>
       </div>
