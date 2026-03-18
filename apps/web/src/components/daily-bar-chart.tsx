@@ -4,7 +4,6 @@ import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -34,15 +33,14 @@ const chartConfig = {
 
 export function DailyBarChart({ data }: { data: any[] }) {
   return (
-    <Card className="border-border/50 bg-card/30 shadow-none h-full">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-          Activité
+    <Card className="border-none bg-transparent shadow-none h-full">
+      <CardHeader className="p-0 pb-4">
+        <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+          Activité (7j)
         </CardTitle>
-        <CardDescription>7 derniers jours par catégorie</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-37.5 w-full">
+      <CardContent className="p-0">
+        <ChartContainer config={chartConfig} className="h-45 w-full">
           <BarChart data={data}>
             <CartesianGrid
               vertical={false}
