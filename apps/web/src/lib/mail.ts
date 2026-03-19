@@ -22,3 +22,17 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     `,
   });
 };
+
+export const sendWelcomeEmail = async (email: string, name: string) => {
+  await resend.emails.send({
+    from: MAIL_FROM,
+    to: email, // mail pour le test
+    subject: "Bienvenue sur Life-Track ! 🚀",
+    html: `
+      <h1>Bonjour ${name} !</h1>
+      <p>Merci d'avoir rejoint Life-Track. Votre compte est maintenant prêt.</p>
+      <p>Pour commencer à économiser, connectez votre banque depuis votre dashboard. Notre IA analysera vos 90 derniers jours pour trouver des économies.</p>
+      <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard">Accéder à mon Dashboard</a>
+    `,
+  });
+};

@@ -4,6 +4,7 @@ import { prisma } from '@life-track/db';
 import { RegisterSchema } from '@life-track/shared';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
+import { sendWelcomeEmail } from '@/lib/mail';
 
 export async function registerUser(formData: FormData) {
   const name = formData.get('name') as string;
@@ -36,6 +37,14 @@ export async function registerUser(formData: FormData) {
       password: hashedPassword,
     },
   });
+
+  // ENVOI DU MAIL DE BIENVENUE
+  try {
+    await sendWelcomeEmail(validatedData.email, validatedData.name);
+  } catch (error) {
+    console.error('Erreur envoi mail bienvenue:', error);
+    // On ne bloque pas l'inscription si le mail échoue
+  }
 
   // Le redirect doit toujours être à la fin, hors de tout bloc logique
   redirect('/login?registered=true');
