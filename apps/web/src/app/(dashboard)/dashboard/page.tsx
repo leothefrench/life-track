@@ -133,6 +133,7 @@ export default async function DashboardPage() {
                 variant="outline"
                 size="sm"
                 type="submit"
+                aria-label="Gérer mon abonnement Stripe"
                 className="h-8 text-[10px] font-bold uppercase tracking-wider"
               >
                 Abonnement

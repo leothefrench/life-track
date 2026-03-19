@@ -140,20 +140,20 @@ export default async function Home() {
       </main>
       <footer className="relative z-10 border-t border-white/5 py-12 mt-20">
         <div className="max-w-3xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-xs text-white/30 font-medium tracking-tighter">
+          <span className="text-xs text-white/60 font-medium tracking-tighter">
             © {new Date().getFullYear()} Life-Track. Tous droits réservés.
           </span>
 
           <div className="flex gap-8">
             <Link
               href="/cgv"
-              className="text-[10px] uppercase tracking-widest text-white/30 hover:text-white transition-colors font-bold"
+              className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
             >
               CGV & Mentions Légales
             </Link>
             <Link
               href="mailto:support@life-track.app"
-              className="text-[10px] uppercase tracking-widest text-white/30 hover:text-white transition-colors font-bold"
+              className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
             >
               Contact
             </Link>
