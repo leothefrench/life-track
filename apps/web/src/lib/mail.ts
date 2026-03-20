@@ -36,3 +36,21 @@ export const sendWelcomeEmail = async (email: string, name: string) => {
     `,
   });
 };
+
+export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
+  await resend.emails.send({
+    from: MAIL_FROM,
+    to: email,
+    subject: 'Votre code de sécurité - Life-Track',
+    html: `
+      <div style="font-family: sans-serif; max-width: 400px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; rounded-lg: 12px;">
+        <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Code de sécurité</h1>
+        <p style="text-align: center; color: #64748b;">Entrez le code ci-dessous pour vous connecter à votre compte.</p>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 0.2em; color: #2563eb; margin: 20px 0;">
+          ${token}
+        </div>
+        <p style="font-size: 12px; color: #94a3b8; text-align: center;">Ce code expire dans 5 minutes.</p>
+      </div>
+    `,
+  });
+};
