@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loginUser } from '@/app/actions/auth'; // Notre nouvelle action
+import { loginUser } from '@/app/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,9 +23,13 @@ export function LoginForm() {
   const isRegistered = searchParams.get('registered') === 'true';
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showTwoFactor, setShowTwoFactor] = useState(false); // ÉTAT POUR LE 2FA
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // ÉTATS POUR SAUVEGARDER LES INFOS ENTRE LES DEUX ÉTAPES
+  const [emailSave, setEmailSave] = useState('');
+  const [passwordSave, setPasswordSave] = useState('');
 
   async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,7 +38,12 @@ export function LoginForm() {
 
     const formData = new FormData(event.currentTarget);
 
-    // On appelle notre nouvelle Server Action
+    // Si on est à l'étape 2 (2FA), on rajoute l'email et le mdp sauvés dans le formulaire
+    if (showTwoFactor) {
+      formData.set('email', emailSave);
+      formData.set('password', passwordSave);
+    }
+
     const result = await loginUser(formData);
 
     if (result?.error) {
@@ -44,7 +53,10 @@ export function LoginForm() {
     }
 
     if (result?.twoFactor) {
-      // SI LE SERVEUR DIT QU'IL FAUT LE 2FA
+      // ON SAUVEGARDE POUR L'ÉTAPE FINALE
+      setEmailSave(formData.get('email') as string);
+      setPasswordSave(formData.get('password') as string);
+
       setShowTwoFactor(true);
       setLoading(false);
       toast.info('Un code de sécurité a été envoyé par email.');
@@ -63,13 +75,12 @@ export function LoginForm() {
         <CardDescription>
           {showTwoFactor
             ? 'Entrez le code reçu par email.'
-            : 'Entrez vos identifiants pour accéder à Life-Track'}
+            : 'Accédez à votre espace Life-Track'}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           {!showTwoFactor ? (
-            // --- ÉTAPE 1 : EMAIL / PASSWORD ---
             <>
               {isRegistered && (
                 <div className="p-3 mb-4 text-sm font-medium text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-center">
@@ -94,7 +105,7 @@ export function LoginForm() {
                     href="/reset"
                     className="text-xs text-muted-foreground hover:text-primary underline"
                   >
-                    Mot de passe oublié ?
+                    Oublié ?
                   </Link>
                 </div>
                 <div className="relative">
@@ -120,7 +131,6 @@ export function LoginForm() {
               </div>
             </>
           ) : (
-            // --- ÉTAPE 2 : CODE 2FA ---
             <div className="space-y-2">
               <Label htmlFor="code">Code de sécurité</Label>
               <div className="relative">
@@ -131,36 +141,22 @@ export function LoginForm() {
                   required
                   className="pl-10 text-center tracking-[0.5em] text-lg font-bold"
                   maxLength={6}
+                  autoFocus
                 />
                 <ShieldCheck className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-500" />
               </div>
-              {/* IMPORTANT : On cache l'email et le password dans le form pour qu'ils soient renvoyés avec le code */}
-              <input
-                type="hidden"
-                name="email"
-                value={
-                  new FormData(document.querySelector('form')!).get(
-                    'email',
-                  ) as string
-                }
-              />
-              <input
-                type="hidden"
-                name="password"
-                value={
-                  new FormData(document.querySelector('form')!).get(
-                    'password',
-                  ) as string
-                }
-              />
             </div>
           )}
 
-          {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-500 font-medium text-center">
+              {error}
+            </p>
+          )}
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading
-              ? 'Chargement...'
+              ? 'Traitement...'
               : showTwoFactor
               ? 'Vérifier le code'
               : 'Se connecter'}
