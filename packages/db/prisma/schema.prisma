@@ -23,7 +23,7 @@ model User {
   isPremium              Boolean   @default(false)
   planType               String    @default("FREE")
 
-  isTwoFactorEnabled Boolean @default(false)
+  isTwoFactorEnabled Boolean @default(true)
 
   // Relations
   accounts      Account[]
