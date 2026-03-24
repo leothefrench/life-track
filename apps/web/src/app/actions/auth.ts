@@ -60,6 +60,11 @@ export async function loginUser(formData: FormData) {
 
   // 1. Vérifier si l'utilisateur existe
   const user = await prisma.user.findUnique({ where: { email } });
+
+// MOUCHARD SERVER 2
+  console.log("UTILISATEUR TROUVÉ:", !!user);
+  console.log("STATUT 2FA DANS LA DB:", user?.isTwoFactorEnabled);
+
   if (!user || !user.password) return { error: 'Identifiants invalides' };
 
   // 2. Vérifier le mot de passe
@@ -77,8 +82,9 @@ export async function loginUser(formData: FormData) {
     }
 
     // Si l'utilisateur a saisi un code, on le vérifie
+
     const existingToken = await prisma.twoFactorToken.findFirst({
-      where: { email: user.email, token: code },
+      where: { email: email, token: code },
     });
 
     if (!existingToken || new Date(existingToken.expires) < new Date()) {
