@@ -13,7 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
+import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
@@ -131,20 +136,54 @@ export function LoginForm() {
               </div>
             </>
           ) : (
-            <div className="space-y-2">
-              <Label htmlFor="code">Code de sécurité</Label>
-              <div className="relative">
-                <Input
-                  id="code"
-                  name="code"
-                  placeholder="123456"
-                  required
-                  className="pl-10 text-center tracking-[0.5em] text-lg font-bold"
-                  maxLength={6}
-                  autoFocus
-                />
-                <ShieldCheck className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-500" />
-              </div>
+            <div className="space-y-4 flex flex-col items-center">
+              <Label htmlFor="code" className="text-center w-full">
+                Code de sécurité
+              </Label>
+
+              <InputOTP
+                maxLength={6}
+                name="code"
+                autoFocus
+                onComplete={() => {
+                  // Attendre 100ms pour que l'utilisateur voie le dernier chiffre s'afficher
+                  setTimeout(() => {
+                    const form = document.querySelector('form');
+                    if (form) form.requestSubmit();
+                  }, 100);
+                }}
+              >
+                <InputOTPGroup className="gap-2">
+                  <InputOTPSlot
+                    index={0}
+                    className="w-10 h-12 text-lg font-bold border-border/50"
+                  />
+                  <InputOTPSlot
+                    index={1}
+                    className="w-10 h-12 text-lg font-bold border-border/50"
+                  />
+                  <InputOTPSlot
+                    index={2}
+                    className="w-10 h-12 text-lg font-bold border-border/50"
+                  />
+                  <InputOTPSlot
+                    index={3}
+                    className="w-10 h-12 text-lg font-bold border-border/50"
+                  />
+                  <InputOTPSlot
+                    index={4}
+                    className="w-10 h-12 text-lg font-bold border-border/50"
+                  />
+                  <InputOTPSlot
+                    index={5}
+                    className="w-10 h-12 text-lg font-bold border-border/50"
+                  />
+                </InputOTPGroup>
+              </InputOTP>
+
+              <p className="text-[10px] text-muted-foreground text-center uppercase tracking-widest">
+                Vérification en cours...
+              </p>
             </div>
           )}
 
