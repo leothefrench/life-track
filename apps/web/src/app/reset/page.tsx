@@ -2,8 +2,12 @@ import { ResetForm } from '@/components/reset-form';
 
 export default function ResetPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-muted/50 p-4">
-      <ResetForm />
+    <main className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative overflow-hidden font-sans">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(120,119,198,0.05)_0,transparent_60%)] pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-md">
+        <ResetForm />
+      </div>
     </main>
   );
 }

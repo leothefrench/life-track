@@ -1,12 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Sparkles, BrainCircuit } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from 'react';
+import { Sparkles, BrainCircuit } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { runSmartAudit } from '@/app/actions/ai';
 
-export function AIAdvisor() {
+// 1. VOICI L'INTERFACE (On définit ce que le composant reçoit)
+interface AIAdvisorProps {
+  isPremium: boolean;
+}
+
+// 2. ON AJOUTE { isPremium } ICI
+export function AIAdvisor({ isPremium }: AIAdvisorProps) {
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +22,7 @@ export function AIAdvisor() {
       const result = await runSmartAudit();
       setAdvice(result.message);
     } catch (error) {
-      setAdvice("Désolé, le coach est indisponible pour le moment.");
+      setAdvice('Désolé, le coach est indisponible pour le moment.');
     } finally {
       setLoading(false);
     }
@@ -34,25 +40,31 @@ export function AIAdvisor() {
         {advice ? (
           <div className="text-sm leading-relaxed animate-in fade-in slide-in-from-top-1 duration-500">
             {advice.split('\n').map((line, i) => (
-              <p key={i} className="mb-2">{line}</p>
+              <p key={i} className="mb-2">
+                {line}
+              </p>
             ))}
           </div>
         ) : (
           <p className="text-xs text-muted-foreground">
-            L'IA analyse vos dépenses du mois pour vous donner des conseils personnalisés.
+            L'IA analyse vos dépenses du mois pour vous donner des conseils
+            personnalisés.
           </p>
         )}
-        
-        <Button 
-          onClick={handleAnalyze} 
-          disabled={loading}
+
+        {/* 3. MODIFICATION DU BOUTON */}
+        <Button
+          onClick={handleAnalyze}
+          disabled={loading || !isPremium} // Bloqué si pas premium
           variant="secondary"
-          className="w-full bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 border border-blue-500/20"
+          className="w-full bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 border border-blue-500/20 disabled:opacity-50"
         >
-          {loading ? "Analyse en cours..." : (
+          {loading ? (
+            'Analyse en cours...'
+          ) : (
             <>
               <Sparkles className="mr-2 h-4 w-4" />
-              Générer des conseils
+              {isPremium ? 'Générer des conseils' : 'Réservé aux membres Pro'}
             </>
           )}
         </Button>

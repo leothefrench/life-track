@@ -36,7 +36,7 @@ export function DashboardStats({
             </div>
           </CardContent>
         </Card>
-        <AIAdvisor />
+        <AIAdvisor isPremium={isPremium} />
       </div>
 
       <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 p-4 min-h-[350px] flex items-center justify-center">
