@@ -1,72 +1,49 @@
-import { auth, signOut } from '@/auth';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
-import { prisma } from '@life-track/db';
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { prisma } from "@life-track/db";
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
+  if (!session) redirect("/login");
 
-  if (!session) {
-    redirect('/login');
-  }
-
-  const user = session?.user?.id
+  // On récupère les infos pour l'affichage (email, status)
+  const user = session?.user?.id 
     ? await prisma.user.findUnique({
         where: { id: session.user.id },
-        select: { isPremium: true, email: true },
+        select: { isPremium: true, email: true }
       })
     : null;
 
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="border-b bg-card/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link
-            href="/dashboard"
-            className="text-xl font-bold tracking-tighter"
-          >
-            Life-Track
-          </Link>
-
-          <div className="flex items-center gap-4">
+    <SidebarProvider> {/* Le "flex" ne s'applique qu'ici maintenant */}
+      <div className="flex min-h-screen w-full bg-black">
+        <AppSidebar />
+        
+        <SidebarInset className="bg-black border-l border-white/5 flex flex-col">
+          <header className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-white/5">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="-ml-1" />
+              <div className="h-4 w-px bg-white/10 hidden md:block" />
+              <span className="text-xs text-white/40 hidden md:block italic">Espace sécurisé</span>
+            </div>
+            
+            {/* Rappel du statut dans le header */}
             {user?.isPremium && (
-              <span className="text-[10px] bg-gradient-to-r from-amber-400 to-yellow-600 text-black font-black px-2 py-0.5 rounded-full shadow-sm">
-                PREMIUM
+               <span className="text-[10px] bg-amber-400/20 text-amber-400 border border-amber-400/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
+                Pro
               </span>
             )}
-            <span className="text-xs text-muted-foreground hidden sm:inline-block">
-              {session.user?.email}
-            </span>
+          </header>
 
-            <form
-              action={async () => {
-                'use server';
-                await signOut({ redirectTo: '/login' });
-              }}
-            >
-              <Button
-                variant="ghost"
-                size="sm"
-                type="submit"
-                className="text-muted-foreground hover:text-red-500 transition-colors"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Déconnexion
-              </Button>
-            </form>
-          </div>
-        </div>
-      </nav>
-
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {children}
-      </main>
-    </div>
+          <main className="flex-1 overflow-y-auto p-6 md:p-10">
+            <div className="max-w-5xl mx-auto">
+              {children}
+            </div>
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 }

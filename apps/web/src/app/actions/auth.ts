@@ -1,11 +1,12 @@
 'use server';
 
 import { prisma } from '@life-track/db';
+import { revalidatePath } from 'next/cache';
 import { RegisterSchema } from '@life-track/shared';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 import { sendWelcomeEmail } from '@/lib/mail';
-import { signIn } from '@/auth';
+import { auth, signIn } from '@/auth';
 import { generateTwoFactorToken } from '@/lib/tokens';
 import { sendTwoFactorTokenEmail } from '@/lib/mail';
 
@@ -107,4 +108,16 @@ export async function loginUser(formData: FormData) {
   } catch (error) {
     return { error: 'Une erreur est survenue lors de la connexion' };
   }
+}
+
+export async function toggleTwoFactor(enabled: boolean) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Non autorisé');
+
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: { isTwoFactorEnabled: enabled },
+  });
+
+  revalidatePath('/settings');
 }
