@@ -17,8 +17,8 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Pour savoir où on est
-import { signOut } from '@/auth'; // On importera l'action de déconnexion plus tard ou on utilisera un bouton client
+import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const items = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
@@ -46,7 +46,7 @@ export function AppSidebar() {
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.url} // MAGIE : Allume le menu si on est sur la page
+                isActive={pathname === item.url}
                 className="hover:bg-white/5 transition-colors py-6 data-[active=true]:bg-white/10 data-[active=true]:text-white"
               >
                 <Link href={item.url} className="flex items-center gap-3">
@@ -64,14 +64,13 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-white/5">
-        {/* Un vrai bouton de déconnexion stylé en bas */}
-        <Link
-          href="/api/auth/signout"
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium w-full"
         >
           <LogOut className="h-4 w-4" />
           Déconnexion
-        </Link>
+        </button>
       </SidebarFooter>
     </Sidebar>
   );

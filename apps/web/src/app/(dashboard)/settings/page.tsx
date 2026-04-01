@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { TwoFactorSwitch } from '@/components/two-factor-switch';
+import { ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -14,6 +17,17 @@ export default async function SettingsPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-8 py-10">
       <div>
+        <Button
+          variant="ghost"
+          size="sm"
+          asChild
+          className="-ml-2 mb-4 text-white/50 hover:text-white transition-colors"
+        >
+          <Link href="/dashboard" className="flex items-center gap-1">
+            <ChevronLeft className="h-4 w-4" />
+            Retour au Dashboard
+          </Link>
+        </Button>
         <h1 className="text-3xl font-bold tracking-tight text-white text-center md:text-left">
           Paramètres
         </h1>
