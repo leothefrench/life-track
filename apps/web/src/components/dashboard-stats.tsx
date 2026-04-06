@@ -39,7 +39,7 @@ export function DashboardStats({
         <AIAdvisor isPremium={isPremium} />
       </div>
 
-      <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border/50 bg-card/20 p-4 min-h-[350px] flex items-center justify-center">
+      <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border-bright bg-card/20 p-4 min-h-87.5 flex items-center justify-center">
         <div
           className={`grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full ${
             !isPremium
@@ -53,7 +53,7 @@ export function DashboardStats({
 
         {!isPremium && (
           <div className="absolute inset-0 flex items-center justify-center z-30">
-            <div className="bg-background/90 p-8 rounded-3xl border border-border/50 shadow-2xl backdrop-blur-md max-w-[260px] text-center">
+            <div className="bg-background/90 p-8 rounded-3xl border border-border-bright shadow-2xl backdrop-blur-md max-w-65 text-center">
               <p className="font-bold text-sm mb-2 uppercase tracking-tighter">
                 Analyses Pro
               </p>

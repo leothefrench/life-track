@@ -4,7 +4,7 @@ import { ExportButton } from "./export-button";
 
 const CATEGORY_STYLES: Record<string, string> = {
   LOYER: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-  NOURRITURE: 'bg-green-500/10 text-green-300 border-green-500/20',
+  NOURRITURE: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
   VETEMENTS: 'bg-orange-500/10 text-orange-300 border-orange-500/20',
   LOISIRS: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
   AUTRE: 'bg-rose-500/10 text-rose-300 border-rose-500/20',

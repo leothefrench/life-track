@@ -24,6 +24,7 @@
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
+  --color-border-bright: var(--border-bright);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
@@ -98,13 +99,14 @@
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
+  --border-bright: oklch(0.7 0.2 250 / 20%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --chart-1: oklch(0.8 0.25 250); /* Bleu Cyan Électrique */
+  --chart-2: oklch(0.85 0.3 150); /* Vert Émeraude Fluo */
+  --chart-3: oklch(0.8 0.25 50);  /* Orange Brûlant */
+  --chart-4: oklch(0.75 0.3 300); /* Violet Néon */
+  --chart-5: oklch(0.75 0.3 20);  /* Rose/Rouge Laser */
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -120,6 +122,21 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground relative; /* Ajout de relative pour le grain */
+  }
+  
+  /* Le grain de texture Resend */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.02;
+    pointer-events: none;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    z-index: 50;
+    filter: contrast(150%) brightness(100%);
   }
 }

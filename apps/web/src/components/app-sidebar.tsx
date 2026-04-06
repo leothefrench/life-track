@@ -30,7 +30,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar className="border-r border-white/5 bg-black text-white">
+    <Sidebar className="border-r border-border-bright bg-black/50 backdrop-blur-xl">
       <SidebarHeader className="p-6">
         <Link href="/dashboard" className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { createCheckoutSession } from '@/app/actions/stripe';
@@ -39,7 +39,7 @@ export default function PricingPage() {
         'Tout le plan Mensuel',
         '2 mois offerts',
         'Audit de patrimoine',
-        'Accès anticipé aux nouveautés',
+        'Accès anticipé',
       ],
       buttonText: "Économiser avec l'annuel",
       highlight: true,
@@ -48,27 +48,44 @@ export default function PricingPage() {
 
   return (
     <div className="max-w-5xl mx-auto py-12 px-4">
+      {/* 1. HEADER */}
       <div className="text-center mb-12 space-y-4">
         <h1 className="text-4xl font-bold tracking-tight">
           Choisissez votre plan
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Passez au niveau supérieur. Laissez notre IA auditer vos{' '}
-          <span className="text-foreground font-medium">
-            dépenses et abonnements
-          </span>{' '}
-          pour optimiser votre cash.
+          Passez au niveau supérieur pour optimiser votre budget et vos
+          abonnements.
         </p>
       </div>
 
+      {/* 2. CASE DE RÉTRACTATION GLOBALE */}
+      <div className="max-w-md mx-auto mb-12 flex items-start gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 shadow-xl">
+        <input
+          type="checkbox"
+          id="global-terms"
+          className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10 text-blue-600 focus:ring-blue-500 cursor-pointer"
+          onChange={(e) => setAccepted(e.target.checked)}
+        />
+        <label
+          htmlFor="global-terms"
+          className="text-[11px] text-white/50 leading-tight cursor-pointer"
+        >
+          Je reconnais que Life-Track fournit un contenu numérique immédiatement
+          et je renonce expressément à mon droit de rétractation de 14 jours
+          pour accéder aux services dès maintenant.
+        </label>
+      </div>
+
+      {/* 3. GRILLE DES PLANS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {plans.map((plan) => (
           <Card
             key={plan.name}
             className={`relative flex flex-col ${
               plan.highlight
-                ? 'border-blue-500 shadow-2xl shadow-blue-500/10'
-                : 'border-border/50'
+                ? 'border-blue-500 bg-white/5 shadow-2xl shadow-blue-500/10'
+                : 'border-white/10 bg-transparent'
             }`}
           >
             {plan.highlight && (
@@ -80,46 +97,35 @@ export default function PricingPage() {
               <CardTitle className="text-xl">{plan.name}</CardTitle>
               <CardDescription>{plan.description}</CardDescription>
               <div className="mt-4">
-                <span className="text-5xl font-bold">{plan.price}</span>
-                <span className="text-muted-foreground">
+                <span className="text-5xl font-bold text-white">
+                  {plan.price}
+                </span>
+                <span className="text-white/40 text-sm">
                   /{plan.name === 'Annuel' ? 'an' : 'mois'}
                 </span>
               </div>
             </CardHeader>
-            <CardContent className="flex-1 space-y-6">
-              <ul className="space-y-3">
+            <CardContent className="flex-1 flex flex-col">
+              <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-3 text-sm">
+                  <li
+                    key={feature}
+                    className="flex items-center gap-3 text-sm text-white/70"
+                  >
                     <Check className="h-4 w-4 text-emerald-500" />
                     {feature}
                   </li>
                 ))}
               </ul>
 
-              {/* --- CASE À COCHER --- */}
-              <div className="flex items-start gap-3 pt-4 border-t border-border/50">
-                <input
-                  type="checkbox"
-                  id={`terms-${plan.name}`}
-                  className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                  onChange={(e) => setAccepted(e.target.checked)}
-                />
-                <label
-                  htmlFor={`terms-${plan.name}`}
-                  className="text-[10px] text-muted-foreground leading-tight cursor-pointer"
-                >
-                  Je reconnais que Life-Track fournit un contenu numérique
-                  immédiatement et je renonce expressément à mon droit de
-                  rétractation.
-                </label>
-              </div>
-
               <form action={createCheckoutSession}>
                 <input type="hidden" name="priceId" value={plan.priceId} />
                 <Button
-                  className={`w-full rounded-xl h-12 font-bold ${
-                    plan.highlight ? 'bg-blue-600 hover:bg-blue-700' : ''
-                  }`}
+                  className={`w-full rounded-xl h-12 font-bold transition-all ${
+                    plan.highlight
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : 'bg-white/10 hover:bg-white/20 text-white'
+                  } disabled:opacity-30 disabled:cursor-not-allowed`}
                   type="submit"
                   disabled={!accepted}
                 >
