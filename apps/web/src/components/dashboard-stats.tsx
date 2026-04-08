@@ -10,6 +10,7 @@ interface DashboardStatsProps {
   last7DaysData: any[];
   chartData: any[];
   isPremium: boolean;
+  expensesCount: number;
 }
 
 export function DashboardStats({
@@ -17,6 +18,7 @@ export function DashboardStats({
   last7DaysData,
   chartData,
   isPremium,
+  expensesCount,
 }: DashboardStatsProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -36,7 +38,7 @@ export function DashboardStats({
             </div>
           </CardContent>
         </Card>
-        <AIAdvisor isPremium={isPremium} />
+        <AIAdvisor isPremium={isPremium} expensesCount={expensesCount} />
       </div>
 
       <div className="lg:col-span-2 relative group overflow-hidden rounded-xl border border-border-bright bg-card/20 p-4 min-h-87.5 flex items-center justify-center">

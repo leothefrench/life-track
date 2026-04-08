@@ -58,3 +58,13 @@ export async function createCustomerPortalSession() {
     redirect(portalSession.url);
   }
 }
+
+export async function getSubscriptionStatus() {
+  const session = await auth();
+  if (!session?.user?.id) return false;
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { isPremium: true },
+  });
+  return user?.isPremium || false;
+}

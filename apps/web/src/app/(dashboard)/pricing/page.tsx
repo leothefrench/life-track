@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createCheckoutSession } from '@/app/actions/stripe';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,9 +11,21 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Check } from 'lucide-react';
+import { createCustomerPortalSession } from '@/app/actions/stripe';
+import { getSubscriptionStatus } from '@/app/actions/stripe';
 
 export default function PricingPage() {
   const [accepted, setAccepted] = useState(false);
+
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      const status = await getSubscriptionStatus();
+      setIsPremium(status);
+    };
+    checkStatus();
+  }, []);
 
   const plans = [
     {
@@ -118,18 +130,25 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              <form action={createCheckoutSession}>
+              {/* On change l'action dynamiquement */}
+              <form
+                action={
+                  isPremium
+                    ? createCustomerPortalSession
+                    : createCheckoutSession
+                }
+              >
                 <input type="hidden" name="priceId" value={plan.priceId} />
                 <Button
                   className={`w-full rounded-xl h-12 font-bold transition-all ${
                     plan.highlight
                       ? 'bg-blue-600 hover:bg-blue-700 text-white'
                       : 'bg-white/10 hover:bg-white/20 text-white'
-                  } disabled:opacity-30 disabled:cursor-not-allowed`}
+                  } disabled:opacity-30`}
                   type="submit"
-                  disabled={!accepted}
+                  disabled={!accepted && !isPremium} // Si déjà premium, pas besoin de cocher la case
                 >
-                  {plan.buttonText}
+                  {isPremium ? 'Gérer mon abonnement' : plan.buttonText}
                 </Button>
               </form>
             </CardContent>

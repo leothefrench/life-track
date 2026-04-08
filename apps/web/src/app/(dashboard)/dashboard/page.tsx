@@ -150,6 +150,7 @@ export default async function DashboardPage() {
         last7DaysData={last7DaysData}
         chartData={chartData}
         isPremium={isPremium}
+        expensesCount={expenses.length} 
       />
 
       <InsightCards insights={insights} />
