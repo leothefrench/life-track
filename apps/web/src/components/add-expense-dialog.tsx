@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react'; 
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,7 +19,7 @@ export function AddExpenseDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="h-8 rounded-lg bg-gradient-to-br from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white border-none shadow-lg shadow-rose-500/20 text-[10px] font-bold uppercase tracking-wider px-4 flex items-center justify-center gap-1.5 transition-all duration-300 hover:scale-105 active:scale-95">
+        <Button className="h-9 rounded-lg bg-rose-600 hover:bg-rose-700 text-white border-none shadow-lg shadow-rose-500/10 text-[10px] font-bold uppercase tracking-wider px-4 flex items-center justify-center gap-2 transition-colors">
           <Plus className="h-3.5 w-3.5" />
           <span>Dépense</span>
         </Button>

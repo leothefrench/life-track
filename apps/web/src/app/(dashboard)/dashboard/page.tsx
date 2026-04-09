@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { PlaidLink } from '@/components/plaid-link';
 import { SyncButton } from '@/components/sync-button';
 import { InsightCards } from '@/components/insight-cards';
+import { WelcomeState } from '@/components/welcome-state';
 
 interface CategoryResult {
   category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
@@ -123,39 +124,42 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        {/* BLOC BOUTONS (Responsive) */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
+<div className="flex flex-wrap items-center gap-2 sm:gap-3">
+  {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
-          {isPremium && (
-            <form action={createCustomerPortalSession}>
-              <Button
-                variant="outline"
-                size="sm"
-                type="submit"
-                aria-label="Gérer mon abonnement Stripe"
-                className="h-8 text-[10px] font-bold uppercase tracking-wider"
-              >
-                Abonnement
-              </Button>
-            </form>
-          )}
+  {isPremium && (
+    <form action={createCustomerPortalSession}>
+      <Button
+        variant="outline"
+        size="sm"
+        type="submit"
+        aria-label="Gérer mon abonnement Stripe"
+        className="h-9 rounded-lg border-white/10 bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-wider px-4"
+      >
+        Abonnement
+      </Button>
+    </form>
+  )}
 
-          <AddExpenseDialog />
-        </div>
+  <AddExpenseDialog />
+</div>
       </div>
 
-      <DashboardStats
-        totalSpent={totalSpent}
-        last7DaysData={last7DaysData}
-        chartData={chartData}
-        isPremium={isPremium}
-        expensesCount={expenses.length} 
-      />
-
-      <InsightCards insights={insights} />
-
-      <ExpenseList expenses={expenses} />
+      {expenses.length > 0 ? (
+        <>
+          <DashboardStats
+            totalSpent={totalSpent}
+            last7DaysData={last7DaysData}
+            chartData={chartData}
+            isPremium={isPremium}
+            expensesCount={expenses.length}
+          />
+          <InsightCards insights={insights} />
+          <ExpenseList expenses={expenses} />
+        </>
+      ) : (
+        <WelcomeState isPremium={isPremium} />
+      )}
     </div>
   );
 }

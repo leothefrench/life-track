@@ -52,9 +52,9 @@ export function PlaidLink() {
       onClick={() => open()}
       disabled={!ready}
       variant="outline"
-      className="gap-2 border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-600"
+      className="h-9 rounded-lg border-white/10 bg-white/5 text-emerald-500 hover:bg-white/10 text-[10px] font-bold uppercase tracking-wider px-4 flex items-center justify-center gap-2 transition-colors"
     >
-      <Landmark className="h-4 w-4" />
+      <Landmark className="h-3.5 w-3.5" />
       Connecter ma banque
     </Button>
   );
