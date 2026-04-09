@@ -1,9 +1,36 @@
+'use client'; // Obligatoire pour utiliser dynamic avec ssr: false
+
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Card, CardContent } from '@/components/ui/card';
-import { AIAdvisor } from '@/components/ai-advisor';
-import { DailyBarChart } from '@/components/daily-bar-chart';
-import { DynamicExpenseChart } from '@/components/dynamic-chart';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+
+
+const DailyBarChart = dynamic(
+  () => import('@/components/daily-bar-chart').then((mod) => mod.DailyBarChart),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-50 w-full bg-white/5" />,
+  },
+);
+
+const DynamicExpenseChart = dynamic(
+  () =>
+    import('@/components/dynamic-chart').then((mod) => mod.DynamicExpenseChart),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-50 w-full bg-white/5" />,
+  },
+);
+
+const AIAdvisor = dynamic(
+  () => import('@/components/ai-advisor').then((mod) => mod.AIAdvisor),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-37.5 w-full bg-white/5" />,
+  },
+);
 
 interface DashboardStatsProps {
   totalSpent: number;
@@ -23,6 +50,7 @@ export function DashboardStats({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-1 flex flex-col gap-6">
+        {/* Cette carte s'affichera instantanément car elle est très légère */}
         <Card className="bg-card/40 border-border/50 shadow-none flex flex-col items-center justify-center text-center py-6">
           <CardContent className="p-0">
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
@@ -38,6 +66,8 @@ export function DashboardStats({
             </div>
           </CardContent>
         </Card>
+
+        {/* L'IA Advisor se chargera juste après */}
         <AIAdvisor isPremium={isPremium} expensesCount={expensesCount} />
       </div>
 
@@ -49,6 +79,7 @@ export function DashboardStats({
               : ''
           }`}
         >
+          {/* Les graphiques ne bloquent plus le thread principal du mobile */}
           <DailyBarChart data={last7DaysData} />
           <DynamicExpenseChart data={chartData} />
         </div>
