@@ -126,7 +126,7 @@
   }
   
   /* Le grain de texture */
-body::before {
+/* body::before {
     content: "";
     position: fixed;
     top: 0;
@@ -136,10 +136,10 @@ body::before {
     opacity: 0.02;
     pointer-events: none;
     z-index: 50;
-    /* On n'active le grain que sur Desktop (écrans larges) */
+    
     @media (min-width: 1024px) {
       background-image: url("/noise.svg");
       filter: contrast(150%) brightness(100%);
     }
-  }
+  } */
 }
