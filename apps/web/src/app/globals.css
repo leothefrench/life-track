@@ -125,8 +125,8 @@
     @apply bg-background text-foreground relative; /* Ajout de relative pour le grain */
   }
   
-  /* Le grain de texture Resend */
-  body::before {
+  /* Le grain de texture */
+body::before {
     content: "";
     position: fixed;
     top: 0;
@@ -135,8 +135,11 @@
     height: 100vh;
     opacity: 0.02;
     pointer-events: none;
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
     z-index: 50;
-    filter: contrast(150%) brightness(100%);
+    /* On n'active le grain que sur Desktop (écrans larges) */
+    @media (min-width: 1024px) {
+      background-image: url("/noise.svg");
+      filter: contrast(150%) brightness(100%);
+    }
   }
 }
