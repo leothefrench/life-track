@@ -5,3 +5,14 @@ dist
 .turbo
 .vercel
 .env*.local
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Playwright artifacts
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/blob-report/
