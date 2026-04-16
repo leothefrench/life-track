@@ -62,9 +62,9 @@ export async function loginUser(formData: FormData) {
   // 1. Vérifier si l'utilisateur existe
   const user = await prisma.user.findUnique({ where: { email } });
 
-// MOUCHARD SERVER 2
-  console.log("UTILISATEUR TROUVÉ:", !!user);
-  console.log("STATUT 2FA DANS LA DB:", user?.isTwoFactorEnabled);
+  // MOUCHARD SERVER 2
+  console.log('UTILISATEUR TROUVÉ:', !!user);
+  console.log('STATUT 2FA DANS LA DB:', user?.isTwoFactorEnabled);
 
   if (!user || !user.password) return { error: 'Identifiants invalides' };
 
@@ -74,26 +74,30 @@ export async function loginUser(formData: FormData) {
 
   // 3. LOGIQUE 2FA
   if (user.isTwoFactorEnabled) {
-    // Si l'utilisateur n'a pas encore saisi de code
     if (!code) {
       const twoFactorToken = await generateTwoFactorToken(user.email!);
       await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
-
-      return { twoFactor: true }; // On dit au site : "Affiche le champ pour le code"
+      return { twoFactor: true };
     }
 
-    // Si l'utilisateur a saisi un code, on le vérifie
+    // --- BYPASS POUR LES TESTS E2E ---
+    const isBypassCode =
+      process.env.NODE_ENV !== 'production' &&
+      code === process.env.E2E_OTP_BYPASS_CODE;
 
-    const existingToken = await prisma.twoFactorToken.findFirst({
-      where: { email: email, token: code },
-    });
+    if (!isBypassCode) {
+      // On ne fait la vérification DB QUE si ce n'est pas le code de bypass
+      const existingToken = await prisma.twoFactorToken.findFirst({
+        where: { email: email, token: code },
+      });
 
-    if (!existingToken || new Date(existingToken.expires) < new Date()) {
-      return { error: 'Code invalide ou expiré' };
+      if (!existingToken || new Date(existingToken.expires) < new Date()) {
+        return { error: 'Code invalide ou expiré' };
+      }
+
+      await prisma.twoFactorToken.delete({ where: { id: existingToken.id } });
     }
-
-    // Le code est bon, on nettoie la base de données
-    await prisma.twoFactorToken.delete({ where: { id: existingToken.id } });
+    // --- FIN DU BYPASS ---
   }
 
   // 4. CONNEXION FINALE

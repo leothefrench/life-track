@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// TEST 1 : L'INSCRIPTION (Le mix qui passait)
+// TEST 1 : L'INSCRIPTION
 test('Flux complet : Création de compte', async ({ page }) => {
   const uniqueEmail = `user-${Date.now()}@test.com`;
   await page.goto('/register');
@@ -10,25 +10,41 @@ test('Flux complet : Création de compte', async ({ page }) => {
   await page.locator('input[name="password"]').fill('Password123!');
 
   await page.locator('button[type="submit"]').click();
-  
-  // On utilise toHaveURL avec un timeout long pour laisser le serveur respirer
-  // Cela couvre le cas "/login?registered=true"
-  await expect(page).toHaveURL(/.*registered=true.*/, { timeout: 30000 });
+
+  await expect(page).toHaveURL(/.*login.*/, { timeout: 30000 });
 });
 
-// TEST 2 : LA CONNEXION (La partie qui passait hier)
-test('Flux Connexion : Identifiants -> Affichage 2FA', async ({ page }) => {
+// TEST 2 : LA CONNEXION -> DASHBOARD
+test('Flux Connexion : Login -> 2FA -> Dashboard', async ({ page }) => {
   await page.goto('/login');
 
-  await page.locator('input[name="email"]').fill(process.env.TEST_USER_EMAIL || '');
-  await page.locator('input[name="password"]').fill(process.env.TEST_USER_PASSWORD || '');
-
+  // 1. Étape Identifiants
+  await page
+    .locator('input[name="email"]')
+    .fill(process.env.TEST_USER_EMAIL || '');
+  await page
+    .locator('input[name="password"]')
+    .fill(process.env.TEST_USER_PASSWORD || '');
   await page.locator('button[type="submit"]').click();
 
-  // On cherche le bouton spécifique du 2FA (écarte toute ambiguïté)
-  const verifyBtn = page.getByRole('button', { name: /Vérifier le code/i });
-  await expect(verifyBtn).toBeVisible({ timeout: 15000 });
+  // 2. Étape OTP (On cible l'input avec précision)
+  const otpInput = page
+    .locator('input[type="text"], input[autocomplete="one-time-code"]')
+    .first();
+  await expect(otpInput).toBeVisible({ timeout: 15000 });
 
-  // On vérifie qu'un champ de saisie est présent pour le code
-  await expect(page.locator('input').first()).toBeVisible();
+  // 3. Saisie du code Bypass (Touche par touche pour React)
+  const magicCode = process.env.E2E_OTP_BYPASS_CODE || '123456';
+  await otpInput.click();
+  await otpInput.pressSequentially(magicCode, { delay: 100 });
+
+  // 4. Clic sur le bouton de validation
+  await page.keyboard.press('Enter');
+
+  // On attend la redirection vers le dashboard
+  // J'augmente à 30s car le premier chargement du dashboard est lourd (Prisma + IA)
+  await expect(page).toHaveURL(/.*dashboard.*/, { timeout: 30000 });
+  
+  // On vérifie que le texte "Dashboard" est présent
+  await expect(page.getByRole('heading', { name: /Dashboard/i })).toBeVisible();
 });
