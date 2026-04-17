@@ -8,7 +8,8 @@ dotenv.config({ path: path.resolve(__dirname, '.env.local') });
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  fullyParallel: false,
+  workers: 1,
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3000',
