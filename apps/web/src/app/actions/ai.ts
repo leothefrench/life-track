@@ -5,7 +5,7 @@ import { prisma } from '@life-track/db';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 import { getAffiliateLink } from '@/lib/affiliates';
-import { extractJsonFromResponse } from '@/lib/ai-parser'; // 1. IMPORT
+import { extractJsonFromResponse } from '@/lib/ai-parser';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
 
@@ -25,31 +25,44 @@ export async function runSmartAudit() {
 
   const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
-  const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
-  Génère des INSIGHTS JSON : [{ "type": "SAVING" | "DUPLICATE" | "INFO", "title": string, "description": string, "potentialSaving": number }]
-  Inclus les mots-clés : EDF, TOTAL, ENGIE, ÉLECTRICITÉ, BANQUE, FRAIS, AGIOS, ASSURANCE, MUTUELLE.`;
+  // Prompt affiné pour l'affiliation et la sécurité juridique
+  const prompt = `Analyses ces dépenses françaises : ${JSON.stringify(expenses)}. 
+  Identifie les opportunités de réduction sur les contrats (Énergie, Télécom, Assurances, Frais bancaires).
+  
+  Génère des INSIGHTS JSON uniquement sous cette forme : 
+  [{ 
+    "type": "SAVING" | "DUPLICATE" | "INFO", 
+    "title": string, 
+    "description": string, 
+    "potentialSaving": number,
+    "category": "ENERGY" | "TELECOM" | "INSURANCE" | "BANK" | "OTHER"
+  }]
+  
+  CONSIGNE : Utilise des termes prudents ("pourrait", "potentiel"). Ne donne pas de conseils financiers fermes.`;
 
   const result = await model.generateContent(prompt);
   const responseText = result.response.text();
 
-  // 2. UTILISATION DU PARSER TESTÉ
   const insights = extractJsonFromResponse(responseText);
   if (!insights || !Array.isArray(insights))
     return { message: "Erreur d'analyse." };
 
   await prisma.insight.deleteMany({ where: { userId: session.user.id } });
 
+  const legalNote = " (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).";
+
   for (const insight of insights) {
-    const searchText = `${insight.title} ${insight.description}`.toUpperCase();
-    const link =
-      insight.type === 'SAVING' ? getAffiliateLink(searchText) : null;
+    // On utilise la catégorie fournie par l'IA ou le texte pour le lien
+    const linkSource = insight.category || `${insight.title} ${insight.description}`;
+    const link = insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
 
     await prisma.insight.create({
       data: {
         userId: session.user.id,
         type: insight.type,
         title: insight.title,
-        description: insight.description,
+        // Ajout automatique du disclaimer à la description
+        description: insight.description + legalNote,
         potentialSaving: insight.potentialSaving,
         affiliateUrl: link,
       },
@@ -71,7 +84,6 @@ export async function categorizeTransactions(titles: string[]) {
     const result = await model.generateContent(prompt);
     const response = result.response.text();
 
-    // 3. UTILISATION DU PARSER TESTÉ
     return extractJsonFromResponse(response) || {};
   } catch (error) {
     console.error('Erreur catégorisation IA:', error);
