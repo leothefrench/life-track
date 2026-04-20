@@ -15,20 +15,25 @@ import {
 } from '@/components/ui/chart';
 
 const categories = [
-  'LOYER',
-  'NOURRITURE',
-  'VETEMENTS',
+  'LOGEMENT',
+  'ENERGIE',
+  'ALIMENTATION',
+  'TRANSPORT',
+  'ABONNEMENTS',
   'LOISIRS',
+  'SANTE',
   'AUTRE',
 ] as const;
 
-// On mappe les catégories aux variables CSS définies dans globals.css
 const chartConfig = {
-  LOYER: { label: 'Loyer', color: 'var(--chart-1)' },
-  NOURRITURE: { label: 'Nourriture', color: 'var(--chart-2)' },
-  VETEMENTS: { label: 'Vêtements', color: 'var(--chart-3)' },
-  LOISIRS: { label: 'Loisirs', color: 'var(--chart-4)' },
-  AUTRE: { label: 'Autre', color: 'var(--chart-5)' },
+  LOGEMENT: { label: 'Logement', color: 'var(--chart-1)' },
+  ENERGIE: { label: 'Énergie', color: 'var(--chart-2)' },
+  ALIMENTATION: { label: 'Alimentation', color: 'var(--chart-3)' },
+  TRANSPORT: { label: 'Transport', color: 'var(--chart-4)' },
+  ABONNEMENTS: { label: 'Abonnements', color: 'var(--chart-5)' },
+  LOISIRS: { label: 'Loisirs', color: 'var(--chart-6)' },
+  SANTE: { label: 'Santé', color: 'var(--chart-7)' },
+  AUTRE: { label: 'Autre', color: 'var(--chart-8)' },
 } satisfies ChartConfig;
 
 export function DailyBarChart({ data }: { data: any[] }) {

@@ -3,11 +3,14 @@ import { ExpenseActions } from "./expense-actions";
 import { ExportButton } from "./export-button";
 
 const CATEGORY_STYLES: Record<string, string> = {
-  LOYER: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-  NOURRITURE: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
-  VETEMENTS: 'bg-orange-500/10 text-orange-300 border-orange-500/20',
-  LOISIRS: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
-  AUTRE: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+  LOGEMENT: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  ENERGIE: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+  ALIMENTATION: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+  TRANSPORT: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+  ABONNEMENTS: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
+  LOISIRS: 'bg-pink-500/10 text-pink-400 border-pink-500/20',
+  SANTE: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
+  AUTRE: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
 };
 
 export function ExpenseList({ expenses }: { expenses: Expense[] }) {

@@ -11,7 +11,15 @@ import { InsightCards } from '@/components/insight-cards';
 import { WelcomeState } from '@/components/welcome-state';
 
 interface CategoryResult {
-  category: 'LOYER' | 'NOURRITURE' | 'VETEMENTS' | 'LOISIRS' | 'AUTRE';
+  category:
+    | 'LOGEMENT'
+    | 'ENERGIE'
+    | 'ALIMENTATION'
+    | 'TRANSPORT'
+    | 'ABONNEMENTS'
+    | 'LOISIRS'
+    | 'SANTE'
+    | 'AUTRE';
   _sum: { amount: number | null };
 }
 
@@ -86,17 +94,26 @@ export default async function DashboardPage() {
       );
       return {
         day: d.toLocaleDateString('fr-FR', { weekday: 'short' }),
-        LOYER: dayExp
-          .filter((e) => e.category === 'LOYER')
+        LOGEMENT: dayExp
+          .filter((e) => e.category === 'LOGEMENT')
           .reduce((sum, e) => sum + e.amount, 0),
-        NOURRITURE: dayExp
-          .filter((e) => e.category === 'NOURRITURE')
+        ENERGIE: dayExp
+          .filter((e) => e.category === 'ENERGIE')
           .reduce((sum, e) => sum + e.amount, 0),
-        VETEMENTS: dayExp
-          .filter((e) => e.category === 'VETEMENTS')
+        ALIMENTATION: dayExp
+          .filter((e) => e.category === 'ALIMENTATION')
+          .reduce((sum, e) => sum + e.amount, 0),
+        TRANSPORT: dayExp
+          .filter((e) => e.category === 'TRANSPORT')
+          .reduce((sum, e) => sum + e.amount, 0),
+        ABONNEMENTS: dayExp
+          .filter((e) => e.category === 'ABONNEMENTS')
           .reduce((sum, e) => sum + e.amount, 0),
         LOISIRS: dayExp
           .filter((e) => e.category === 'LOISIRS')
+          .reduce((sum, e) => sum + e.amount, 0),
+        SANTE: dayExp
+          .filter((e) => e.category === 'SANTE')
           .reduce((sum, e) => sum + e.amount, 0),
         AUTRE: dayExp
           .filter((e) => e.category === 'AUTRE')
@@ -124,25 +141,25 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-<div className="flex flex-wrap items-center gap-2 sm:gap-3">
-  {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
-  {isPremium && (
-    <form action={createCustomerPortalSession}>
-      <Button
-        variant="outline"
-        size="sm"
-        type="submit"
-        aria-label="Gérer mon abonnement Stripe"
-        className="h-9 rounded-lg border-white/10 bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-wider px-4"
-      >
-        Abonnement
-      </Button>
-    </form>
-  )}
+          {isPremium && (
+            <form action={createCustomerPortalSession}>
+              <Button
+                variant="outline"
+                size="sm"
+                type="submit"
+                aria-label="Gérer mon abonnement Stripe"
+                className="h-9 rounded-lg border-white/10 bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-wider px-4"
+              >
+                Abonnement
+              </Button>
+            </form>
+          )}
 
-  <AddExpenseDialog />
-</div>
+          <AddExpenseDialog />
+        </div>
       </div>
 
       {expenses.length > 0 ? (

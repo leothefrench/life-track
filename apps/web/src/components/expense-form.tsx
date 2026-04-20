@@ -48,7 +48,9 @@ export function ExpenseForm({ onSuccess, initialData }: ExpenseformProps) {
 return (
   <Card>
     <CardHeader>
-      <CardTitle>{initialData ? "Modifier la dépense" : "Nouvelle dépense"}</CardTitle>
+      <CardTitle>
+        {initialData ? 'Modifier la dépense' : 'Nouvelle dépense'}
+      </CardTitle>
     </CardHeader>
     <CardContent>
       <form action={clientAction} className="space-y-4">
@@ -75,27 +77,31 @@ return (
         </div>
         <div className="space-y-2">
           <Label htmlFor="category">Catégorie</Label>
-            <Select name="category" defaultValue={initialData?.category} required>
+          <Select name="category" defaultValue={initialData?.category} required>
             <SelectTrigger>
               <SelectValue placeholder="Choisir une catégorie" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="NOURRITURE">Nourriture</SelectItem>
-              <SelectItem value="LOYER">Loyer</SelectItem>
-              <SelectItem value="VETEMENTS">Vêtements</SelectItem>
+              <SelectItem value="LOGEMENT">Logement</SelectItem>
+              <SelectItem value="ENERGIE">Énergie</SelectItem>
+              <SelectItem value="ALIMENTATION">Alimentation</SelectItem>
+              <SelectItem value="TRANSPORT">Transport</SelectItem>
+              <SelectItem value="ABONNEMENTS">Abonnements</SelectItem>
               <SelectItem value="LOISIRS">Loisirs</SelectItem>
+              <SelectItem value="SANTE">Santé</SelectItem>
               <SelectItem value="AUTRE">Autre</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading 
-            ? 'Enregistrement...' 
-            : (initialData ? 'Enregistrer les modifications' : 'Ajouter la dépense')
-          }
+          {loading
+            ? 'Enregistrement...'
+            : initialData
+            ? 'Enregistrer les modifications'
+            : 'Ajouter la dépense'}
         </Button>
       </form>
     </CardContent>
   </Card>
-)}
+);}

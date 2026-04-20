@@ -17,11 +17,14 @@ import {
 
 const chartConfig = {
   amount: { label: 'Montant', color: 'transparent' },
-  loyer: { label: 'Loyer', color: 'var(--chart-1)' },
-  nourriture: { label: 'Nourriture', color: 'var(--chart-2)' },
-  vetements: { label: 'Vêtements', color: 'var(--chart-3)' },
-  loisirs: { label: 'Loisirs', color: 'var(--chart-4)' },
-  autre: { label: 'Autre', color: 'var(--chart-5)' },
+  logement: { label: 'Logement', color: 'var(--chart-1)' },
+  energie: { label: 'Énergie', color: 'var(--chart-2)' },
+  alimentation: { label: 'Alimentation', color: 'var(--chart-3)' },
+  transport: { label: 'Transport', color: 'var(--chart-4)' },
+  abonnements: { label: 'Abonnements', color: 'var(--chart-5)' },
+  loisirs: { label: 'Loisirs', color: 'var(--chart-6)' },
+  sante: { label: 'Santé', color: 'var(--chart-7)' },
+  autre: { label: 'Autre', color: 'var(--chart-8)' },
 } satisfies ChartConfig;
 
 export function ExpenseChart({ data }: { data: any[] }) {
@@ -38,32 +41,31 @@ export function ExpenseChart({ data }: { data: any[] }) {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-        
-            <PieChart>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Pie
-                data={data}
-                dataKey="amount"
-                nameKey="category"
-                innerRadius={60}
-                strokeWidth={5}
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={
-                      chartConfig[
-                        entry.category.toLowerCase() as keyof typeof chartConfig
-                      ]?.color || 'gray'
-                    }
-                  />
-                ))}
-              </Pie>
-            </PieChart>
-    
+          <PieChart>
+            <ChartTooltip
+              cursor={false}
+              shared={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Pie
+              data={data}
+              dataKey="amount"
+              nameKey="category"
+              innerRadius={60}
+              strokeWidth={5}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    chartConfig[
+                      entry.category.toLowerCase() as keyof typeof chartConfig
+                    ]?.color || 'gray'
+                  }
+                />
+              ))}
+            </Pie>
+          </PieChart>
         </ChartContainer>
       </CardContent>
     </Card>

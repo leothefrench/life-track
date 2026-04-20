@@ -77,8 +77,8 @@ export async function categorizeTransactions(titles: string[]) {
   const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
   const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
-  Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
-  Catégories : LOYER, NOURRITURE, VETEMENTS, LOISIRS, AUTRE.`;
+Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
+Catégories : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.`;
 
   try {
     const result = await model.generateContent(prompt);
