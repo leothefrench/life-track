@@ -1,6 +1,15 @@
-import { Expense } from "@life-track/shared";
-import { ExpenseActions } from "./expense-actions";
-import { ExportButton } from "./export-button";
+'use client';
+
+import { Expense } from '@life-track/shared';
+import { ExpenseActions } from './expense-actions';
+import { ExportButton } from './export-button';
+
+// On crée un type local "robuste" pour l'affichage
+// On dit à TS : "Ici, on est sûr que l'id est une string et la date est présente"
+type ExpenseWithId = Expense & {
+  id: string;
+  date: Date;
+};
 
 const CATEGORY_STYLES: Record<string, string> = {
   LOGEMENT: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
@@ -13,36 +22,54 @@ const CATEGORY_STYLES: Record<string, string> = {
   AUTRE: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
 };
 
-export function ExpenseList({ expenses }: { expenses: Expense[] }) {
+export function ExpenseList({ expenses }: { expenses: any[] }) {
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Historique</h2>
+        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+          Historique
+        </h2>
         <ExportButton />
       </div>
       <div className="divide-y divide-border/20 border rounded-xl overflow-hidden bg-card/20">
         {expenses.length === 0 ? (
-          <p className="p-8 text-center text-muted-foreground italic">Aucune donnée</p>
+          <p className="p-8 text-center text-muted-foreground italic">
+            Aucune donnée
+          </p>
         ) : (
-          expenses.map((expense: Expense) => (
-            <div key={expense.id} className="flex justify-between items-center p-3 hover:bg-card/40 transition-colors">
+          expenses.map((expense: ExpenseWithId) => (
+            <div
+              key={expense.id}
+              className="flex justify-between items-center p-3 hover:bg-card/40 transition-colors"
+            >
               <div className="flex flex-col gap-1">
                 <p className="text-sm font-medium">{expense.title}</p>
-                <span className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-extrabold w-fit border ${CATEGORY_STYLES[expense.category] || CATEGORY_STYLES.AUTRE}`}>
+                <span
+                  className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-extrabold w-fit border ${
+                    CATEGORY_STYLES[expense.category] || CATEGORY_STYLES.AUTRE
+                  }`}
+                >
                   {expense.category}
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="font-bold text-sm">{expense.amount.toFixed(2)} €</p>
+                  <p className="font-bold text-sm">
+                    {expense.amount.toFixed(2)} €
+                  </p>
                   <p className="text-[9px] text-muted-foreground uppercase">
-                    {new Date(expense.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+                    {new Date(expense.date).toLocaleDateString('fr-FR', {
+                      day: '2-digit',
+                      month: 'short',
+                    })}
                   </p>
                 </div>
+                {/* On passe l'expense typée correctement au composant d'actions */}
                 <ExpenseActions expense={expense} />
               </div>
             </div>
-          )))}
+          ))
+        )}
       </div>
     </section>
   );
