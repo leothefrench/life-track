@@ -29,7 +29,7 @@ export function ExpenseActions({ expense }: ExpenseActionsProps) {
 
   const handleDelete = async () => {
     const formData = new FormData();
-    formData.append('id', expense.id!);
+   formData.append('id', (expense as any).id);
     try {
       await deleteExpense(formData);
       toast.success('Dépense supprimée');
