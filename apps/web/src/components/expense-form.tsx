@@ -28,7 +28,7 @@ export function ExpenseForm({ onSuccess, initialData }: ExpenseformProps) {
     setLoading(true);
     try {
       if (initialData) {
-        await updateExpense(initialData.id!, formData);
+        await updateExpense((initialData as any).id, formData);
         toast.success('Dépense mise à jour avec succès !');
       } else {
       await createExpense(formData);
