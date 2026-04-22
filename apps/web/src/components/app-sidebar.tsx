@@ -6,6 +6,7 @@ import {
   Settings,
   LogOut,
   Wallet,
+  X,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -15,6 +16,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -28,16 +30,32 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { isMobile, toggleSidebar } = useSidebar();
 
   return (
     <Sidebar className="border-r border-border-bright bg-black/50 backdrop-blur-xl">
       <SidebarHeader className="p-6">
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
-            <Wallet className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-bold tracking-tighter text-xl">Life-Track</span>
-        </Link>
+        <div className="flex items-center justify-between w-full">
+          <Link href="/dashboard" className="flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
+              <Wallet className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-bold tracking-tighter text-xl text-white">
+              Life-Track
+            </span>
+          </Link>
+
+          {/* CROIX DE FERMETURE : Uniquement sur mobile */}
+          {isMobile && (
+            <button
+              onClick={toggleSidebar}
+              className="p-2 -mr-2 text-white/50 hover:text-white transition-colors"
+              aria-label="Fermer le menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="px-4">
