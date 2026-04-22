@@ -143,8 +143,8 @@
     opacity: 0.015; /* Très léger */
     pointer-events: none;
     z-index: 50;
-    /* On utilise l'image fixe Cloudinary beaucoup plus performante que le SVG */
-    background-image: url("https://res.cloudinary.com/dnw9asv6s/image/upload/v1671542474/noise_f6u76u.png");
+
+    background-image: url("/noise.png");
     
     /* On ne l'affiche que sur Desktop pour garantir le score mobile */
     @media (max-width: 1023px) {
