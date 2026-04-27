@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { usePlaidLink } from 'react-plaid-link';
 import { Button } from '@/components/ui/button';
 import { Landmark } from 'lucide-react';
@@ -10,6 +11,7 @@ import { exchangePublicToken } from '@/app/actions/plaid';
 
 export function PlaidLink() {
   const [token, setToken] = useState<string | null>(null);
+   const router = useRouter(); 
 
   // 1. On demande le jeton au serveur dès que le composant apparaît
   useEffect(() => {
@@ -25,22 +27,24 @@ export function PlaidLink() {
   }, []);
 
   // 2. Ce qui se passe quand l'utilisateur a choisi sa banque
-  const onSuccess = useCallback(async (public_token: string, metadata: any) => {
+const onSuccess = useCallback(
+  async (public_token: string, metadata: any) => {
     try {
-      // On envoie le jeton au serveur avec le nom de la banque
       const institutionName = metadata.institution?.name || 'Banque Inconnue';
-
       const result = await exchangePublicToken(public_token, institutionName);
 
       if (result.success) {
         toast.success(`Votre compte ${institutionName} est maintenant lié !`);
+        router.refresh(); // 2. Force Next.js à recalculer le Dashboard (Server Side)
       } else {
         toast.error('Erreur lors de la liaison finale.');
       }
     } catch (error) {
       toast.error('Une erreur technique est survenue.');
     }
-  }, []);
+  },
+  [router],
+);
 
   const { open, ready } = usePlaidLink({
     token,

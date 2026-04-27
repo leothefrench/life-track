@@ -92,29 +92,36 @@ export async function syncTransactions() {
     const categoriesMap = await categorizeTransactions(titlesToCategorize);
 
     // 2. On enregistre avec la catégorie intelligente
-    for (const trx of transactions) {
-      const existing = await prisma.expense.findFirst({
-        where: {
-          userId: session.user.id,
-          title: trx.name,
-          date: new Date(trx.date),
-        },
-      });
+for (const trx of transactions) {
+  const existing = await prisma.expense.findFirst({
+    where: {
+      userId: session.user.id,
+      title: trx.name,
+      date: new Date(trx.date),
+    },
+  });
 
-      if (!existing) {
-        const suggestedCategory = categoriesMap[trx.name] || 'AUTRE';
+  if (!existing) {
+    // SÉCURITÉ : On vérifie que la catégorie de l'IA appartient bien à notre liste autorisée
+    const validCategories = ['LOGEMENT', 'ENERGIE', 'ALIMENTATION', 'TRANSPORT', 'ABONNEMENTS', 'LOISIRS', 'SANTE', 'AUTRE'];
+    let suggestedCategory = (categoriesMap[trx.name] || 'AUTRE').toUpperCase();
 
-        await prisma.expense.create({
-          data: {
-            userId: session.user.id,
-            title: trx.name,
-            amount: Math.abs(trx.amount),
-            category: suggestedCategory as any,
-            date: new Date(trx.date),
-          },
-        });
-      }
+    // Si l'IA renvoie n'importe quoi, on reset à AUTRE pour éviter le crash DB
+    if (!validCategories.includes(suggestedCategory)) {
+      suggestedCategory = 'AUTRE';
     }
+
+    await prisma.expense.create({
+      data: {
+        userId: session.user.id,
+        title: trx.name,
+        amount: Math.abs(trx.amount),
+        category: suggestedCategory as any,
+        date: new Date(trx.date),
+      },
+    });
+  }
+}
 
     revalidatePath('/dashboard');
     return { success: true, count: transactions.length };

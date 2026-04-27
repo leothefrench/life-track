@@ -175,7 +175,7 @@ export default async function DashboardPage() {
           <ExpenseList expenses={expenses} />
         </>
       ) : (
-        <WelcomeState isPremium={isPremium} />
+        <WelcomeState isPremium={isPremium}  isBankConnected={isBankConnected}  />
       )}
     </div>
   );
