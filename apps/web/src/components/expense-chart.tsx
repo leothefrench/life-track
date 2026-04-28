@@ -17,14 +17,14 @@ import {
 
 const chartConfig = {
   amount: { label: 'Montant', color: 'transparent' },
-  logement: { label: 'Logement', color: 'var(--chart-1)' },
-  energie: { label: 'Énergie', color: 'var(--chart-2)' },
-  alimentation: { label: 'Alimentation', color: 'var(--chart-3)' },
-  transport: { label: 'Transport', color: 'var(--chart-4)' },
-  abonnements: { label: 'Abonnements', color: 'var(--chart-5)' },
-  loisirs: { label: 'Loisirs', color: 'var(--chart-6)' },
-  sante: { label: 'Santé', color: 'var(--chart-7)' },
-  autre: { label: 'Autre', color: 'var(--chart-8)' },
+  LOGEMENT: { label: 'Logement', color: 'var(--chart-1)' },
+  ENERGIE: { label: 'Énergie', color: 'var(--chart-2)' },
+  ALIMENTATION: { label: 'Alimentation', color: 'var(--chart-3)' },
+  TRANSPORT: { label: 'Transport', color: 'var(--chart-4)' },
+  ABONNEMENTS: { label: 'Abonnements', color: 'var(--chart-5)' },
+  LOISIRS: { label: 'Loisirs', color: 'var(--chart-6)' },
+  SANTE: { label: 'Santé', color: 'var(--chart-7)' },
+  AUTRE: { label: 'Autre', color: 'var(--chart-8)' },
 } satisfies ChartConfig;
 
 export function ExpenseChart({ data }: { data: any[] }) {
@@ -59,7 +59,7 @@ export function ExpenseChart({ data }: { data: any[] }) {
                   key={`cell-${index}`}
                   fill={
                     chartConfig[
-                      entry.category.toLowerCase() as keyof typeof chartConfig
+                      entry.category as keyof typeof chartConfig
                     ]?.color || 'gray'
                   }
                 />
