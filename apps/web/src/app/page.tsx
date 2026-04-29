@@ -151,12 +151,12 @@ export default async function Home() {
             >
               CGV & Mentions Légales
             </Link>
-            <Link
-              href="mailto:support@life-track.app"
+            <a
+              href="mailto:leothefrench@gmail.com"
               className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
             >
               Contact
-            </Link>
+            </a>
           </div>
         </div>
       </footer>

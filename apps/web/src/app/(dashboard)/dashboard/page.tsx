@@ -63,7 +63,7 @@ export default async function DashboardPage() {
     ? await prisma.insight.findMany({
         where: { userId, isDismissed: false },
         orderBy: { createdAt: 'desc' },
-        take: 3,
+        take: 5,
       })
     : [];
 

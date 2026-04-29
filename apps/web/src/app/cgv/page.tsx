@@ -1,6 +1,24 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { ChevronLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
 export default function CGVPage() {
+  const router = useRouter();
+
   return (
     <main className="max-w-4xl mx-auto py-20 px-6 text-white/80 leading-relaxed">
+      {/* BOUTON RETOUR */}
+      <Button
+        variant="ghost"
+        onClick={() => router.back()}
+        className="mb-8 -ml-4 text-white/50 hover:text-white"
+      >
+        <ChevronLeft className="h-4 w-4 mr-2" />
+        Retour
+      </Button>
+
       <h1 className="text-3xl font-bold text-white mb-8">
         Conditions Générales de Vente (CGV)
       </h1>

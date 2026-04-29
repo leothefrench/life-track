@@ -25,20 +25,23 @@ export async function runSmartAudit() {
 
   const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
-  // Prompt affiné pour l'affiliation et la sécurité juridique
-  const prompt = `Analyses ces dépenses françaises : ${JSON.stringify(expenses)}. 
-  Identifie les opportunités de réduction sur les contrats (Énergie, Télécom, Assurances, Frais bancaires).
-  
-  Génère des INSIGHTS JSON uniquement sous cette forme : 
-  [{ 
-    "type": "SAVING" | "DUPLICATE" | "INFO", 
-    "title": string, 
-    "description": string, 
-    "potentialSaving": number,
-    "category": "ENERGY" | "TELECOM" | "INSURANCE" | "BANK" | "OTHER"
-  }]
-  
-  CONSIGNE : Utilise des termes prudents ("pourrait", "potentiel"). Ne donne pas de conseils financiers fermes.`;
+const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
+Identifie les opportunités d'économies et les anomalies.
+
+RÈGLE DE PRIORITÉ : Sélectionne en priorité les 5 événements les plus impactants financièrement :
+1. Les dépenses unitaires anormalement élevées (ex: > 500€).
+2. Les contrats récurrents (EDF, Télécom) où une économie est possible.
+
+Génère un tableau JSON de 5 objets maximum :
+[{ 
+  "type": "SAVING" | "INFO", 
+  "title": string, 
+  "description": string, 
+  "potentialSaving": number,
+  "category": "ENERGY" | "TELECOM" | "INSURANCE" | "BANK" | "OTHER"
+}]
+
+CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'est une priorité absolue.`;
 
   const result = await model.generateContent(prompt);
   const responseText = result.response.text();
