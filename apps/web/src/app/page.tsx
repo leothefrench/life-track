@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { ContactModal } from '@/components/contact-modal';
 
 export default async function Home() {
   const session = await auth();
@@ -151,12 +152,7 @@ export default async function Home() {
             >
               CGV & Mentions Légales
             </Link>
-            <a
-              href="mailto:leothefrench@gmail.com"
-              className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
-            >
-              Contact
-            </a>
+            <ContactModal />
           </div>
         </div>
       </footer>

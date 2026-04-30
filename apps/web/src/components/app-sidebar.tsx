@@ -7,6 +7,7 @@ import {
   LogOut,
   Wallet,
   X,
+  LifeBuoy, // Ajout de l'icône pour le support
 } from 'lucide-react';
 import {
   Sidebar,
@@ -21,6 +22,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import { ContactModal } from './contact-modal';
 
 const items = [
   { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
@@ -81,10 +83,19 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-white/5">
+      <SidebarFooter className="p-4 border-t border-white/5 space-y-1">
+        {/* BOUTON SUPPORT */}
+        <ContactModal>
+          <button className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-all text-sm font-medium w-full text-left">
+            <LifeBuoy className="h-4 w-4" />
+            Support
+          </button>
+        </ContactModal>
+
+        {/* BOUTON DÉCONNEXION */}
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium w-full text-left"
         >
           <LogOut className="h-4 w-4" />
           Déconnexion
