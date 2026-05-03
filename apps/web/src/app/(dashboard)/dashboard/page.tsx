@@ -141,23 +141,29 @@ export default async function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          {/* 1. Bouton Banque (Sync ou Plaid) */}
           {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
+          {/* 2. Formulaire Abonnement */}
           {isPremium && (
-            <form action={createCustomerPortalSession}>
+            <form
+              action={createCustomerPortalSession}
+              className="w-full sm:w-auto"
+            >
               <Button
                 variant="outline"
                 size="sm"
                 type="submit"
                 aria-label="Gérer mon abonnement Stripe"
-                className="h-9 rounded-lg border-white/10 bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-wider px-4"
+                className="h-9 w-full sm:w-auto rounded-lg border-white/10 bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-wider px-4"
               >
                 Abonnement
               </Button>
             </form>
           )}
 
+          {/* 3. Bouton Dépense */}
           <AddExpenseDialog />
         </div>
       </div>
@@ -175,7 +181,7 @@ export default async function DashboardPage() {
           <ExpenseList expenses={expenses} />
         </>
       ) : (
-        <WelcomeState isPremium={isPremium}  isBankConnected={isBankConnected}  />
+        <WelcomeState isPremium={isPremium} isBankConnected={isBankConnected} />
       )}
     </div>
   );

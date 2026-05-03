@@ -15,7 +15,7 @@ export default async function SettingsPage() {
   });
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 py-10">
+    <div className="max-w-2xl mx-auto space-y-8 py-10 px-4 md:px-0">
       <div>
         <Button
           variant="ghost"
