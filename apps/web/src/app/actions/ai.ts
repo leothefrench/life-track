@@ -11,13 +11,18 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
 
 export async function runSmartAudit() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error('Non autorisé');
+
+   if (!session?.user?.id) {
+     throw new Error('Non autorisé');
+   }
+
+   const userId = session.user.id;
 
   const ninetyDaysAgo = new Date();
   ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
   const expenses = await prisma.expense.findMany({
-    where: { userId: session.user.id, date: { gte: ninetyDaysAgo } },
+    where: { userId: userId, date: { gte: ninetyDaysAgo } },
     orderBy: { date: 'desc' },
   });
 
@@ -25,7 +30,7 @@ export async function runSmartAudit() {
 
   const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
-const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
+  const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
 Identifie les opportunités d'économies et les anomalies.
 
 RÈGLE DE PRIORITÉ : Sélectionne en priorité les 5 événements les plus impactants financièrement :
@@ -50,27 +55,32 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
   if (!insights || !Array.isArray(insights))
     return { message: "Erreur d'analyse." };
 
-  await prisma.insight.deleteMany({ where: { userId: session.user.id } });
+  await prisma.insight.deleteMany({ where: { userId: userId } });
 
-  const legalNote = " (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).";
+  const legalNote =
+    ' (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).';
 
-  for (const insight of insights) {
-    // On utilise la catégorie fournie par l'IA ou le texte pour le lien
-    const linkSource = insight.category || `${insight.title} ${insight.description}`;
-    const link = insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
+  // On prépare toutes les créations en une seule fois
+  const insightPromises = insights.map((insight) => {
+    const linkSource =
+      insight.category || `${insight.title} ${insight.description}`;
+    const link =
+      insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
 
-    await prisma.insight.create({
+    return prisma.insight.create({
       data: {
-        userId: session.user.id,
+        userId: userId,
         type: insight.type,
         title: insight.title,
-        // Ajout automatique du disclaimer à la description
         description: insight.description + legalNote,
         potentialSaving: insight.potentialSaving,
         affiliateUrl: link,
       },
     });
-  }
+  });
+
+  // On exécute tout en PARALLÈLE
+  await Promise.all(insightPromises);
 
   revalidatePath('/dashboard');
   return { message: 'Audit terminé !' };

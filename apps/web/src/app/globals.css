@@ -156,3 +156,11 @@
     }
   }
 }
+
+@keyframes scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(200%); }
+}
+.animate-scan {
+  animation: scan 2s linear infinite;
+}
