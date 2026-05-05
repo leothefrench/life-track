@@ -1,12 +1,7 @@
 'use client';
 
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -70,8 +65,9 @@ export function DailyBarChart({ data }: { data: any[] }) {
                 key={cat}
                 dataKey={cat}
                 fill={chartConfig[cat].color}
-                radius={[4, 4, 0, 0]}
+                radius={[2, 2, 0, 0]}
                 stackId="a"
+                style={{ filter: 'saturate(1.4) brightness(1.1)' }}
               />
             ))}
           </BarChart>

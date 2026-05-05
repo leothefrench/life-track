@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 /* @import "tw-animate-css"; */
 @plugin "tailwindcss-animate";
 
@@ -66,16 +66,16 @@
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
-  
+
   /* Couleurs Graphiques (Light - Fallback) */
-  --chart-1: oklch(0.6 0.2 250);  /* Bleu (Logement) */
+  --chart-1: oklch(0.6 0.2 250); /* Bleu (Logement) */
   --chart-2: oklch(0.75 0.15 70); /* Ambre (Énergie) */
-  --chart-3: oklch(0.7 0.2 150);  /* Émeraude (Alimentation) */
+  --chart-3: oklch(0.7 0.2 150); /* Émeraude (Alimentation) */
   --chart-4: oklch(0.6 0.15 280); /* Indigo (Transport) */
-  --chart-5: oklch(0.6 0.2 300);  /* Violet (Abonnements) */
-  --chart-6: oklch(0.7 0.2 350);  /* Rose (Loisirs) */
+  --chart-5: oklch(0.6 0.2 300); /* Violet (Abonnements) */
+  --chart-6: oklch(0.7 0.2 350); /* Rose (Loisirs) */
   --chart-7: oklch(0.7 0.15 180); /* Teal (Santé) */
-  --chart-8: oklch(0.6 0 0);      /* Gris (Autre) */
+  --chart-8: oklch(0.6 0 0); /* Gris (Autre) */
 
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
@@ -108,15 +108,15 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);
 
-  /* Couleurs Graphiques (Dark - Premium Neon) */
-  --chart-1: oklch(0.7 0.2 250);  /* Bleu Electrique (Logement) */
-  --chart-2: oklch(0.8 0.2 70);   /* Ambre (Énergie) */
-  --chart-3: oklch(0.8 0.25 150); /* Vert Néon (Alimentation) */
-  --chart-4: oklch(0.65 0.2 280); /* Indigo (Transport) */
-  --chart-5: oklch(0.7 0.25 300); /* Violet (Abonnements) */
-  --chart-6: oklch(0.75 0.25 350);/* Rose Laser (Loisirs) */
-  --chart-7: oklch(0.8 0.2 180);  /* Teal (Santé) */
-  --chart-8: oklch(0.7 0 0);      /* Ardoise (Autre) */
+/* Palette Cyber-Néon (Contrastée et Vibrante) */
+  --chart-1: oklch(0.7 0.35 250);  /* Bleu Électrique (Logement) */
+  --chart-2: oklch(0.75 0.3 60);   /* Orange Brûlant (Énergie) */
+  --chart-3: oklch(0.85 0.4 145);  /* Vert Émeraude (Alimentation) */
+  --chart-4: oklch(0.9 0.25 100);  /* Jaune Flash (Transport) */
+  --chart-5: oklch(0.65 0.35 300); /* Violet Ultra (Abonnements) */
+  --chart-6: oklch(0.7 0.4 350);   /* Rose Laser (Loisirs) - Très différent du Bleu ! */
+  --chart-7: oklch(0.8 0.25 190);  /* Cyan / Sarcelle (Santé) */
+  --chart-8: oklch(0.6 0 0);       /* Gris Acier (Autre) */
 
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
@@ -129,12 +129,16 @@
 }
 
 @layer base {
-  * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground relative; }
-  
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground relative;
+  }
+
   /* Texture Grain (Décommentée et optimisée) */
   body::before {
-    content: "";
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
@@ -144,8 +148,8 @@
     pointer-events: none;
     z-index: 50;
 
-    background-image: url("/noise.png");
-    
+    background-image: url('/noise.png');
+
     /* On ne l'affiche que sur Desktop pour garantir le score mobile */
     @media (max-width: 1023px) {
       display: none;
