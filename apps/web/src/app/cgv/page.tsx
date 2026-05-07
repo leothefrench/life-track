@@ -27,8 +27,8 @@ export default function CGVPage() {
         <div>
           <h2 className="text-xl font-semibold text-white mb-2">1. Objet</h2>
           <p>
-            Les présentes CGV régissent la vente des abonnements "Premium" de
-            l'application Life-Track.
+            Les présentes CGV régissent la vente des abonnements 'Premium' de
+            l'application Life-Track, éditée par DA SILVA COSTA Léandro José EI.
           </p>
         </div>
 
@@ -75,6 +75,11 @@ export default function CGVPage() {
             L&apos;utilisateur reste seul responsable de ses décisions
             budgétaires.
           </p>
+          <p>
+            L&apos;éditeurr ne pourra être tenu responsable des dommages directs
+            ou indirects, financiers ou matériels, résultant de l'interprétation
+            des analyses fournies par l&apos;intelligence artificielle.
+          </p>
         </div>
 
         <div>
@@ -85,6 +90,16 @@ export default function CGVPage() {
             Vos données sont traitées conformément au RGPD. Vous disposez
             d&apos;un droit d&apos;accès, de rectification et de suppression via
             votre tableau de bord.
+          </p>
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold text-white mb-2">
+            7. Droit applicable
+          </h2>
+          <p>
+            Les présentes CGV sont soumises à la loi française. En cas de
+            litige, et à défaut de résolution amiable, les tribunaux français
+            seront seuls compétents.
           </p>
         </div>
       </section>
