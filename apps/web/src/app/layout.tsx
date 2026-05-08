@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -9,11 +10,10 @@ const jakarta = Plus_Jakarta_Sans({
   variable: '--font-jakarta',
 });
 
-
 export const metadata: Metadata = {
   title: 'Life-Track | Gestion de dépenses',
   description: 'Prenez le contrôle de vos finances',
-  manifest: '/manifest.json', 
+  manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -41,12 +41,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster
-            position="bottom-right"
-            richColors
-            toastOptions={{ classNames: { toast: 'text-white' } }}
-          />
+          <TooltipProvider>
+            {children}
+            <Toaster
+              position="bottom-right"
+              richColors
+              toastOptions={{ classNames: { toast: 'text-white' } }}
+            />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

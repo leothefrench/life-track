@@ -100,6 +100,21 @@ export default async function Home() {
           </h2>
 
           <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-sync" className="border-white/10">
+              <AccordionTrigger className="text-sm hover:no-underline text-left">
+                Comment fonctionne la synchronisation avec ma banque ?
+              </AccordionTrigger>
+              <AccordionContent className="text-xs text-white/50 leading-relaxed">
+                Life-Track utilise Plaid, le standard mondial de sécurité
+                utilisé par des millions d&apos;utilisateurs. Votre connexion
+                est en <strong>lecture seule</strong> : l&apos;IA analyse vos
+                transactions pour identifier des économies, mais il est
+                techniquement impossible pour nous (ou pour l&apos;IA)
+                d&apos;effectuer des virements, de modifier vos comptes ou
+                d&apos;accéder à vos identifiants.
+              </AccordionContent>
+            </AccordionItem>
+
             <AccordionItem value="item-1" className="border-white/10">
               <AccordionTrigger className="text-sm hover:no-underline">
                 Est-ce que Life-Track peut faire des virements depuis mon compte

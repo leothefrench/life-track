@@ -8,6 +8,11 @@ import { Landmark } from 'lucide-react';
 import { createLinkToken } from '@/app/actions/plaid';
 import { toast } from 'sonner';
 import { exchangePublicToken } from '@/app/actions/plaid';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export function PlaidLink() {
   const [token, setToken] = useState<string | null>(null);
@@ -52,14 +57,25 @@ const onSuccess = useCallback(
   });
 
   return (
-    <Button
-      onClick={() => open()}
-      disabled={!ready}
-      variant="outline"
-      className="h-9 rounded-lg border-white/10 bg-white/5 text-emerald-500 hover:bg-white/10 text-[10px] font-bold uppercase tracking-wider px-4 flex items-center justify-center gap-2 transition-colors"
-    >
-      <Landmark className="h-3.5 w-3.5" />
-      Connecter ma banque
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          onClick={() => open()}
+          disabled={!ready}
+          variant="outline"
+          className="h-9 rounded-lg border-white/10 bg-white/5 text-emerald-500 hover:bg-white/10 text-[10px] font-bold uppercase tracking-wider px-4 flex items-center justify-center gap-2 transition-colors"
+        >
+          <Landmark className="h-3.5 w-3.5" />
+          Connecter ma banque
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent
+        side="bottom"
+        className="bg-black border-white/10 text-white text-[10px] uppercase font-bold"
+        sideOffset={10}
+      >
+        Liaison 100% sécurisée via Plaid (Lecture seule)
+      </TooltipContent>
+    </Tooltip>
   );
 }
