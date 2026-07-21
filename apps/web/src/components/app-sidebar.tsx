@@ -94,7 +94,7 @@ export function AppSidebar() {
 
         {/* BOUTON DÉCONNEXION */}
         <button
-          onClick={() => signOut({ callbackUrl: '/' })}
+          onClick={() => signOut({ redirectTo: '/' })}
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium w-full text-left"
         >
           <LogOut className="h-4 w-4" />
