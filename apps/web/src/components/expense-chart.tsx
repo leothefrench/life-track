@@ -53,6 +53,7 @@ export function ExpenseChart({ data }: { data: any[] }) {
               nameKey="category"
               innerRadius={60}
               strokeWidth={5}
+              minAngle={15}
             >
               {data.map((entry, index) => (
                 <Cell
