@@ -102,11 +102,18 @@ export function RegisterForm() {
             {loading ? 'Création en cours...' : "S'inscrire"}
           </Button>
         </form>
-        <div className="mt-4 text-center text-sm">
-          Déjà un compte ?{' '}
-          <Link href="/login" className="underline hover:text-primary">
-            Se connecter
-          </Link>
+        <div className="mt-4 text-center text-sm space-y-2">
+          <div>
+            Déjà un compte ?{' '}
+            <Link href="/login" className="underline hover:text-primary transition-colors">
+              Se connecter
+            </Link>
+          </div>
+          <div>
+            <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline">
+              Retourner à l'accueil
+            </Link>
+          </div>
         </div>
       </CardContent>
     </Card>

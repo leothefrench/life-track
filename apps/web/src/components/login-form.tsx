@@ -206,6 +206,22 @@ export function LoginForm() {
               : 'Se connecter'}
           </Button>
         </form>
+
+        <div className="mt-6 space-y-2 text-center text-sm">
+          {!showTwoFactor && (
+            <div>
+              Nouveau sur Life-Track ?{' '}
+              <Link href="/register" className="underline hover:text-primary transition-colors">
+                Créer un compte
+              </Link>
+            </div>
+          )}
+          <div>
+            <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline">
+              Retourner à l'accueil
+            </Link>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
