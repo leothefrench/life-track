@@ -1,68 +1,70 @@
 'use server';
 
 import { auth } from '@/auth';
-import { plaidClient } from '@/lib/plaid';
-import { prisma } from '@life-track/db';
-import { Products, CountryCode, LinkTokenCreateRequest } from 'plaid';
-import { categorizeTransactions } from './ai';
+import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
+import {
+  Configuration,
+  PlaidApi,
+  PlaidEnvironments,
+  Products,
+  CountryCode,
+} from 'plaid';
+import { categorizeExpenseWithAI } from './ai';
+
+const configuration = new Configuration({
+  basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+      'PLAID-SECRET': process.env.PLAID_SECRET,
+    },
+  },
+});
+
+const plaidClient = new PlaidApi(configuration);
 
 export async function createLinkToken() {
   const session = await auth();
   if (!session?.user?.id) throw new Error('Non autorisé');
 
-  const configs: LinkTokenCreateRequest = {
+  const response = await plaidClient.linkTokenCreate({
     user: { client_user_id: session.user.id },
-    client_name: 'Life-Track',
+    client_name: 'LifeTrack',
     products: [Products.Transactions],
-    country_codes: [CountryCode.Fr],
-    language: 'fr',
-  };
+    country_codes: [CountryCode.Fr, CountryCode.Us],
+    language: 'fr', // <--- PLAID DÉSORMAIS EN FRANÇAIS
+  });
 
-  try {
-    const createTokenResponse = await plaidClient.linkTokenCreate(configs);
-    return { linkToken: createTokenResponse.data.link_token };
-  } catch (error) {
-    console.error('Erreur Plaid Link Token:', error);
-    return { error: 'Impossible de générer le jeton de connexion.' };
-  }
+  return response.data.link_token;
 }
 
-export async function exchangePublicToken(
-  publicToken: string,
-  institutionName: string,
-) {
+export async function exchangePublicToken(publicToken: string) {
   const session = await auth();
   if (!session?.user?.id) throw new Error('Non autorisé');
 
-  try {
-    // 1. On demande à Plaid d'échanger le jeton public contre un Access Token permanent
-    const response = await plaidClient.itemPublicTokenExchange({
-      public_token: publicToken,
-    });
+  const response = await plaidClient.itemPublicTokenExchange({
+    public_token: publicToken,
+  });
 
-    const accessToken = response.data.access_token;
-    const itemId = response.data.item_id;
+  const accessToken = response.data.access_token;
+  const itemId = response.data.item_id;
 
-    // 2. On enregistre cette connexion dans Neon pour ce User
-    await prisma.bankConnection.create({
-      data: {
-        userId: session.user.id,
-        accessToken: accessToken,
-        itemId: itemId,
-        institutionName: institutionName,
-      },
-    });
+  await prisma.bankConnection.create({
+    data: {
+      userId: session.user.id,
+      accessToken,
+      itemId,
+      institutionName: 'Banque Connectée',
+    },
+  });
 
-    return { success: true };
-  } catch (error) {
-    console.error('Erreur échange Plaid:', error);
-    return { error: 'Échec de la liaison bancaire.' };
-  }
+  revalidatePath('/dashboard');
+  return { success: true };
 }
 
-import { revalidatePath } from 'next/cache';
-
-export async function syncTransactions() {
+// ACTION POUR DÉCONNECTER LA BANQUE
+export async function disconnectBankAction() {
   const session = await auth();
   if (!session?.user?.id) throw new Error('Non autorisé');
 
@@ -70,63 +72,85 @@ export async function syncTransactions() {
     where: { userId: session.user.id },
   });
 
-  if (!connection) throw new Error('Aucune banque connectée');
-
-  const now = new Date();
-  const start = new Date();
-  start.setDate(now.getDate() - 30);
-  const startDate = start.toISOString().split('T')[0];
-  const endDate = now.toISOString().split('T')[0];
-
-  try {
-    const response = await plaidClient.transactionsGet({
-      access_token: connection.accessToken,
-      start_date: startDate,
-      end_date: endDate,
-    });
-
-    const transactions = response.data.transactions;
-
-    // 1. On demande à l'IA de classer les noms
-    const titlesToCategorize = transactions.map((t) => t.name);
-    const categoriesMap = await categorizeTransactions(titlesToCategorize);
-
-    // 2. On enregistre avec la catégorie intelligente
-for (const trx of transactions) {
-  const existing = await prisma.expense.findFirst({
-    where: {
-      userId: session.user.id,
-      title: trx.name,
-      date: new Date(trx.date),
-    },
-  });
-
-  if (!existing) {
-    // SÉCURITÉ : On vérifie que la catégorie de l'IA appartient bien à notre liste autorisée
-    const validCategories = ['LOGEMENT', 'ENERGIE', 'ALIMENTATION', 'TRANSPORT', 'ABONNEMENTS', 'LOISIRS', 'SANTE', 'AUTRE'];
-    let suggestedCategory = (categoriesMap[trx.name] || 'AUTRE').toUpperCase();
-
-    // Si l'IA renvoie n'importe quoi, on reset à AUTRE pour éviter le crash DB
-    if (!validCategories.includes(suggestedCategory)) {
-      suggestedCategory = 'AUTRE';
+  if (connection) {
+    try {
+      // Révoquer le jeton côté Plaid
+      await plaidClient.itemRemove({
+        access_token: connection.accessToken,
+      });
+    } catch (e) {
+      console.error('Erreur lors de la révocation Plaid:', e);
     }
 
-    await prisma.expense.create({
-      data: {
-        userId: session.user.id,
-        title: trx.name,
-        amount: Math.abs(trx.amount),
-        category: suggestedCategory as any,
-        date: new Date(trx.date),
-      },
+    // Supprimer la connexion en BDD
+    await prisma.bankConnection.delete({
+      where: { id: connection.id },
     });
   }
+
+  revalidatePath('/dashboard');
+  return { success: true };
 }
 
-    revalidatePath('/dashboard');
-    return { success: true, count: transactions.length };
-  } catch (error) {
-    console.error('Erreur Sync Plaid:', error);
-    return { error: 'Échec de la récupération des transactions.' };
+export async function syncBankTransactions() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Non autorisé');
+
+  const bankConnection = await prisma.bankConnection.findFirst({
+    where: { userId: session.user.id },
+  });
+
+  if (!bankConnection) {
+    throw new Error('Aucune banque connectée');
   }
+
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+  const startDate = thirtyDaysAgo.toISOString().split('T')[0];
+  const endDate = now.toISOString().split('T')[0];
+
+  const response = await plaidClient.transactionsGet({
+    access_token: bankConnection.accessToken,
+    start_date: startDate,
+    end_date: endDate,
+  });
+
+  const transactions = response.data.transactions;
+  let addedCount = 0;
+
+  for (const tx of transactions) {
+    if (tx.amount <= 0) continue;
+
+    const existing = await prisma.expense.findFirst({
+      where: {
+        userId: session.user.id,
+        amount: tx.amount,
+        date: new Date(tx.date),
+      },
+    });
+
+    if (!existing) {
+      let category = 'AUTRES';
+      try {
+        category = await categorizeExpenseWithAI(tx.name, tx.amount);
+      } catch (err) {
+        console.error('Erreur IA lors de la sync:', err);
+      }
+
+      await prisma.expense.create({
+        data: {
+          userId: session.user.id,
+          title: tx.name,
+          amount: tx.amount,
+          category,
+          date: new Date(tx.date),
+        },
+      });
+      addedCount++;
+    }
+  }
+
+  revalidatePath('/dashboard');
+  return { count: addedCount };
 }
