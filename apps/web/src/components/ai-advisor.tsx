@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, BrainCircuit, Loader2 } from 'lucide-react'; // Ajout de Loader2
+import { useRouter } from 'next/navigation';
+import { Sparkles, BrainCircuit, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { runSmartAudit } from '@/app/actions/ai';
@@ -13,6 +14,7 @@ interface AIAdvisorProps {
 }
 
 export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
+  const router = useRouter();
   const [advice, setAdvice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +26,7 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
     try {
       const result = await runSmartAudit();
       setAdvice(result.message);
+      router.refresh();
     } catch (error) {
       setAdvice('Désolé, le coach est indisponible pour le moment.');
     } finally {
@@ -73,13 +76,24 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
             </div>
           ) : advice ? (
             <div className="animate-in fade-in slide-in-from-top-1 duration-500 text-white/80">
-              <p className="font-semibold text-blue-400 mb-1">
-                Analyse terminée !
-              </p>
-              <p>
-                Vos nouveaux conseils d'économies sont disponibles juste en
-                dessous.
-              </p>
+              {advice === 'Audit terminé !' ? (
+                <>
+                  <p className="font-semibold text-blue-400 mb-1">
+                    Analyse terminée !
+                  </p>
+                  <p className="text-[11px] text-white/80">
+                    Vos nouveaux conseils d'économies sont disponibles juste en
+                    dessous.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-semibold text-amber-400 mb-1">
+                    Information
+                  </p>
+                  <p className="text-[11px] text-white/80">{advice}</p>
+                </>
+              )}
             </div>
           ) : (
             <p className="text-white/40 italic">
