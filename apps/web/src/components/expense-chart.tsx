@@ -1,6 +1,6 @@
 'use client';
 
-import { Pie, PieChart, Cell} from 'recharts';
+import { Pie, PieChart, Cell } from 'recharts';
 import {
   Card,
   CardContent,
@@ -59,9 +59,8 @@ export function ExpenseChart({ data }: { data: any[] }) {
                 <Cell
                   key={`cell-${index}`}
                   fill={
-                    chartConfig[
-                      entry.category as keyof typeof chartConfig
-                    ]?.color || 'gray'
+                    chartConfig[entry.category as keyof typeof chartConfig]
+                      ?.color || 'gray'
                   }
                 />
               ))}

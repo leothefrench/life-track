@@ -38,6 +38,9 @@ export default async function DashboardPage() {
   const isPremium = user?.isPremium || false;
   const isBankConnected = (user?.bankConnections?.length || 0) > 0;
 
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
   const expenses = userId
     ? await prisma.expense.findMany({
         where: { userId },
@@ -46,14 +49,14 @@ export default async function DashboardPage() {
     : [];
   const totalStats = userId
     ? await prisma.expense.aggregate({
-        where: { userId },
+        where: { userId, date: { gte: thirtyDaysAgo } },
         _sum: { amount: true },
       })
     : null;
   const categoriesData = userId
     ? await prisma.expense.groupBy({
         by: ['category'],
-        where: { userId },
+        where: { userId, date: { gte: thirtyDaysAgo } },
         _sum: { amount: true },
       })
     : [];
@@ -76,16 +79,14 @@ export default async function DashboardPage() {
     }),
   );
 
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const dailyExpenses = userId
+  const dailyExpenses: { amount: number; date: Date; category: any }[] = userId
     ? await prisma.expense.findMany({
-        where: { userId, date: { gte: sevenDaysAgo } },
+        where: { userId, date: { gte: thirtyDaysAgo } },
         select: { amount: true, date: true, category: true },
       })
     : [];
 
-  const last7DaysData = Array.from({ length: 7 })
+  const last30DaysData = Array.from({ length: 30 })
     .map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - i);
@@ -93,7 +94,7 @@ export default async function DashboardPage() {
         (e) => new Date(e.date).toDateString() === d.toDateString(),
       );
       return {
-        day: d.toLocaleDateString('fr-FR', { weekday: 'short' }),
+        day: d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric' }),
         LOGEMENT: dayExp
           .filter((e) => e.category === 'LOGEMENT')
           .reduce((sum, e) => sum + e.amount, 0),
@@ -172,7 +173,7 @@ export default async function DashboardPage() {
         <>
           <DashboardStats
             totalSpent={totalSpent}
-            last7DaysData={last7DaysData}
+            last30DaysData={last30DaysData}
             chartData={chartData}
             isPremium={isPremium}
             expensesCount={expenses.length}

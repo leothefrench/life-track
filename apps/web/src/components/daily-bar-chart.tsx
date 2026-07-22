@@ -36,7 +36,7 @@ export function DailyBarChart({ data }: { data: any[] }) {
     <Card className="border-none bg-transparent shadow-none h-full">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-          Activité (7j)
+          Activité (30j)
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">

@@ -6,7 +6,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
-
 const DailyBarChart = dynamic(
   () => import('@/components/daily-bar-chart').then((mod) => mod.DailyBarChart),
   {
@@ -34,7 +33,7 @@ const AIAdvisor = dynamic(
 
 interface DashboardStatsProps {
   totalSpent: number;
-  last7DaysData: any[];
+  last30DaysData: any[];
   chartData: any[];
   isPremium: boolean;
   expensesCount: number;
@@ -42,7 +41,7 @@ interface DashboardStatsProps {
 
 export function DashboardStats({
   totalSpent,
-  last7DaysData,
+  last30DaysData,
   chartData,
   isPremium,
   expensesCount,
@@ -54,7 +53,7 @@ export function DashboardStats({
         <Card className="bg-card/40 border-border/50 shadow-none flex flex-col items-center justify-center text-center py-6">
           <CardContent className="p-0">
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
-              Total dépensé
+              Dépensé (30j)
             </p>
             <div className="flex items-baseline justify-center gap-1">
               <span className="text-4xl font-bold tracking-tight text-rose-500">
@@ -80,7 +79,7 @@ export function DashboardStats({
           }`}
         >
           {/* Les graphiques ne bloquent plus le thread principal du mobile */}
-          <DailyBarChart data={last7DaysData} />
+          <DailyBarChart data={last30DaysData} />
           <DynamicExpenseChart data={chartData} />
         </div>
 
