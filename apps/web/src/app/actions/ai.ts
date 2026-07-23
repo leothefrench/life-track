@@ -7,30 +7,43 @@ import { revalidatePath } from 'next/cache';
 import { getAffiliateLink } from '@/lib/affiliates';
 import { extractJsonFromResponse } from '@/lib/ai-parser';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
+function getGenAI() {
+  const apiKey =
+    process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '';
+  if (!apiKey) {
+    throw new Error(
+      'Clé API Google Gemini non configurée (GEMINI_API_KEY ou GOOGLE_AI_API_KEY manquante dans l\'environnement).',
+    );
+  }
+  return new GoogleGenerativeAI(apiKey);
+}
 
 export async function runSmartAudit() {
-  const session = await auth();
+  try {
+    const session = await auth();
 
-   if (!session?.user?.id) {
-     throw new Error('Non autorisé');
-   }
+    if (!session?.user?.id) {
+      throw new Error('Non autorisé');
+    }
 
-   const userId = session.user.id;
+    const userId = session.user.id;
 
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+    const ninetyDaysAgo = new Date();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
-  const expenses = await prisma.expense.findMany({
-    where: { userId: userId, date: { gte: ninetyDaysAgo } },
-    orderBy: { date: 'desc' },
-  });
+    const expenses = await prisma.expense.findMany({
+      where: { userId: userId, date: { gte: ninetyDaysAgo } },
+      orderBy: { date: 'desc' },
+    });
 
-  if (expenses.length < 3) return { message: 'Pas assez de données.' };
+    if (expenses.length < 3) {
+      return { message: 'Pas assez de données (minimum 3 dépenses requises pour une analyse).' };
+    }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const genAI = getGenAI();
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-  const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
+    const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
 Identifie les opportunités d'économies et les anomalies.
 
 RÈGLE DE PRIORITÉ : Sélectionne en priorité les 5 événements les plus impactants financièrement :
@@ -48,52 +61,61 @@ Génère un tableau JSON de 5 objets maximum :
 
 CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'est une priorité absolue.`;
 
-  const result = await model.generateContent(prompt);
-  const responseText = result.response.text();
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text();
 
-  const insights = extractJsonFromResponse(responseText);
-  if (!insights || !Array.isArray(insights))
-    return { message: "Erreur d'analyse." };
+    const insights = extractJsonFromResponse(responseText);
+    if (!insights || !Array.isArray(insights)) {
+      return { message: "Erreur lors de l'analyse des résultats de l'IA." };
+    }
 
-  await prisma.insight.deleteMany({ where: { userId: userId } });
+    await prisma.insight.deleteMany({ where: { userId: userId } });
 
-  const legalNote =
-    ' (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).';
+    const legalNote =
+      ' (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).';
 
-  // On prépare toutes les créations en une seule fois
-  const insightPromises = insights.map((insight) => {
-    const linkSource =
-      insight.category || `${insight.title} ${insight.description}`;
-    const link =
-      insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
+    const insightPromises = insights.map((insight) => {
+      const linkSource =
+        insight.category || `${insight.title} ${insight.description}`;
+      const link =
+        insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
 
-    return prisma.insight.create({
-      data: {
-        userId: userId,
-        type: insight.type,
-        title: insight.title,
-        description: insight.description + legalNote,
-        potentialSaving: insight.potentialSaving,
-        affiliateUrl: link,
-      },
+      return prisma.insight.create({
+        data: {
+          userId: userId,
+          type: insight.type || 'INFO',
+          title: insight.title || 'Conseil IA',
+          description: (insight.description || '') + legalNote,
+          potentialSaving: typeof insight.potentialSaving === 'number' ? insight.potentialSaving : null,
+          affiliateUrl: link,
+        },
+      });
     });
-  });
 
-  // On exécute tout en PARALLÈLE
-  await Promise.all(insightPromises);
+    await Promise.all(insightPromises);
 
-  revalidatePath('/dashboard');
-  return { message: 'Audit terminé !' };
+    revalidatePath('/dashboard');
+    return { message: 'Audit terminé !' };
+  } catch (error) {
+    console.error('Erreur audit IA:', error);
+    return {
+      message:
+        error instanceof Error
+          ? error.message
+          : 'Désolé, le coach est indisponible pour le moment.',
+    };
+  }
 }
 
 export async function categorizeTransactions(titles: string[]) {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  try {
+    const genAI = getGenAI();
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-  const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
+    const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
 Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
 Catégories : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.`;
 
-  try {
     const result = await model.generateContent(prompt);
     const response = result.response.text();
 
