@@ -28,7 +28,7 @@ export async function runSmartAudit() {
 
   if (expenses.length < 3) return { message: 'Pas assez de données.' };
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
   const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
 Identifie les opportunités d'économies et les anomalies.
@@ -87,7 +87,7 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
 }
 
 export async function categorizeTransactions(titles: string[]) {
-  const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
   const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
 Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
