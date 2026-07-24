@@ -7,6 +7,15 @@ import { revalidatePath } from 'next/cache';
 import { getAffiliateLink } from '@/lib/affiliates';
 import { extractJsonFromResponse } from '@/lib/ai-parser';
 
+const CANDIDATE_MODELS = [
+  'gemini-1.5-flash-latest',
+  'gemini-1.5-flash',
+  'gemini-2.0-flash',
+  'gemini-2.5-flash',
+  'gemini-1.5-pro',
+  'gemini-pro',
+];
+
 function getGenAI() {
   const apiKey =
     process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '';
@@ -16,6 +25,21 @@ function getGenAI() {
     );
   }
   return new GoogleGenerativeAI(apiKey);
+}
+
+async function generateContentWithFallback(genAI: GoogleGenerativeAI, prompt: string) {
+  let lastError: unknown = null;
+  for (const modelName of CANDIDATE_MODELS) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(prompt);
+      return result;
+    } catch (err) {
+      lastError = err;
+      console.warn(`Modèle ${modelName} non disponible, test du suivant...`);
+    }
+  }
+  throw lastError;
 }
 
 export async function runSmartAudit() {
@@ -40,9 +64,6 @@ export async function runSmartAudit() {
       return { message: 'Pas assez de données (minimum 3 dépenses requises pour une analyse).' };
     }
 
-    const genAI = getGenAI();
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
     const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
 Identifie les opportunités d'économies et les anomalies.
 
@@ -61,7 +82,8 @@ Génère un tableau JSON de 5 objets maximum :
 
 CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'est une priorité absolue.`;
 
-    const result = await model.generateContent(prompt);
+    const genAI = getGenAI();
+    const result = await generateContentWithFallback(genAI, prompt);
     const responseText = result.response.text();
 
     const insights = extractJsonFromResponse(responseText);
@@ -110,13 +132,12 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
 export async function categorizeTransactions(titles: string[]) {
   try {
     const genAI = getGenAI();
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
 Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
 Catégories : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.`;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithFallback(genAI, prompt);
     const response = result.response.text();
 
     return extractJsonFromResponse(response) || {};
