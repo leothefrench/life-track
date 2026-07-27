@@ -7,32 +7,63 @@ import { revalidatePath } from 'next/cache';
 import { getAffiliateLink } from '@/lib/affiliates';
 import { extractJsonFromResponse } from '@/lib/ai-parser';
 
-const apiKey =
-  process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '';
-const genAI = new GoogleGenerativeAI(apiKey);
+// Liste des modèles Gemini pris en charge à essayer successivement
+const CANDIDATE_MODELS = [
+  'gemini-2.0-flash',
+  'gemini-1.5-flash-latest',
+  'gemini-1.5-flash',
+  'gemini-2.0-flash-lite',
+];
+
+function getGenAI() {
+  const apiKey =
+    process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '';
+  if (!apiKey) {
+    throw new Error(
+      'Clé API Google Gemini non configurée dans Vercel (variable GEMINI_API_KEY ou GOOGLE_AI_API_KEY manquante).',
+    );
+  }
+  return new GoogleGenerativeAI(apiKey);
+}
+
+async function generateContentWithFallback(genAI: GoogleGenerativeAI, prompt: string) {
+  let firstError: unknown = null;
+  for (const modelName of CANDIDATE_MODELS) {
+    try {
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent(prompt);
+      return result;
+    } catch (err) {
+      if (!firstError) firstError = err;
+      console.warn(`[IA Warning] Le modèle ${modelName} a échoué, essai du modèle suivant... Error:`, err);
+    }
+  }
+  throw firstError;
+}
 
 export async function runSmartAudit() {
-  const session = await auth();
+  try {
+    const session = await auth();
 
-  if (!session?.user?.id) {
-    throw new Error('Non autorisé');
-  }
+    if (!session?.user?.id) {
+      throw new Error('Non autorisé');
+    }
 
-  const userId = session.user.id;
+    const userId = session.user.id;
 
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+    const ninetyDaysAgo = new Date();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
-  const expenses = await prisma.expense.findMany({
-    where: { userId: userId, date: { gte: ninetyDaysAgo } },
-    orderBy: { date: 'desc' },
-  });
+    const expenses = await prisma.expense.findMany({
+      where: { userId: userId, date: { gte: ninetyDaysAgo } },
+      orderBy: { date: 'desc' },
+    });
 
-  if (expenses.length < 3) return { message: 'Pas assez de données.' };
+    if (expenses.length < 3) {
+      return { message: 'Pas assez de données (minimum 3 dépenses sur 90 jours requises).' };
+    }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-  const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
+    const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
 Identifie les opportunités d'économies et les anomalies.
 
 RÈGLE DE PRIORITÉ : Sélectionne en priorité les 5 événements les plus impactants financièrement :
@@ -50,53 +81,68 @@ Génère un tableau JSON de 5 objets maximum :
 
 CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'est une priorité absolue.`;
 
-  const result = await model.generateContent(prompt);
-  const responseText = result.response.text();
+    const genAI = getGenAI();
+    const result = await generateContentWithFallback(genAI, prompt);
+    const responseText = result.response.text();
 
-  const insights = extractJsonFromResponse(responseText);
-  if (!insights || !Array.isArray(insights))
-    return { message: "Erreur d'analyse." };
+    const insights = extractJsonFromResponse(responseText);
+    if (!insights || !Array.isArray(insights)) {
+      return { message: "Erreur lors du traitement du JSON généré par l'IA." };
+    }
 
-  await prisma.insight.deleteMany({ where: { userId: userId } });
+    await prisma.insight.deleteMany({ where: { userId: userId } });
 
-  const legalNote =
-    ' (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).';
+    const legalNote =
+      ' (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).';
 
-  // On prépare toutes les créations en une seule fois
-  const insightPromises = insights.map((insight) => {
-    const linkSource =
-      insight.category || `${insight.title} ${insight.description}`;
-    const link =
-      insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
+    const insightPromises = insights.map((insight) => {
+      const linkSource =
+        insight.category || `${insight.title} ${insight.description}`;
+      const link =
+        insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
 
-    return prisma.insight.create({
-      data: {
-        userId: userId,
-        type: insight.type,
-        title: insight.title,
-        description: insight.description + legalNote,
-        potentialSaving: insight.potentialSaving,
-        affiliateUrl: link,
-      },
+      return prisma.insight.create({
+        data: {
+          userId: userId,
+          type: insight.type || 'INFO',
+          title: insight.title || 'Conseil IA',
+          description: (insight.description || '') + legalNote,
+          potentialSaving: typeof insight.potentialSaving === 'number' ? insight.potentialSaving : null,
+          affiliateUrl: link,
+        },
+      });
     });
-  });
 
-  // On exécute tout en PARALLÈLE
-  await Promise.all(insightPromises);
+    await Promise.all(insightPromises);
 
-  revalidatePath('/dashboard');
-  return { message: 'Audit terminé !' };
+    revalidatePath('/dashboard');
+    return { message: 'Audit terminé !' };
+  } catch (error) {
+    console.error('Erreur audit IA:', error);
+    const rawMessage = error instanceof Error ? error.message : String(error);
+    
+    // Message lisible et précis en cas de 404 Google / Clé API
+    if (rawMessage.includes('404 Not Found') || rawMessage.includes('is not found for API version')) {
+      return {
+        message: 'Erreur Google Gemini API (404) : La clé API sous Vercel ne semble pas autorisée sur le service Generative Language API de Google AI Studio, ou est restreinte.',
+      };
+    }
+
+    return {
+      message: rawMessage || 'Désolé, le coach est indisponible pour le moment.',
+    };
+  }
 }
 
 export async function categorizeTransactions(titles: string[]) {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  try {
+    const genAI = getGenAI();
 
-  const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
+    const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
 Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
 Catégories : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.`;
 
-  try {
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithFallback(genAI, prompt);
     const response = result.response.text();
 
     return extractJsonFromResponse(response) || {};
