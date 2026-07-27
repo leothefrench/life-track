@@ -9,9 +9,9 @@ import { extractJsonFromResponse } from '@/lib/ai-parser';
 
 // Liste des modèles Gemini pris en charge à essayer successivement
 const CANDIDATE_MODELS = [
-  'gemini-2.0-flash',
-  'gemini-1.5-flash-latest',
   'gemini-1.5-flash',
+  'gemini-1.5-flash-latest',
+  'gemini-2.0-flash',
   'gemini-2.0-flash-lite',
 ];
 
@@ -26,7 +26,10 @@ function getGenAI() {
   return new GoogleGenerativeAI(apiKey);
 }
 
-async function generateContentWithFallback(genAI: GoogleGenerativeAI, prompt: string) {
+async function generateContentWithFallback(
+  genAI: GoogleGenerativeAI,
+  prompt: string,
+) {
   let firstError: unknown = null;
   for (const modelName of CANDIDATE_MODELS) {
     try {
@@ -35,7 +38,10 @@ async function generateContentWithFallback(genAI: GoogleGenerativeAI, prompt: st
       return result;
     } catch (err) {
       if (!firstError) firstError = err;
-      console.warn(`[IA Warning] Le modèle ${modelName} a échoué, essai du modèle suivant... Error:`, err);
+      console.warn(
+        `[IA Warning] Le modèle ${modelName} a échoué, essai du modèle suivant... Error:`,
+        err,
+      );
     }
   }
   throw firstError;
@@ -60,7 +66,10 @@ export async function runSmartAudit() {
     });
 
     if (expenses.length < 3) {
-      return { message: 'Pas assez de données (minimum 3 dépenses sur 90 jours requises).' };
+      return {
+        message:
+          'Pas assez de données (minimum 3 dépenses sur 90 jours requises).',
+      };
     }
 
     const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
@@ -107,7 +116,10 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
           type: insight.type || 'INFO',
           title: insight.title || 'Conseil IA',
           description: (insight.description || '') + legalNote,
-          potentialSaving: typeof insight.potentialSaving === 'number' ? insight.potentialSaving : null,
+          potentialSaving:
+            typeof insight.potentialSaving === 'number'
+              ? insight.potentialSaving
+              : null,
           affiliateUrl: link,
         },
       });
@@ -120,16 +132,30 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
   } catch (error) {
     console.error('Erreur audit IA:', error);
     const rawMessage = error instanceof Error ? error.message : String(error);
-    
-    // Message lisible et précis en cas de 404 Google / Clé API
-    if (rawMessage.includes('404 Not Found') || rawMessage.includes('is not found for API version')) {
+
+    if (
+      rawMessage.includes('429 Too Many Requests') ||
+      rawMessage.includes('Quota exceeded')
+    ) {
       return {
-        message: 'Erreur Google Gemini API (404) : La clé API sous Vercel ne semble pas autorisée sur le service Generative Language API de Google AI Studio, ou est restreinte.',
+        message:
+          "Quota d'appels IA dépassé (Erreur 429) : La limite de requêtes gratuites pour votre clé API est atteinte ou temporairement bloquée. Veuillez patienter une minute ou générer une nouvelle clé sur Google AI Studio.",
+      };
+    }
+
+    if (
+      rawMessage.includes('404 Not Found') ||
+      rawMessage.includes('is not found for API version')
+    ) {
+      return {
+        message:
+          "Erreur Google Gemini API (404) : Le modèle demandé est introuvable ou votre clé API Vercel n'a pas accès au service.",
       };
     }
 
     return {
-      message: rawMessage || 'Désolé, le coach est indisponible pour le moment.',
+      message:
+        rawMessage || 'Désolé, le coach est indisponible pour le moment.',
     };
   }
 }
