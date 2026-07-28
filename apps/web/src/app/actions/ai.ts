@@ -1,50 +1,20 @@
 'use server';
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { Mistral } from '@mistralai/mistralai';
 import { prisma } from '@life-track/db';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 import { getAffiliateLink } from '@/lib/affiliates';
 import { extractJsonFromResponse } from '@/lib/ai-parser';
 
-// Liste des modèles Gemini pris en charge à essayer successivement
-const CANDIDATE_MODELS = [
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-latest',
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-lite',
-];
-
-function getGenAI() {
-  const apiKey =
-    process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '';
+function getMistralClient() {
+  const apiKey = process.env.MISTRAL_API_KEY || '';
   if (!apiKey) {
     throw new Error(
-      'Clé API Google Gemini non configurée dans Vercel (variable GEMINI_API_KEY ou GOOGLE_AI_API_KEY manquante).',
+      'Clé API Mistral non configurée (variable MISTRAL_API_KEY manquante dans Vercel/.env).'
     );
   }
-  return new GoogleGenerativeAI(apiKey);
-}
-
-async function generateContentWithFallback(
-  genAI: GoogleGenerativeAI,
-  prompt: string,
-) {
-  let firstError: unknown = null;
-  for (const modelName of CANDIDATE_MODELS) {
-    try {
-      const model = genAI.getGenerativeModel({ model: modelName });
-      const result = await model.generateContent(prompt);
-      return result;
-    } catch (err) {
-      if (!firstError) firstError = err;
-      console.warn(
-        `[IA Warning] Le modèle ${modelName} a échoué, essai du modèle suivant... Error:`,
-        err,
-      );
-    }
-  }
-  throw firstError;
+  return new Mistral({ apiKey });
 }
 
 export async function runSmartAudit() {
@@ -66,10 +36,7 @@ export async function runSmartAudit() {
     });
 
     if (expenses.length < 3) {
-      return {
-        message:
-          'Pas assez de données (minimum 3 dépenses sur 90 jours requises).',
-      };
+      return { message: 'Pas assez de données (minimum 3 dépenses sur 90 jours requises).' };
     }
 
     const prompt = `Analyses ces dépenses : ${JSON.stringify(expenses)}. 
@@ -88,15 +55,21 @@ Génère un tableau JSON de 5 objets maximum :
   "category": "ENERGY" | "TELECOM" | "INSURANCE" | "BANK" | "OTHER"
 }]
 
-CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'est une priorité absolue.`;
+CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'est une priorité absolue.
+Réponds uniquement en JSON valide.`;
 
-    const genAI = getGenAI();
-    const result = await generateContentWithFallback(genAI, prompt);
-    const responseText = result.response.text();
+    const client = getMistralClient();
+    const chatResponse = await client.chat.complete({
+      model: 'mistral-small-latest',
+      messages: [{ role: 'user', content: prompt }],
+    });
+
+    const rawContent = chatResponse.choices?.[0]?.message?.content;
+    const responseText = typeof rawContent === 'string' ? rawContent : String(rawContent || '');
 
     const insights = extractJsonFromResponse(responseText);
     if (!insights || !Array.isArray(insights)) {
-      return { message: "Erreur lors du traitement du JSON généré par l'IA." };
+      return { message: "Erreur lors du traitement du JSON généré par l'IA Mistral." };
     }
 
     await prisma.insight.deleteMany({ where: { userId: userId } });
@@ -116,10 +89,7 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
           type: insight.type || 'INFO',
           title: insight.title || 'Conseil IA',
           description: (insight.description || '') + legalNote,
-          potentialSaving:
-            typeof insight.potentialSaving === 'number'
-              ? insight.potentialSaving
-              : null,
+          potentialSaving: typeof insight.potentialSaving === 'number' ? insight.potentialSaving : null,
           affiliateUrl: link,
         },
       });
@@ -130,50 +100,46 @@ CONSIGNE : Sois percutant. Si tu vois une dépense de 1000€ en chaussures, c'e
     revalidatePath('/dashboard');
     return { message: 'Audit terminé !' };
   } catch (error) {
-    console.error('Erreur audit IA:', error);
+    console.error('Erreur audit IA Mistral:', error);
     const rawMessage = error instanceof Error ? error.message : String(error);
-
-    if (
-      rawMessage.includes('429 Too Many Requests') ||
-      rawMessage.includes('Quota exceeded')
-    ) {
+    
+    if (rawMessage.includes('401') || rawMessage.includes('Unauthorized') || rawMessage.includes('invalid_api_key')) {
       return {
-        message:
-          "Quota d'appels IA dépassé (Erreur 429) : La limite de requêtes gratuites pour votre clé API est atteinte ou temporairement bloquée. Veuillez patienter une minute ou générer une nouvelle clé sur Google AI Studio.",
+        message: 'Clé API Mistral invalide (Erreur 401). Vérifiez votre variable MISTRAL_API_KEY sur Vercel.',
       };
     }
 
-    if (
-      rawMessage.includes('404 Not Found') ||
-      rawMessage.includes('is not found for API version')
-    ) {
+    if (rawMessage.includes('429') || rawMessage.includes('Rate limit')) {
       return {
-        message:
-          "Erreur Google Gemini API (404) : Le modèle demandé est introuvable ou votre clé API Vercel n'a pas accès au service.",
+        message: 'Quota d\'appels Mistral dépassé (Erreur 429). Veuillez patienter quelques minutes.',
       };
     }
 
     return {
-      message:
-        rawMessage || 'Désolé, le coach est indisponible pour le moment.',
+      message: rawMessage || 'Désolé, le coach IA est indisponible pour le moment.',
     };
   }
 }
 
 export async function categorizeTransactions(titles: string[]) {
   try {
-    const genAI = getGenAI();
+    const client = getMistralClient();
 
     const prompt = `Classe ces libellés : ${JSON.stringify(titles)}. 
 Réponds en JSON uniquement : {"Libellé": "CATEGORIE"}. 
 Catégories : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.`;
 
-    const result = await generateContentWithFallback(genAI, prompt);
-    const response = result.response.text();
+    const chatResponse = await client.chat.complete({
+      model: 'mistral-small-latest',
+      messages: [{ role: 'user', content: prompt }],
+    });
 
-    return extractJsonFromResponse(response) || {};
+    const rawContent = chatResponse.choices?.[0]?.message?.content;
+    const responseText = typeof rawContent === 'string' ? rawContent : String(rawContent || '');
+
+    return extractJsonFromResponse(responseText) || {};
   } catch (error) {
-    console.error('Erreur catégorisation IA:', error);
+    console.error('Erreur catégorisation IA Mistral:', error);
     return {};
   }
 }
