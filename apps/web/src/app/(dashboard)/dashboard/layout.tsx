@@ -18,15 +18,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <SidebarProvider> {/* Le "flex" ne s'applique qu'ici maintenant */}
-      <div className="flex min-h-screen w-full bg-black">
+      <div className="flex min-h-screen w-full bg-background text-foreground">
         <AppSidebar />
         
-        <SidebarInset className="bg-black border-l border-white/5 flex flex-col">
-          <header className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-white/5">
+        <SidebarInset className="bg-background border-l border-border flex flex-col">
+          <header className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-border">
             <div className="flex items-center gap-4">
               <SidebarTrigger className="-ml-1" />
-              <div className="h-4 w-px bg-white/10 hidden md:block" />
-              <span className="text-xs text-white/40 hidden md:block italic">Espace sécurisé</span>
+              <div className="h-4 w-px bg-border hidden md:block" />
+              <span className="text-xs text-muted-foreground hidden md:block italic">Espace sécurisé</span>
             </div>
             
             {/* Rappel du statut dans le header */}

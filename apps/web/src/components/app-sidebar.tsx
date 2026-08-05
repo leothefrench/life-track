@@ -35,7 +35,7 @@ export function AppSidebar() {
   const { isMobile, toggleSidebar } = useSidebar();
 
   return (
-    <Sidebar className="border-r border-border-bright bg-black/50 backdrop-blur-xl">
+    <Sidebar className="border-r border-border bg-sidebar backdrop-blur-xl">
       <SidebarHeader className="p-6">
         <div className="flex items-center justify-between w-full">
           <Link href="/dashboard" className="flex items-center gap-3">
