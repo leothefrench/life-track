@@ -94,3 +94,8 @@ export async function exportExpensesAction() {
     return { success: false, error: 'Erreur lors de la génération du fichier' };
   }
 }
+
+export async function getExpensesCSV() {
+  const result = await exportExpensesAction();
+  return result.success ? result.data : null;
+}

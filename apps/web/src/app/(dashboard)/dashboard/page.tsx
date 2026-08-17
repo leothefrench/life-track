@@ -3,12 +3,12 @@ import { auth } from '@/auth';
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
 import { DashboardStats } from '@/components/dashboard-stats';
 import { ExpenseList } from '@/components/expense-list';
-import { createCustomerPortalSession } from '@/app/actions/stripe';
-import { Button } from '@/components/ui/button';
+import { SubscriptionButton } from '@/components/subscription-button';
 import { PlaidLink } from '@/components/plaid-link';
 import { SyncButton } from '@/components/sync-button';
 import { InsightCards } from '@/components/insight-cards';
 import { WelcomeState } from '@/components/welcome-state';
+import { DashboardHeader } from '@/components/dashboard-header';
 
 interface CategoryResult {
   category:
@@ -94,7 +94,10 @@ export default async function DashboardPage() {
         (e) => new Date(e.date).toDateString() === d.toDateString(),
       );
       return {
-        day: d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'numeric' }),
+        day: d.toLocaleDateString('default', {
+          day: 'numeric',
+          month: 'numeric',
+        }),
         LOGEMENT: dayExp
           .filter((e) => e.category === 'LOGEMENT')
           .reduce((sum, e) => sum + e.amount, 0),
@@ -128,41 +131,14 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center justify-between mb-8">
         {/* BLOC TITRE */}
-        <div className="space-y-1">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight inline-flex items-center gap-3">
-            Dashboard
-            {isPremium && (
-              <span className="text-[10px] bg-amber-400/20 text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
-                Pro
-              </span>
-            )}
-          </h1>
-          <p className="text-muted-foreground text-xs md:text-sm">
-            Suivi de vos dépenses et abonnements.
-          </p>
-        </div>
+        <DashboardHeader isPremium={isPremium} />
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
           {/* 1. Bouton Banque (Sync ou Plaid) */}
           {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
           {/* 2. Formulaire Abonnement */}
-          {isPremium && (
-            <form
-              action={createCustomerPortalSession}
-              className="w-full sm:w-auto"
-            >
-              <Button
-                variant="outline"
-                size="sm"
-                type="submit"
-                aria-label="Gérer mon abonnement Stripe"
-                className="h-9 w-full sm:w-auto rounded-lg border-white/10 bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-wider px-4"
-              >
-                Abonnement
-              </Button>
-            </form>
-          )}
+          {isPremium && <SubscriptionButton />}
 
           {/* 3. Bouton Dépense */}
           <AddExpenseDialog />

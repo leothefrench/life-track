@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sparkles, BrainCircuit, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { runSmartAudit } from '@/app/actions/ai';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 interface AIAdvisorProps {
   isPremium: boolean;
@@ -15,24 +16,50 @@ interface AIAdvisorProps {
 
 export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
   const router = useRouter();
-  const [advice, setAdvice] = useState<string | null>(null);
+  const { t, language } = useI18n();
+  const [advice, setAdvice] = useState<{
+    isSuccess: boolean;
+    text: string;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
+  const prevLangRef = useRef<string | null>(null);
 
   const hasEnoughData = expensesCount >= 3;
   const progress = Math.min((expensesCount / 3) * 100, 100);
 
-  const handleAnalyze = async () => {
-    setLoading(true);
-    try {
-      const result = await runSmartAudit();
-      setAdvice(result.message);
-      router.refresh();
-    } catch (error) {
-      setAdvice('Désolé, le coach est indisponible pour le moment.');
-    } finally {
-      setLoading(false);
+  const handleAnalyze = useCallback(
+    async (overrideLang?: string) => {
+      const targetLang = overrideLang || language;
+      setLoading(true);
+      try {
+        const result = await runSmartAudit(targetLang);
+        if (result.success) {
+          setAdvice({ isSuccess: true, text: 'audit_success' });
+        } else {
+          setAdvice({ isSuccess: false, text: result.message || t('error') });
+        }
+        router.refresh();
+      } catch (error) {
+        setAdvice({ isSuccess: false, text: t('error') });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [language, router, t],
+  );
+
+  useEffect(() => {
+    if (prevLangRef.current === null) {
+      prevLangRef.current = language;
+      return;
     }
-  };
+    if (prevLangRef.current !== language) {
+      prevLangRef.current = language;
+      if (hasEnoughData && isPremium) {
+        handleAnalyze(language);
+      }
+    }
+  }, [language, hasEnoughData, isPremium, handleAnalyze]);
 
   return (
     <Card className="border-blue-500/20 bg-blue-500/5 shadow-none flex flex-col h-full overflow-hidden relative">
@@ -44,12 +71,14 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 z-10">
         <CardTitle className="text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 text-blue-500">
           <BrainCircuit className={cn('h-3 w-3', loading && 'animate-pulse')} />
-          Assistant IA
+          {t('ai_assistant_title')}
         </CardTitle>
 
         <div className="flex flex-col items-end gap-1">
           <span className="text-[9px] font-bold text-white/40 uppercase">
-            {hasEnoughData ? 'Prêt' : `Données : ${expensesCount}/3`}
+            {hasEnoughData
+              ? t('ready_status')
+              : `${t('data_progress')} : ${expensesCount}/3`}
           </span>
           {/* MICRO BARRE DE PROGRESSION */}
           {!hasEnoughData && (
@@ -68,44 +97,41 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
           {loading ? (
             <div className="flex flex-col gap-2 animate-pulse">
               <p className="text-blue-400/80 italic">
-                Analyse de vos transactions en cours...
+                {t('analyzing_transactions')}
               </p>
               <p className="text-white/20 text-[9px]">
-                Calcul des économies potentielles via Gemini Flash
+                {t('calculating_savings')}
               </p>
             </div>
           ) : advice ? (
             <div className="animate-in fade-in slide-in-from-top-1 duration-500 text-white/80">
-              {advice === 'Audit terminé !' ? (
+              {advice.isSuccess ? (
                 <>
                   <p className="font-semibold text-blue-400 mb-1">
-                    Analyse terminée !
+                    {t('analysis_complete')}
                   </p>
                   <p className="text-[11px] text-white/80">
-                    Vos nouveaux conseils d'économies sont disponibles juste en
-                    dessous.
+                    {t('analysis_complete_desc')}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="font-semibold text-amber-400 mb-1">
-                    Information
+                    {t('info_label')}
                   </p>
-                  <p className="text-[11px] text-white/80">{advice}</p>
+                  <p className="text-[11px] text-white/80">{advice.text}</p>
                 </>
               )}
             </div>
           ) : (
             <p className="text-white/40 italic">
-              {hasEnoughData
-                ? "L'IA est prête à identifier vos économies sur vos contrats (énergie, assurances...)."
-                : 'Ajoutez encore quelques dépenses pour permettre une analyse précise.'}
+              {hasEnoughData ? t('ai_ready_desc') : t('add_more_expenses_desc')}
             </p>
           )}
         </div>
 
         <Button
-          onClick={handleAnalyze}
+          onClick={() => handleAnalyze()}
           disabled={loading || !isPremium || !hasEnoughData}
           variant="secondary"
           className={cn(
@@ -118,12 +144,12 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
           {loading ? (
             <>
               <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-              Calcul en cours...
+              {t('calculating_btn')}
             </>
           ) : (
             <>
               <Sparkles className="mr-2 h-3 w-3" />
-              {!isPremium ? 'Activer le Coach Pro' : 'Lancer l’Audit IA'}
+              {!isPremium ? t('activate_pro_coach') : t('launch_ai_audit')}
             </>
           )}
         </Button>

@@ -1,13 +1,13 @@
 'use client';
 
 import {
-  LayoutDashboard,
   CreditCard,
+  LayoutDashboard,
   Settings,
   LogOut,
   Wallet,
   X,
-  LifeBuoy, // Ajout de l'icône pour le support
+  LifeBuoy,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -23,59 +23,61 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { ContactModal } from './contact-modal';
-
-const items = [
-  { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
-  { title: 'Abonnement', url: '/pricing', icon: CreditCard },
-  { title: 'Paramètres', url: '/settings', icon: Settings },
-];
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { isMobile, toggleSidebar } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
+  const { t } = useI18n();
+
+  const items = [
+    { title: t('nav_dashboard'), url: '/dashboard', icon: LayoutDashboard },
+    { title: t('nav_pricing'), url: '/pricing', icon: CreditCard },
+    { title: t('nav_settings'), url: '/settings', icon: Settings },
+  ];
 
   return (
     <Sidebar className="border-r border-border bg-sidebar backdrop-blur-xl">
-      <SidebarHeader className="p-6">
-        <div className="flex items-center justify-between w-full">
-          <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20">
-              <Wallet className="h-5 w-5 text-white" />
-            </div>
-            <span className="font-bold tracking-tighter text-xl text-white">
-              Life-Track
+      <SidebarHeader className="p-4 border-b border-border/50 flex flex-row items-center justify-between">
+        <Link href="/dashboard" className="flex items-center gap-3 group">
+          <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
+            <Wallet className="h-5 w-5" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-bold text-sm tracking-tight text-foreground">
+              LifeTrack
             </span>
-          </Link>
+            <span className="text-[10px] text-muted-foreground font-mono">
+              v1.0.0
+            </span>
+          </div>
+        </Link>
 
-          {/* CROIX DE FERMETURE : Uniquement sur mobile */}
-          {isMobile && (
-            <button
-              onClick={toggleSidebar}
-              className="p-2 -mr-2 text-white/50 hover:text-white transition-colors"
-              aria-label="Fermer le menu"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          )}
-        </div>
+        {isMobile && (
+          <button
+            onClick={() => setOpenMobile(false)}
+            className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
       </SidebarHeader>
 
       <SidebarContent className="px-4">
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
+            <SidebarMenuItem key={item.url}>
               <SidebarMenuButton
                 asChild
                 isActive={pathname === item.url}
-                className="hover:bg-white/5 transition-colors py-6 data-[active=true]:bg-white/10 data-[active=true]:text-white"
+                className="w-full justify-start gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-semibold hover:bg-accent hover:text-accent-foreground"
               >
-                <Link href={item.url} className="flex items-center gap-3">
-                  <item.icon
-                    className={`h-4 w-4 ${
-                      pathname === item.url ? 'text-white' : 'text-white/50'
-                    }`}
-                  />
-                  <span className="text-sm font-medium">{item.title}</span>
+                <Link
+                  href={item.url}
+                  onClick={() => isMobile && setOpenMobile(false)}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -83,22 +85,20 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-white/5 space-y-1">
-        {/* BOUTON SUPPORT */}
+      <SidebarFooter className="p-4 border-t border-border/50 space-y-2">
         <ContactModal>
           <button className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-all text-sm font-medium w-full text-left">
             <LifeBuoy className="h-4 w-4" />
-            Support
+            {t('nav_support')}
           </button>
         </ContactModal>
 
-        {/* BOUTON DÉCONNEXION */}
         <button
-          onClick={() => signOut({ redirectTo: '/' })}
+          onClick={() => signOut({ callbackUrl: '/login' })}
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-white/50 hover:text-red-400 hover:bg-red-400/10 transition-all text-sm font-medium w-full text-left"
         >
           <LogOut className="h-4 w-4" />
-          Déconnexion
+          {t('nav_logout')}
         </button>
       </SidebarFooter>
     </Sidebar>

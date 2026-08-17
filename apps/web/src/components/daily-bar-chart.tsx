@@ -8,6 +8,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 const categories = [
   'LOGEMENT',
@@ -20,23 +21,25 @@ const categories = [
   'AUTRE',
 ] as const;
 
-const chartConfig = {
-  LOGEMENT: { label: 'Logement', color: 'var(--chart-1)' },
-  ENERGIE: { label: 'Énergie', color: 'var(--chart-2)' },
-  ALIMENTATION: { label: 'Alimentation', color: 'var(--chart-3)' },
-  TRANSPORT: { label: 'Transport', color: 'var(--chart-4)' },
-  ABONNEMENTS: { label: 'Abonnements', color: 'var(--chart-5)' },
-  LOISIRS: { label: 'Loisirs', color: 'var(--chart-6)' },
-  SANTE: { label: 'Santé', color: 'var(--chart-7)' },
-  AUTRE: { label: 'Autre', color: 'var(--chart-8)' },
-} satisfies ChartConfig;
-
 export function DailyBarChart({ data }: { data: any[] }) {
+  const { t } = useI18n();
+
+  const chartConfig = {
+    LOGEMENT: { label: t('cat_housing'), color: 'var(--chart-1)' },
+    ENERGIE: { label: t('cat_energy'), color: 'var(--chart-2)' },
+    ALIMENTATION: { label: t('cat_food'), color: 'var(--chart-3)' },
+    TRANSPORT: { label: t('cat_transport'), color: 'var(--chart-4)' },
+    ABONNEMENTS: { label: t('cat_subscriptions'), color: 'var(--chart-5)' },
+    LOISIRS: { label: t('cat_leisure'), color: 'var(--chart-6)' },
+    SANTE: { label: t('cat_health'), color: 'var(--chart-7)' },
+    AUTRE: { label: t('cat_other'), color: 'var(--chart-8)' },
+  } satisfies ChartConfig;
+
   return (
     <Card className="border-none bg-transparent shadow-none h-full">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-          Activité (30j)
+          {t('activity_30d')}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">

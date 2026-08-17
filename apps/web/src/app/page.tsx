@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <>
-      <main className="min-h-screen bg-black text-white selection:bg-blue-500/30 overflow-hidden">
+      <main className="min-h-screen bg-background text-white selection:bg-blue-500/30 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px]" />
         </div>

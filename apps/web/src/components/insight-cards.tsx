@@ -8,8 +8,11 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function InsightCards({ insights }: { insights: any[] }) {
+  const { t } = useI18n();
+
   if (insights.length === 0) return null;
 
   return (
@@ -20,7 +23,6 @@ export function InsightCards({ insights }: { insights: any[] }) {
           className="border-emerald-500/20 bg-emerald-500/5 shadow-none overflow-hidden flex flex-col"
         >
           <CardContent className="p-4 flex flex-col h-full">
-            {/* 1. Le contenu (titre + description) prend tout l'espace disponible */}
             <div className="flex-1 space-y-3 mb-4">
               <div className="flex items-start justify-between">
                 <div className="p-2 rounded-lg bg-emerald-500/10">
@@ -49,7 +51,6 @@ export function InsightCards({ insights }: { insights: any[] }) {
               </div>
             </div>
 
-            {/* 2. Le bouton est maintenant "ancré" en bas grâce au flex-1 du dessus */}
             {insight.affiliateUrl && (
               <Button
                 variant="ghost"
@@ -66,9 +67,9 @@ export function InsightCards({ insights }: { insights: any[] }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {insight.type === 'SAVING' && 'Comparer les offres'}
-                  {insight.type === 'DUPLICATE' && "Vérifier l'erreur"}
-                  {insight.type === 'INFO' && 'En savoir plus'}
+                  {insight.type === 'SAVING' && t('compare_offers')}
+                  {insight.type === 'DUPLICATE' && t('check_error')}
+                  {insight.type === 'INFO' && t('learn_more')}
                   <ArrowRight className="h-3 w-3" />
                 </a>
               </Button>

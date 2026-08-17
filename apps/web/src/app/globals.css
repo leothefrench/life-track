@@ -48,25 +48,25 @@
 }
 :root, .dark {
   --radius: 0.625rem;
-  /* Thème Sombre Anthracite (Style Resend / Charcoal moderne) */
-  --background: oklch(0.18 0.008 260);         /* Anthracite doux (#141923), fini le noir pur #000 */
-  --foreground: oklch(0.98 0.002 260);         /* Texte blanc cassé haut contraste */
-  --card: oklch(0.22 0.01 260);                /* Cartes légèrement surélevées (#1e2532) */
+  /* Thème Sombre Anthracite Éclairci & Contrasté */
+  --background: oklch(0.24 0.012 260);         /* Vrai Gris Anthracite bien visible, fini le noir */
+  --foreground: oklch(0.98 0.002 260);         /* Texte blanc pur haut contraste */
+  --card: oklch(0.28 0.015 260);                /* Cartes surélevées avec contraste net */
   --card-foreground: oklch(0.98 0.002 260);
-  --popover: oklch(0.22 0.01 260);
+  --popover: oklch(0.28 0.015 260);
   --popover-foreground: oklch(0.98 0.002 260);
   --primary: oklch(0.98 0.002 260);             /* Boutons principaux blancs sur fond sombre */
-  --primary-foreground: oklch(0.18 0.008 260);
-  --secondary: oklch(0.26 0.012 260);           /* Éléments secondaires & badges */
+  --primary-foreground: oklch(0.24 0.012 260);
+  --secondary: oklch(0.32 0.018 260);           /* Éléments secondaires & badges */
   --secondary-foreground: oklch(0.98 0.002 260);
-  --muted: oklch(0.26 0.012 260);
-  --muted-foreground: oklch(0.68 0.015 260);    /* Texte secondaire lisible et adouci */
-  --accent: oklch(0.28 0.015 260);
+  --muted: oklch(0.32 0.018 260);
+  --muted-foreground: oklch(0.72 0.015 260);    /* Texte secondaire lisible */
+  --accent: oklch(0.34 0.02 260);
   --accent-foreground: oklch(0.98 0.002 260);
   --destructive: oklch(0.65 0.2 22);
-  --border: oklch(1 0 0 / 10%);                /* Bordure 1px translucide très raffinée */
-  --border-bright: oklch(0.7 0.2 250 / 25%);
-  --input: oklch(1 0 0 / 12%);
+  --border: oklch(1 0 0 / 14%);                /* Bordures nettes et élégantes */
+  --border-bright: oklch(0.7 0.2 250 / 30%);
+  --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.7 0.2 260);
 
   /* Palette Graphiques Vibrante */

@@ -3,9 +3,8 @@
 import { Expense } from '@life-track/shared';
 import { ExpenseActions } from './expense-actions';
 import { ExportButton } from './export-button';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
-// On crée un type local "robuste" pour l'affichage
-// On dit à TS : "Ici, on est sûr que l'id est une string et la date est présente"
 type ExpenseWithId = Expense & {
   id: string;
   date: Date;
@@ -22,19 +21,40 @@ const CATEGORY_STYLES: Record<string, string> = {
   AUTRE: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
 };
 
+const CATEGORY_TRANSLATIONS: Record<string, string> = {
+  LOGEMENT: 'cat_housing',
+  ENERGIE: 'cat_energy',
+  ALIMENTATION: 'cat_food',
+  TRANSPORT: 'cat_transport',
+  ABONNEMENTS: 'cat_subscriptions',
+  LOISIRS: 'cat_leisure',
+  SANTE: 'cat_health',
+  AUTRE: 'cat_other',
+};
+
 export function ExpenseList({ expenses }: { expenses: any[] }) {
+  const { t, language } = useI18n();
+
+  const localeMap = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    de: 'de-DE',
+    es: 'es-ES',
+    pt: 'pt-PT',
+  };
+
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-          Historique
+          {t('history_title')}
         </h2>
         <ExportButton />
       </div>
       <div className="divide-y divide-border/20 border rounded-xl overflow-hidden bg-card/20">
         {expenses.length === 0 ? (
           <p className="p-8 text-center text-muted-foreground italic">
-            Aucune donnée
+            {t('no_data')}
           </p>
         ) : (
           expenses.map((expense: ExpenseWithId) => (
@@ -49,7 +69,10 @@ export function ExpenseList({ expenses }: { expenses: any[] }) {
                     CATEGORY_STYLES[expense.category] || CATEGORY_STYLES.AUTRE
                   }`}
                 >
-                  {expense.category}
+                  {t(
+                    (CATEGORY_TRANSLATIONS[expense.category] ||
+                      'cat_other') as any,
+                  )}
                 </span>
               </div>
               <div className="flex items-center gap-4">
@@ -58,13 +81,15 @@ export function ExpenseList({ expenses }: { expenses: any[] }) {
                     {expense.amount.toFixed(2)} €
                   </p>
                   <p className="text-[9px] text-muted-foreground uppercase">
-                    {new Date(expense.date).toLocaleDateString('fr-FR', {
-                      day: '2-digit',
-                      month: 'short',
-                    })}
+                    {new Date(expense.date).toLocaleDateString(
+                      localeMap[language] || 'fr-FR',
+                      {
+                        day: '2-digit',
+                        month: 'short',
+                      },
+                    )}
                   </p>
                 </div>
-                {/* On passe l'expense typée correctement au composant d'actions */}
                 <ExpenseActions expense={expense} />
               </div>
             </div>

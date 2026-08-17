@@ -1,10 +1,11 @@
-'use client'; // Obligatoire pour utiliser dynamic avec ssr: false
+'use client'; 
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 const DailyBarChart = dynamic(
   () => import('@/components/daily-bar-chart').then((mod) => mod.DailyBarChart),
@@ -46,6 +47,7 @@ export function DashboardStats({
   isPremium,
   expensesCount,
 }: DashboardStatsProps) {
+  const { t } = useI18n();
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-1 flex flex-col gap-6">
@@ -53,7 +55,7 @@ export function DashboardStats({
         <Card className="bg-card/40 border-border/50 shadow-none flex flex-col items-center justify-center text-center py-6">
           <CardContent className="p-0">
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
-              Dépensé (30j)
+              {t('spent_30d')}
             </p>
             <div className="flex items-baseline justify-center gap-1">
               <span className="text-4xl font-bold tracking-tight text-rose-500">

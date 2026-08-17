@@ -3,48 +3,43 @@
 import { useState } from 'react';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { exportExpensesAction } from '@/app/actions/expenses';
+import { getExpensesCSV } from '@/app/actions/expenses';
 import { toast } from 'sonner';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function ExportButton() {
-  const [isExporting, setIsExporting] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { t } = useI18n();
 
   const handleExport = async () => {
-    setIsExporting(true);
+    setLoading(true);
     try {
-      const result = await exportExpensesAction();
+      const csvData = await getExpensesCSV();
 
-      if (result.success && result.data) {
-        // --- LA MAGIE DU TÉLÉCHARGEMENT ---
-        // 1. On crée un "Blob" (un objet binaire) à partir du texte CSV
-        const blob = new Blob([result.data], {
-          type: 'text/csv;charset=utf-8;',
-        });
-
-        // 2. On crée un lien temporaire dans la mémoire du navigateur
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-
-        // 3. On configure le nom du fichier
-        link.setAttribute('href', url);
-        link.setAttribute(
-          'download',
-          `life-track-export-${new Date().toISOString().split('T')[0]}.csv`,
-        );
-
-        // 4. On déclenche le clic invisible et on nettoie
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        toast.success('Exportation terminée !');
-      } else {
-        toast.error("Échec de l'exportation");
+      if (!csvData) {
+        toast.error(t('no_data'));
+        return;
       }
+
+      // Créer un blob et lancer le téléchargement
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute(
+        'download',
+        `depenses_${new Date().toISOString().slice(0, 10)}.csv`,
+      );
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success(t('success'));
     } catch (error) {
-      toast.error('Erreur technique');
+      console.error("Erreur lors de l'export:", error);
+      toast.error(t('error'));
     } finally {
-      setIsExporting(false);
+      setLoading(false);
     }
   };
 
@@ -53,11 +48,11 @@ export function ExportButton() {
       variant="outline"
       size="sm"
       onClick={handleExport}
-      disabled={isExporting}
-      className="h-8 text-[10px] font-bold uppercase tracking-wider"
+      disabled={loading}
+      className="gap-2 border-white/10 bg-white/5 hover:bg-white/10 text-white"
     >
-      <Download className="mr-2 h-3 w-3" />
-      {isExporting ? 'Calcul...' : 'Exporter (CSV)'}
+      <Download className="h-4 w-4" />
+      {loading ? t('exporting_btn') : t('export_csv_btn')}
     </Button>
   );
 }
