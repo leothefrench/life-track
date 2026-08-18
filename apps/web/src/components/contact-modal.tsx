@@ -7,17 +7,19 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { sendContactEmail } from '@/app/actions/contact';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function ContactModal({ children }: { children?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const { t } = useI18n();
 
   async function handleSubmit(formData: FormData) {
     const result = await sendContactEmail(formData);
     if (result.success) {
-      toast.success('Message envoyé !');
+      toast.success(t('contact_success_toast'));
       setOpen(false);
     } else {
-      toast.error("Échec de l'envoi.");
+      toast.error(t('contact_error_toast'));
     }
   }
 
@@ -27,31 +29,31 @@ export function ContactModal({ children }: { children?: React.ReactNode }) {
         {/* Si on passe un bouton spécifique, on l'affiche, sinon bouton par défaut */}
         {children || (
           <button className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold">
-            Contact
+            {t('nav_support')}
           </button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-black border-white/10 text-white">
         <DialogHeader>
-          <DialogTitle>Contacter le support</DialogTitle>
+          <DialogTitle>{t('contact_modal_title')}</DialogTitle>
         </DialogHeader>
         <form action={handleSubmit} className="space-y-4 pt-4">
           <Input
             name="email"
             type="email"
-            placeholder="Votre adresse email"
+            placeholder={t('contact_email_placeholder')}
             required
             className="bg-white/5 border-white/10"
           />
           <Input
             name="subject"
-            placeholder="Sujet de votre message"
+            placeholder={t('contact_subject_placeholder')}
             required
             className="bg-white/5 border-white/10"
           />
           <Textarea
             name="message"
-            placeholder="Comment pouvons-nous vous aider ?"
+            placeholder={t('contact_message_placeholder')}
             required
             className="min-h-[150px] bg-white/5 border-white/10"
           />
@@ -59,7 +61,7 @@ export function ContactModal({ children }: { children?: React.ReactNode }) {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl"
           >
-            Envoyer le message
+            {t('contact_send_btn')}
           </Button>
         </form>
       </DialogContent>
