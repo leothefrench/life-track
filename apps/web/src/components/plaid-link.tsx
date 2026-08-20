@@ -18,12 +18,12 @@ import {
 export function PlaidLink() {
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, language } = useI18n();
 
-  // 1. On demande le jeton au serveur dès que le composant apparaît
+  // 1. On demande le jeton au serveur dès que le composant apparaît ou que la langue change
   useEffect(() => {
     const getLinkToken = async () => {
-      const result = await createLinkToken();
+      const result = await createLinkToken(language);
       if (result.linkToken) {
         setToken(result.linkToken);
       } else {
@@ -31,7 +31,7 @@ export function PlaidLink() {
       }
     };
     getLinkToken();
-  }, []);
+  }, [language]);
 
   // 2. Ce qui se passe quand l'utilisateur a choisi sa banque
   const onSuccess = useCallback(
