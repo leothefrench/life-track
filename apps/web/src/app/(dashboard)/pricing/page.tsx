@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card';
 import { Check, Sparkles } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { PricingHeader } from '@/components/pricing-header';
 
 export default function PricingPage() {
   const [accepted, setAccepted] = useState(false);
@@ -43,7 +44,10 @@ export default function PricingPage() {
 
   if (isPremium) {
     return (
-      <div className="max-w-3xl mx-auto py-24 px-4 text-center space-y-8">
+      <div className="max-w-3xl mx-auto py-12 px-4 text-center space-y-8">
+        <div className="flex justify-start">
+          <PricingHeader />
+        </div>
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-bold uppercase tracking-wider mb-4">
             <Sparkles className="h-3 w-3" /> {t('pro_member')}
@@ -108,6 +112,8 @@ export default function PricingPage() {
 
   return (
     <div className="max-w-5xl mx-auto py-12 px-4">
+      <PricingHeader />
+
       <div className="text-center mb-12 space-y-4">
         <h1 className="text-4xl font-bold tracking-tight text-white">
           {t('pricing_title')}

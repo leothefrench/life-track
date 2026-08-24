@@ -11,7 +11,7 @@ function getMistralClient() {
   const apiKey = process.env.MISTRAL_API_KEY || '';
   if (!apiKey) {
     throw new Error(
-      'Clé API Mistral non configurée (variable MISTRAL_API_KEY manquante dans Vercel/.env).'
+      'Clé API Mistral non configurée (variable MISTRAL_API_KEY manquante dans Vercel/.env).',
     );
   }
   return new Mistral({ apiKey });
@@ -39,7 +39,6 @@ export async function runSmartAudit(language: string = 'fr') {
       string,
       {
         langName: string;
-        legalNote: string;
         defaultTitle: string;
         notEnoughData: string;
         jsonError: string;
@@ -47,8 +46,6 @@ export async function runSmartAudit(language: string = 'fr') {
     > = {
       fr: {
         langName: 'Français',
-        legalNote:
-          ' (Note : Cette estimation informative ne constitue pas un conseil financier personnalisé).',
         defaultTitle: 'Conseil IA',
         notEnoughData:
           'Pas assez de données (minimum 3 dépenses sur 90 jours requises).',
@@ -56,8 +53,6 @@ export async function runSmartAudit(language: string = 'fr') {
       },
       en: {
         langName: 'English',
-        legalNote:
-          ' (Note: This informative estimate does not constitute personalized financial advice).',
         defaultTitle: 'AI Insight',
         notEnoughData:
           'Not enough data (minimum 3 expenses over 90 days required).',
@@ -65,17 +60,14 @@ export async function runSmartAudit(language: string = 'fr') {
       },
       de: {
         langName: 'Deutsch',
-        legalNote:
-          ' (Hinweis: Diese Information stellt keine finanzielle Beratung dar).',
         defaultTitle: 'KI-Ratschlag',
         notEnoughData:
           'Nicht genügend Daten (mindestens 3 Ausgaben in 90 Tagen erforderlich).',
-        jsonError: 'Fehler beim Verarbeiten des von Mistral AI generierten JSON.',
+        jsonError:
+          'Fehler beim Verarbeiten des von Mistral AI generierten JSON.',
       },
       es: {
         langName: 'Español',
-        legalNote:
-          ' (Nota: Esta estimación informativa no constituye un consejo financiero personalizado).',
         defaultTitle: 'Consejo IA',
         notEnoughData:
           'Insuficientes datos (mínimo 3 gastos en 90 días requeridos).',
@@ -83,8 +75,6 @@ export async function runSmartAudit(language: string = 'fr') {
       },
       pt: {
         langName: 'Português',
-        legalNote:
-          ' (Nota: Esta estimativa informativa não constitui aconselhamento financeiro personalizado).',
         defaultTitle: 'Conselho IA',
         notEnoughData:
           'Dados insuficientes (mínimo de 3 despesas em 90 dias necessárias).',
@@ -125,9 +115,7 @@ Reply only with valid JSON.`;
 
     const rawContent = chatResponse.choices?.[0]?.message?.content;
     const responseText =
-      typeof rawContent === 'string'
-        ? rawContent
-        : String(rawContent || '');
+      typeof rawContent === 'string' ? rawContent : String(rawContent || '');
 
     const insights = extractJsonFromResponse(responseText);
     if (!insights || !Array.isArray(insights)) {
@@ -147,7 +135,7 @@ Reply only with valid JSON.`;
           userId: userId,
           type: insight.type || 'INFO',
           title: insight.title || config.defaultTitle,
-          description: (insight.description || '') + config.legalNote,
+          description: insight.description || '',
           potentialSaving:
             typeof insight.potentialSaving === 'number'
               ? insight.potentialSaving
@@ -164,21 +152,28 @@ Reply only with valid JSON.`;
   } catch (error) {
     console.error('Erreur audit IA Mistral:', error);
     const rawMessage = error instanceof Error ? error.message : String(error);
-    
-    if (rawMessage.includes('401') || rawMessage.includes('Unauthorized') || rawMessage.includes('invalid_api_key')) {
+
+    if (
+      rawMessage.includes('401') ||
+      rawMessage.includes('Unauthorized') ||
+      rawMessage.includes('invalid_api_key')
+    ) {
       return {
-        message: 'Clé API Mistral invalide (Erreur 401). Vérifiez votre variable MISTRAL_API_KEY sur Vercel.',
+        message:
+          'Clé API Mistral invalide (Erreur 401). Vérifiez votre variable MISTRAL_API_KEY sur Vercel.',
       };
     }
 
     if (rawMessage.includes('429') || rawMessage.includes('Rate limit')) {
       return {
-        message: 'Quota d\'appels Mistral dépassé (Erreur 429). Veuillez patienter quelques minutes.',
+        message:
+          "Quota d'appels Mistral dépassé (Erreur 429). Veuillez patienter quelques minutes.",
       };
     }
 
     return {
-      message: rawMessage || 'Désolé, le coach IA est indisponible pour le moment.',
+      message:
+        rawMessage || 'Désolé, le coach IA est indisponible pour le moment.',
     };
   }
 }
@@ -197,7 +192,8 @@ Catégories : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, 
     });
 
     const rawContent = chatResponse.choices?.[0]?.message?.content;
-    const responseText = typeof rawContent === 'string' ? rawContent : String(rawContent || '');
+    const responseText =
+      typeof rawContent === 'string' ? rawContent : String(rawContent || '');
 
     return extractJsonFromResponse(responseText) || {};
   } catch (error) {

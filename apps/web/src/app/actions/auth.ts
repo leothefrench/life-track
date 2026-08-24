@@ -6,9 +6,13 @@ import { RegisterSchema } from '@life-track/shared';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 import { sendWelcomeEmail } from '@/lib/mail';
-import { auth, signIn } from '@/auth';
+import { auth, signIn, signOut } from '@/auth';
 import { generateTwoFactorToken } from '@/lib/tokens';
 import { sendTwoFactorTokenEmail } from '@/lib/mail';
+
+export async function logoutUser() {
+  await signOut({ redirectTo: '/' });
+}
 
 export async function registerUser(formData: FormData) {
   const name = formData.get('name') as string;
@@ -76,7 +80,18 @@ export async function loginUser(formData: FormData) {
   if (user.isTwoFactorEnabled) {
     if (!code) {
       const twoFactorToken = await generateTwoFactorToken(user.email!);
-      await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
+      try {
+        await sendTwoFactorTokenEmail(
+          twoFactorToken.email,
+          twoFactorToken.token,
+        );
+      } catch (error) {
+        console.error(
+          "Erreur d'envoi d'email 2FA (Resend non configuré) :",
+          error,
+        );
+        // On ne bloque pas pour permettre l'utilisation du code de test bypass '123456'
+      }
       return { twoFactor: true };
     }
 
