@@ -10,22 +10,24 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function SyncButton() {
   const [loading, setLoading] = useState(false);
   const [disconnecting, setDisconnecting] = useState(false);
+  const { t } = useI18n();
 
   const handleSync = async () => {
     setLoading(true);
     try {
       const result = await syncTransactions();
       if (result.success) {
-        toast.success(`${result.count} transactions récupérées !`);
+        toast.success(`${result.count} transactions !`);
       } else {
-        toast.error(result.error || 'Erreur de synchronisation');
+        toast.error(result.error || t('error'));
       }
     } catch (error) {
-      toast.error('Une erreur technique est survenue');
+      toast.error(t('error'));
     } finally {
       setLoading(false);
     }
@@ -34,7 +36,7 @@ export function SyncButton() {
   const handleDisconnect = async () => {
     if (
       !confirm(
-        'Voulez-vous vraiment déconnecter votre banque ? Pour la reconnecter plus tard, vous devrez refaire la procédure avec Plaid.',
+        t('confirm_disconnect_bank'),
       )
     ) {
       return;
@@ -43,12 +45,12 @@ export function SyncButton() {
     try {
       const result = await disconnectBank();
       if (result.success) {
-        toast.success('Banque déconnectée avec succès.');
+        toast.success(t('success'));
       } else {
-        toast.error(result.error || 'Erreur lors de la déconnexion');
+        toast.error(result.error || t('error'));
       }
     } catch (error) {
-      toast.error('Une erreur technique est survenue');
+      toast.error(t('error'));
     } finally {
       setDisconnecting(false);
     }
@@ -65,7 +67,7 @@ export function SyncButton() {
             className="gap-2 border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 text-blue-600 h-9 text-[10px] font-bold uppercase tracking-wider"
           >
             <Zap className={`h-4 w-4 ${loading ? 'animate-pulse' : ''}`} />
-            {loading ? 'Synchronisation...' : 'Synchroniser'}
+            {loading ? t('syncing_btn') : t('sync_btn')}
           </Button>
         </TooltipTrigger>
         <TooltipContent
@@ -73,7 +75,7 @@ export function SyncButton() {
           className="bg-black border-white/10 text-white text-[10px] uppercase font-bold"
           sideOffset={10}
         >
-          Connexion sécurisée Plaid (Lecture seule)
+          Plaid (Read-only)
         </TooltipContent>
       </Tooltip>
 
@@ -86,7 +88,7 @@ export function SyncButton() {
             className="gap-1.5 border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 text-rose-500 hover:text-rose-600 h-9 text-[10px] font-bold uppercase tracking-wider px-3"
           >
             <Unplug className="h-3.5 w-3.5" />
-            {disconnecting ? 'Déconnexion...' : 'Déconnecter'}
+            {disconnecting ? t('disconnecting_btn') : t('disconnect_btn')}
           </Button>
         </TooltipTrigger>
         <TooltipContent
@@ -94,9 +96,10 @@ export function SyncButton() {
           className="bg-black border-white/10 text-white text-[10px] uppercase font-bold"
           sideOffset={10}
         >
-          Supprime le lien bancaire
+          Remove bank link
         </TooltipContent>
       </Tooltip>
     </div>
   );
 }
+

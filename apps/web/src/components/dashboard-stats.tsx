@@ -89,17 +89,17 @@ export function DashboardStats({
           <div className="absolute inset-0 flex items-center justify-center z-30">
             <div className="bg-background/90 p-8 rounded-3xl border border-border-bright shadow-2xl backdrop-blur-md max-w-65 text-center">
               <p className="font-bold text-sm mb-2 uppercase tracking-tighter">
-                Analyses Pro
+                {t('pro_analytics')}
               </p>
               <p className="text-[11px] text-muted-foreground mb-6">
-                Visualisez vos dépenses et abonnements en détail.
+                {t('visualize_expenses')}
               </p>
               <Button
                 size="sm"
                 className="rounded-full px-8 shadow-lg shadow-blue-500/20 bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 w-full"
                 asChild
               >
-                <Link href="/pricing">Passer Premium</Link>
+                <Link href="/pricing">{t('upgrade_premium_btn')}</Link>
               </Button>
             </div>
           </div>

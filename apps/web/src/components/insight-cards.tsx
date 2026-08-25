@@ -5,7 +5,6 @@ import {
   TrendingDown,
   AlertTriangle,
   ArrowRight,
-  Info,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -81,10 +80,10 @@ export function InsightCards({ insights }: { insights: any[] }) {
         ))}
       </div>
 
-      {/* Note d'information légale discrète et adaptée aux smartphones */}
-      <div className="flex items-center gap-1.5 px-1 text-[11px] text-muted-foreground/75 leading-tight">
-        <Info className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
-        <span>{t('ai_disclaimer')}</span>
+      {/* Avertissement légal clair et visible */}
+      <div className="flex items-center gap-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs leading-relaxed shadow-sm">
+        <AlertTriangle className="h-4 w-4 shrink-0 text-amber-400" />
+        <span className="text-white font-medium">{t('ai_disclaimer')}</span>
       </div>
     </div>
   );

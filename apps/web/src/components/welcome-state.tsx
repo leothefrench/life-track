@@ -1,10 +1,11 @@
 'use client';
 
-import { Wallet, Landmark } from 'lucide-react';
+import { Wallet, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AddExpenseDialog } from './add-expense-dialog';
 import { PlaidLink } from './plaid-link';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import Link from 'next/link';
 
 export function WelcomeState({
   isPremium,
@@ -34,11 +35,14 @@ export function WelcomeState({
             <PlaidLink />
           ) : (
             <Button
+              asChild
               variant="outline"
-              className="h-9 rounded-lg border-white/10 bg-white/5 text-white/50 cursor-not-allowed px-6 text-[10px] font-bold uppercase tracking-wider gap-2"
+              className="h-9 rounded-lg border-amber-500/30 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 hover:text-white px-6 text-[10px] font-bold uppercase tracking-wider gap-2 transition-all shadow-sm"
             >
-              <Landmark className="h-4 w-4" />
-              {t('bank_sync_pro')}
+              <Link href="/pricing">
+                <Lock className="h-3.5 w-3.5 text-amber-400" />
+                {t('bank_sync_pro')}
+              </Link>
             </Button>
           ))}
 

@@ -86,6 +86,7 @@ export default function PricingPage() {
       description: t('monthly_desc'),
       priceId: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID,
       features: [
+        t('feature_bank_sync'),
         t('unlimited_ai'),
         t('detailed_charts'),
         t('export_csv_pdf'),
@@ -100,6 +101,7 @@ export default function PricingPage() {
       description: t('annual_desc'),
       priceId: process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID,
       features: [
+        t('feature_bank_sync'),
         t('unlimited_ai'),
         t('detailed_charts'),
         t('export_csv_pdf'),
@@ -134,8 +136,7 @@ export default function PricingPage() {
           htmlFor="global-terms"
           className="text-[11px] text-white/50 leading-tight cursor-pointer"
         >
-          Je reconnais que Life-Track fournit un contenu numérique immédiatement
-          et je renonce expressément à mon droit de rétractation.
+          {t('pricing_terms_agreement')}
         </label>
       </div>
 
@@ -164,7 +165,7 @@ export default function PricingPage() {
                   {plan.price}
                 </span>
                 <span className="text-white/40 text-sm">
-                  {plan.name === t('annual') ? ' / an' : ' / mois'}
+                  {plan.name === t('annual') ? t('per_year') : t('per_month')}
                 </span>
               </div>
             </CardHeader>
