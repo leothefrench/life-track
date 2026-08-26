@@ -3,7 +3,6 @@ import { auth } from '@/auth';
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
 import { DashboardStats } from '@/components/dashboard-stats';
 import { ExpenseList } from '@/components/expense-list';
-import { SubscriptionButton } from '@/components/subscription-button';
 import { PlaidLink } from '@/components/plaid-link';
 import { SyncButton } from '@/components/sync-button';
 import { InsightCards } from '@/components/insight-cards';
@@ -134,13 +133,10 @@ export default async function DashboardPage() {
         <DashboardHeader user={session?.user} isPremium={isPremium} />
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-          {/* 1. Bouton Banque (Sync ou Plaid) */}
+          {/* 1. Bouton Banque (Sync ou Plaid) pour les utilisateurs PRO */}
           {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
-          {/* 2. Bouton Abonnement */}
-          <SubscriptionButton isSubscribed={isPremium} />
-
-          {/* 3. Bouton Dépense */}
+          {/* 2. Bouton Dépense */}
           <AddExpenseDialog />
         </div>
       </div>
