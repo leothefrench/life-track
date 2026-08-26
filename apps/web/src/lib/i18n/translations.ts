@@ -1,6 +1,9 @@
 export type Language = 'fr' | 'en' | 'de' | 'es' | 'pt';
 
-export const LANGUAGE_NAMES: Record<Language, { name: string; flag: string; label: string }> = {
+export const LANGUAGE_NAMES: Record<
+  Language,
+  { name: string; flag: string; label: string }
+> = {
   fr: { name: 'Français', flag: '🇫🇷', label: 'FR' },
   en: { name: 'English', flag: '🇬🇧', label: 'EN' },
   de: { name: 'Deutsch', flag: '🇩🇪', label: 'DE' },
@@ -13,7 +16,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Espace sécurisé',
     pro_badge: 'PRO',
-    
+
     // Sidebar
     nav_dashboard: 'Tableau de bord',
     nav_pricing: 'Abonnement',
@@ -24,18 +27,20 @@ export const translations = {
     sync_active: 'Banque Connectée',
     sync_inactive: 'Connecter ma banque',
     plaid_tooltip: 'Liaison 100% sécurisée via Plaid (Lecture seule)',
-    
+
     // Dashboard Page
     dashboard_title: 'Aperçu Financier',
-    dashboard_subtitle: 'Suivez vos dépenses et optimisez votre budget au quotidien',
+    dashboard_subtitle:
+      'Suivez vos dépenses et optimisez votre budget au quotidien',
     dashboard_header_title: 'Dashboard',
     dashboard_header_subtitle: 'Suivi de vos dépenses et abonnements.',
     add_expense: 'Ajouter une dépense',
     export_csv: 'Exporter en CSV',
-    
+
     // Welcome State
     welcome_title: 'Bienvenue sur Life-Track',
-    welcome_desc: 'Votre tableau de bord est prêt. Commencez par ajouter vos premières dépenses pour que l\'IA puisse analyser votre budget.',
+    welcome_desc:
+      "Votre tableau de bord est prêt. Commencez par ajouter vos premières dépenses pour que l'IA puisse analyser votre budget.",
     bank_sync_pro: 'Synchro bancaire (Pro)',
 
     // Stats Cards & Dashboard
@@ -56,12 +61,12 @@ export const translations = {
     recent_transactions: 'Dernières transactions',
     no_transactions: 'Aucune transaction enregistrée',
     compare_offers: 'Comparer les offres',
-    check_error: 'Vérifier l\'erreur',
+    check_error: "Vérifier l'erreur",
     learn_more: 'En savoir plus',
     activity_30d: 'Activité (30J)',
     breakdown_title: 'Répartition',
     by_category: 'Par catégorie de dépenses',
-    
+
     // AI & Advice
     ai_advisor_title: 'Conseil Budgétaire IA',
     ai_advisor_badge: 'INTELLIGENCE ARTIFICIELLE',
@@ -72,19 +77,24 @@ export const translations = {
     analyzing_transactions: 'Analyse de vos transactions en cours...',
     calculating_savings: 'Calcul des économies potentielles via Gemini Flash',
     analysis_complete: 'Analyse terminée !',
-    analysis_complete_desc: 'Vos nouveaux conseils d\'économies sont disponibles juste en dessous.',
+    analysis_complete_desc:
+      "Vos nouveaux conseils d'économies sont disponibles juste en dessous.",
     info_label: 'Information',
-    ai_ready_desc: 'L\'IA est prête à identifier vos économies sur vos contrats (énergie, assurances...).',
-    add_more_expenses_desc: 'Ajoutez encore quelques dépenses pour permettre une analyse précise.',
+    ai_ready_desc:
+      "L'IA est prête à identifier vos économies sur vos contrats (énergie, assurances...).",
+    add_more_expenses_desc:
+      'Ajoutez encore quelques dépenses pour permettre une analyse précise.',
     calculating_btn: 'Calcul en cours...',
     activate_pro_coach: 'Activer le Coach Pro',
     launch_ai_audit: 'Lancer l’Audit IA',
-    ai_disclaimer: 'Recommandations générées par IA à titre purement indicatif. Ne constitue pas un conseil financier personnalisé.',
+    ai_disclaimer:
+      'Recommandations générées par IA à titre purement indicatif. Ne constitue pas un conseil financier personnalisé.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Dépense',
     add_expense_dialog_title: 'Ajouter une dépense',
-    add_expense_dialog_desc: 'Remplissez les détails ci-dessous. Cliquez sur enregistrer une fois terminé.',
+    add_expense_dialog_desc:
+      'Remplissez les détails ci-dessous. Cliquez sur enregistrer une fois terminé.',
     edit_expense: 'Modifier la dépense',
     new_expense: 'Nouvelle dépense',
     description: 'Description',
@@ -113,7 +123,7 @@ export const translations = {
     syncing_btn: 'Synchronisation...',
     disconnect_btn: 'Déconnecter',
     disconnecting_btn: 'Déconnexion...',
-    
+
     // Settings Page
     settings_title: 'Paramètres du compte',
     settings_subtitle: 'Gérez la sécurité et vos préférences',
@@ -130,16 +140,16 @@ export const translations = {
     two_factor_enabled_toast: '2FA activé',
     two_factor_disabled_toast: '2FA désactivé',
     two_factor_error_toast: 'Erreur lors de la modification',
-    language_title: 'Langue de l\'application',
-    language_desc: 'Choisissez votre langue d\'affichage préférée',
+    language_title: "Langue de l'application",
+    language_desc: "Choisissez votre langue d'affichage préférée",
     contact_modal_title: 'Contacter le support',
     contact_email_placeholder: 'Votre adresse email',
     contact_subject_placeholder: 'Sujet de votre message',
     contact_message_placeholder: 'Comment pouvons-nous vous aider ?',
     contact_send_btn: 'Envoyer le message',
     contact_success_toast: 'Message envoyé !',
-    contact_error_toast: 'Échec de l\'envoi.',
-    
+    contact_error_toast: "Échec de l'envoi.",
+
     // Pricing Page
     pricing_title: 'Passez au niveau supérieur',
     pricing_subtitle: 'Débloquez tout le potentiel de votre gestion financière',
@@ -147,57 +157,69 @@ export const translations = {
     plan_pro: 'Plan Premium',
     price_pro: '9,99 €',
     per_month: '/ mois',
-    subscribe_button: 'S\'abonner maintenant',
+    subscribe_button: "S'abonner maintenant",
     current_plan: 'Votre plan actuel',
     pro_member: 'Membre Pro',
     subscription_active: 'Votre abonnement est actif',
-    active_desc: 'Vous profitez actuellement de toutes les fonctionnalités illimitées de Life-Track.',
-    stripe_portal_desc: 'Pour modifier votre mode de paiement, consulter vos factures ou gérer votre abonnement, accédez à votre espace sécurisé Stripe.',
+    active_desc:
+      'Vous profitez actuellement de toutes les fonctionnalités illimitées de Life-Track.',
+    stripe_portal_desc:
+      'Pour modifier votre mode de paiement, consulter vos factures ou gérer votre abonnement, accédez à votre espace sécurisé Stripe.',
     manage_subscription: 'Gérer mon abonnement',
     monthly: 'Mensuel',
     annual: 'Annuel',
     monthly_desc: 'La flexibilité totale, mois après mois.',
     annual_desc: 'Le meilleur choix pour transformer vos finances.',
-    subscribe_monthly: 'S\'abonner au mois',
-    subscribe_annual: 'S\'abonner à l\'année',
+    subscribe_monthly: "S'abonner au mois",
+    subscribe_annual: "S'abonner à l'année",
     unlimited_ai: 'Analyses IA illimitées',
     detailed_charts: 'Graphiques détaillés',
     export_csv_pdf: 'Export CSV/PDF',
     priority_support: 'Support prioritaire',
     best_value: 'Meilleure offre',
-    
+
     // Premium features list
     feature_bank_sync: 'Connexion bancaire automatique illimitée',
     feature_ai_advice: 'Conseiller IA financier personnalisé',
     feature_unlimited_export: 'Exports CSV et rapports détaillés illimités',
     feature_multi_currency: 'Gestion multi-devises et multi-comptes',
     feature_priority_support: 'Support client prioritaire 7j/7',
-    
+
     // Landing Page
     landing_hero_title_1: 'Votre argent méritait',
     landing_hero_title_2: 'une meilleure vision',
-    landing_hero_subtitle: "Life-Track utilise l'IA pour analyser vos habitudes et identifier chaque euro que vous pouvez économiser",
+    landing_hero_subtitle:
+      "Life-Track utilise l'IA pour analyser vos habitudes et identifier chaque euro que vous pouvez économiser",
     landing_hero_cta: 'Commencer à économiser',
     landing_login_btn: 'Se connecter',
     landing_trust_title: 'Pourquoi nous faire confiance',
     landing_security_title: 'Sécurité Bancaire',
-    landing_security_desc: 'Vos identifiants ne transitent jamais par nos serveurs. Nous utilisons un cryptage de niveau militaire (AES-256) pour protéger vos données.',
+    landing_security_desc:
+      'Vos identifiants ne transitent jamais par nos serveurs. Nous utilisons un cryptage de niveau militaire (AES-256) pour protéger vos données.',
     landing_privacy_title: 'Vie Privée',
-    landing_privacy_desc: 'Zéro revente de données. Votre vie financière est privée, et le restera.',
+    landing_privacy_desc:
+      'Zéro revente de données. Votre vie financière est privée, et le restera.',
     landing_sovereignty_title: 'Souveraineté Européenne',
-    landing_sovereignty_desc: 'Toutes vos données sont stockées sur des serveurs sécurisés en Europe. Conformité RGPD totale pour une tranquillité d\'esprit absolue.',
+    landing_sovereignty_desc:
+      "Toutes vos données sont stockées sur des serveurs sécurisés en Europe. Conformité RGPD totale pour une tranquillité d'esprit absolue.",
     landing_faq_title: 'Questions fréquentes',
-    landing_faq_q_sync: 'Comment fonctionne la synchronisation avec ma banque ?',
-    landing_faq_a_sync: 'Life-Track utilise Plaid, le standard mondial de sécurité utilisé par des millions d\'utilisateurs. Votre connexion est en lecture seule : l\'IA analyse vos transactions pour identifier des économies, mais il est techniquement impossible pour nous (ou pour l\'IA) d\'effectuer des virements, de modifier vos comptes ou d\'accéder à vos identifiants.',
-    landing_faq_q1: 'Est-ce que Life-Track peut faire des virements depuis mon compte ?',
-    landing_faq_a1: 'Absolument pas. Nous utilisons Plaid, le standard mondial de sécurité bancaire. Votre connexion est en lecture seule : nous pouvons voir les transactions pour les analyser, mais il est techniquement impossible pour nous de déplacer votre argent.',
-    landing_faq_q2: 'L\'IA a-t-elle accès à mon identité réelle ?',
-    landing_faq_a2: 'Non. Avant d\'être analysées par Gemini, vos données sont anonymisées. L\'IA voit des montants et des libellés (ex: Starbucks 5€), mais jamais votre nom, votre adresse ou votre numéro de compte.',
+    landing_faq_q_sync:
+      'Comment fonctionne la synchronisation avec ma banque ?',
+    landing_faq_a_sync:
+      "Life-Track utilise Plaid, le standard mondial de sécurité utilisé par des millions d'utilisateurs. Votre connexion est en lecture seule : l'IA analyse vos transactions pour identifier des économies, mais il est techniquement impossible pour nous (ou pour l'IA) d'effectuer des virements, de modifier vos comptes ou d'accéder à vos identifiants.",
+    landing_faq_q1:
+      'Est-ce que Life-Track peut faire des virements depuis mon compte ?',
+    landing_faq_a1:
+      'Absolument pas. Nous utilisons Plaid, le standard mondial de sécurité bancaire. Votre connexion est en lecture seule : nous pouvons voir les transactions pour les analyser, mais il est techniquement impossible pour nous de déplacer votre argent.',
+    landing_faq_q2: "L'IA a-t-elle accès à mon identité réelle ?",
+    landing_faq_a2:
+      "Non. Avant d'être analysées par Gemini, vos données sont anonymisées. L'IA voit des montants et des libellés (ex: Starbucks 5€), mais jamais votre nom, votre adresse ou votre numéro de compte.",
     landing_faq_q3: 'Puis-je annuler mon abonnement facilement ?',
-    landing_faq_a3: 'Oui, à tout moment et en un seul clic depuis votre Dashboard. Il n\'y a aucun engagement de durée. Une fois annulé, vous gardez vos accès Premium jusqu\'à la fin de la période payée.',
+    landing_faq_a3:
+      "Oui, à tout moment et en un seul clic depuis votre Dashboard. Il n'y a aucun engagement de durée. Une fois annulé, vous gardez vos accès Premium jusqu'à la fin de la période payée.",
     landing_footer_rights: 'Tous droits réservés.',
     landing_footer_cgv: 'CGV & Mentions Légales',
-    
+
     // Common
     cancel: 'Annuler',
     save: 'Enregistrer',
@@ -210,7 +232,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Secure space',
     pro_badge: 'PRO',
-    
+
     // Sidebar
     nav_dashboard: 'Dashboard',
     nav_pricing: 'Subscription',
@@ -221,7 +243,7 @@ export const translations = {
     sync_active: 'Bank Connected',
     sync_inactive: 'Connect Bank',
     plaid_tooltip: '100% secure connection via Plaid (Read only)',
-    
+
     // Dashboard Page
     dashboard_title: 'Financial Overview',
     dashboard_subtitle: 'Track your expenses and optimize your daily budget',
@@ -229,10 +251,11 @@ export const translations = {
     dashboard_header_subtitle: 'Track your expenses and subscriptions.',
     add_expense: 'Add Expense',
     export_csv: 'Export CSV',
-    
+
     // Welcome State
     welcome_title: 'Welcome to Life-Track',
-    welcome_desc: 'Your dashboard is ready. Start by adding your first expenses so AI can analyze your budget.',
+    welcome_desc:
+      'Your dashboard is ready. Start by adding your first expenses so AI can analyze your budget.',
     bank_sync_pro: 'Bank sync (Pro)',
 
     // Stats Cards & Dashboard
@@ -258,7 +281,7 @@ export const translations = {
     activity_30d: 'Activity (30D)',
     breakdown_title: 'Breakdown',
     by_category: 'By expense category',
-    
+
     // AI & Advice
     ai_advisor_title: 'AI Financial Advisor',
     ai_advisor_badge: 'ARTIFICIAL INTELLIGENCE',
@@ -271,17 +294,20 @@ export const translations = {
     analysis_complete: 'Analysis complete!',
     analysis_complete_desc: 'Your new savings advice is available right below.',
     info_label: 'Information',
-    ai_ready_desc: 'AI is ready to identify savings on your contracts (energy, insurance...).',
+    ai_ready_desc:
+      'AI is ready to identify savings on your contracts (energy, insurance...).',
     add_more_expenses_desc: 'Add a few more expenses for an accurate analysis.',
     calculating_btn: 'Calculating...',
     activate_pro_coach: 'Activate Pro Coach',
     launch_ai_audit: 'Launch AI Audit',
-    ai_disclaimer: 'AI-generated recommendations for informational purposes only. Does not constitute personalized financial advice.',
+    ai_disclaimer:
+      'AI-generated recommendations for informational purposes only. Does not constitute personalized financial advice.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Expense',
     add_expense_dialog_title: 'Add an Expense',
-    add_expense_dialog_desc: 'Fill in the details below. Click save when finished.',
+    add_expense_dialog_desc:
+      'Fill in the details below. Click save when finished.',
     edit_expense: 'Edit expense',
     new_expense: 'New expense',
     description: 'Description',
@@ -310,7 +336,7 @@ export const translations = {
     syncing_btn: 'Syncing...',
     disconnect_btn: 'Disconnect',
     disconnecting_btn: 'Disconnecting...',
-    
+
     // Settings Page
     settings_title: 'Account Settings',
     settings_subtitle: 'Manage your security and preferences',
@@ -320,7 +346,8 @@ export const translations = {
     security_title: 'Account Security',
     security: 'Security',
     two_factor_title: 'Two-Factor Authentication (2FA)',
-    two_factor_desc: 'Protect your account with a verification code sent via email',
+    two_factor_desc:
+      'Protect your account with a verification code sent via email',
     two_factor_code_email: 'Security code sent via email.',
     enabled: 'Enabled',
     disabled: 'Disabled',
@@ -336,7 +363,7 @@ export const translations = {
     contact_send_btn: 'Send message',
     contact_success_toast: 'Message sent!',
     contact_error_toast: 'Failed to send message.',
-    
+
     // Pricing Page
     pricing_title: 'Upgrade your experience',
     pricing_subtitle: 'Unlock the full potential of your financial management',
@@ -349,7 +376,8 @@ export const translations = {
     pro_member: 'Pro Member',
     subscription_active: 'Your subscription is active',
     active_desc: 'You currently enjoy all unlimited features of Life-Track.',
-    stripe_portal_desc: 'To update your payment method, view invoices, or manage your subscription, access your secure Stripe area.',
+    stripe_portal_desc:
+      'To update your payment method, view invoices, or manage your subscription, access your secure Stripe area.',
     manage_subscription: 'Manage my subscription',
     monthly: 'Monthly',
     annual: 'Annual',
@@ -362,36 +390,44 @@ export const translations = {
     export_csv_pdf: 'CSV/PDF exports',
     priority_support: 'Priority support',
     best_value: 'Best value',
-    
+
     // Premium features list
     feature_bank_sync: 'Unlimited automatic bank synchronization',
     feature_ai_advice: 'Personalized AI financial advisor',
     feature_unlimited_export: 'Unlimited CSV exports & detailed analytics',
     feature_multi_currency: 'Multi-currency and multi-account support',
     feature_priority_support: '24/7 Priority customer support',
-    
+
     // Landing Page
     landing_hero_title_1: 'Your money deserved',
     landing_hero_title_2: 'a better vision',
-    landing_hero_subtitle: 'Life-Track uses AI to analyze your habits and identify every dollar you can save',
+    landing_hero_subtitle:
+      'Life-Track uses AI to analyze your habits and identify every dollar you can save',
     landing_hero_cta: 'Start saving now',
     landing_login_btn: 'Log in',
     landing_trust_title: 'Why trust us',
     landing_security_title: 'Banking Security',
-    landing_security_desc: 'Your credentials never pass through our servers. We use military-grade encryption (AES-256) to protect your data.',
+    landing_security_desc:
+      'Your credentials never pass through our servers. We use military-grade encryption (AES-256) to protect your data.',
     landing_privacy_title: 'Privacy',
-    landing_privacy_desc: 'Zero data resale. Your financial life is private, and will stay that way.',
+    landing_privacy_desc:
+      'Zero data resale. Your financial life is private, and will stay that way.',
     landing_sovereignty_title: 'European Sovereignty',
-    landing_sovereignty_desc: 'All your data is stored on secure servers in Europe. Full GDPR compliance for absolute peace of mind.',
+    landing_sovereignty_desc:
+      'All your data is stored on secure servers in Europe. Full GDPR compliance for absolute peace of mind.',
     landing_faq_title: 'Frequently Asked Questions',
     landing_faq_q_sync: 'How does bank synchronization work?',
-    landing_faq_a_sync: 'Life-Track uses Plaid, the global security standard used by millions of users. Your connection is read-only: AI analyzes your transactions to identify savings, but it is technically impossible for us (or the AI) to make transfers, modify your accounts, or access your credentials.',
+    landing_faq_a_sync:
+      'Life-Track uses Plaid, the global security standard used by millions of users. Your connection is read-only: AI analyzes your transactions to identify savings, but it is technically impossible for us (or the AI) to make transfers, modify your accounts, or access your credentials.',
     landing_faq_q1: 'Can Life-Track make transfers from my account?',
-    landing_faq_a1: 'Absolutely not. We use Plaid, the global banking security standard. Your connection is read-only: we can see transactions to analyze them, but it is technically impossible for us to move your money.',
+    landing_faq_a1:
+      'Absolutely not. We use Plaid, the global banking security standard. Your connection is read-only: we can see transactions to analyze them, but it is technically impossible for us to move your money.',
     landing_faq_q2: 'Does AI have access to my real identity?',
-    landing_faq_a2: 'No. Before being analyzed by Gemini, your data is anonymized. The AI sees amounts and descriptions (e.g. Starbucks $5), but never your name, address, or account number.',
+    landing_faq_a2:
+      'No. Before being analyzed by Gemini, your data is anonymized. The AI sees amounts and descriptions (e.g. Starbucks $5), but never your name, address, or account number.',
     landing_faq_q3: 'Can I cancel my subscription easily?',
-    landing_faq_a3: 'Yes, anytime with a single click from your Dashboard. There is no long-term commitment. Once canceled, you keep your Premium access until the end of the billing cycle.',
+    landing_faq_a3:
+      'Yes, anytime with a single click from your Dashboard. There is no long-term commitment. Once canceled, you keep your Premium access until the end of the billing cycle.',
     landing_footer_rights: 'All rights reserved.',
     landing_footer_cgv: 'Terms & Legal Notices',
 
@@ -407,7 +443,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Sicherer Bereich',
     pro_badge: 'PRO',
-    
+
     // Sidebar
     nav_dashboard: 'Dashboard',
     nav_pricing: 'Abonnement',
@@ -418,18 +454,20 @@ export const translations = {
     sync_active: 'Bank verbunden',
     sync_inactive: 'Bank verbinden',
     plaid_tooltip: '100% sichere Verbindung über Plaid (Nur Lesen)',
-    
+
     // Dashboard Page
     dashboard_title: 'Finanzübersicht',
-    dashboard_subtitle: 'Verfolgen Sie Ihre Ausgaben und optimieren Sie Ihr Budget',
+    dashboard_subtitle:
+      'Verfolgen Sie Ihre Ausgaben und optimieren Sie Ihr Budget',
     dashboard_header_title: 'Dashboard',
     dashboard_header_subtitle: 'Verfolgen Sie Ihre Ausgaben und Abonnements.',
     add_expense: 'Ausgabe hinzufügen',
     export_csv: 'Als CSV exportieren',
-    
+
     // Welcome State
     welcome_title: 'Willkommen bei Life-Track',
-    welcome_desc: 'Ihr Dashboard ist bereit. Fügen Sie Ihre ersten Ausgaben hinzu, damit die KI Ihr Budget analysieren kann.',
+    welcome_desc:
+      'Ihr Dashboard ist bereit. Fügen Sie Ihre ersten Ausgaben hinzu, damit die KI Ihr Budget analysieren kann.',
     bank_sync_pro: 'Bank-Synchro (Pro)',
 
     // Stats Cards & Dashboard
@@ -441,7 +479,8 @@ export const translations = {
     remaining: 'verbleibend',
     spent_30d: 'Ausgaben (30T)',
     pro_analytics: 'Pro-Analysen',
-    visualize_expenses: 'Visualisieren Sie Ihre Ausgaben und Abonnements im Detail.',
+    visualize_expenses:
+      'Visualisieren Sie Ihre Ausgaben und Abonnements im Detail.',
     upgrade_premium_btn: 'Auf Premium upgraden',
 
     // Charts & Analytics & Insights
@@ -455,7 +494,7 @@ export const translations = {
     activity_30d: 'Aktivität (30T)',
     breakdown_title: 'Aufschlüsselung',
     by_category: 'Nach Ausgabenkategorie',
-    
+
     // AI & Advice
     ai_advisor_title: 'KI-Finanzberater',
     ai_advisor_badge: 'KÜNSTLICHE INTELLIGENZ',
@@ -468,17 +507,21 @@ export const translations = {
     analysis_complete: 'Analyse abgeschlossen!',
     analysis_complete_desc: 'Ihre neuen Spartipps sind direkt unten verfügbar.',
     info_label: 'Information',
-    ai_ready_desc: 'Die KI ist bereit, Einsparungen bei Ihren Verträgen zu identifizieren.',
-    add_more_expenses_desc: 'Fügen Sie noch ein paar Ausgaben hinzu für eine genaue Analyse.',
+    ai_ready_desc:
+      'Die KI ist bereit, Einsparungen bei Ihren Verträgen zu identifizieren.',
+    add_more_expenses_desc:
+      'Fügen Sie noch ein paar Ausgaben hinzu für eine genaue Analyse.',
     calculating_btn: 'Berechnung läuft...',
     activate_pro_coach: 'Pro-Coach aktivieren',
     launch_ai_audit: 'KI-Audit starten',
-    ai_disclaimer: 'KI-generierte Empfehlungen dienen nur zu Informationszwecken. Stellt keine persönliche Finanzberatung dar.',
+    ai_disclaimer:
+      'KI-generierte Empfehlungen dienen nur zu Informationszwecken. Stellt keine persönliche Finanzberatung dar.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Ausgabe',
     add_expense_dialog_title: 'Ausgabe hinzufügen',
-    add_expense_dialog_desc: 'Füllen Sie die Details unten aus. Klicken Sie nach Abschluss auf Speichern.',
+    add_expense_dialog_desc:
+      'Füllen Sie die Details unten aus. Klicken Sie nach Abschluss auf Speichern.',
     edit_expense: 'Ausgabe bearbeiten',
     new_expense: 'Neue Ausgabe',
     description: 'Beschreibung',
@@ -507,7 +550,7 @@ export const translations = {
     syncing_btn: 'Synchronisiere...',
     disconnect_btn: 'Trennen',
     disconnecting_btn: 'Trenne...',
-    
+
     // Settings Page
     settings_title: 'Kontoeinstellungen',
     settings_subtitle: 'Verwalten Sie Ihre Sicherheit und Einstellungen',
@@ -517,7 +560,8 @@ export const translations = {
     security_title: 'Konto-Sicherheit',
     security: 'Sicherheit',
     two_factor_title: 'Zwei-Faktor-Authentifizierung (2FA)',
-    two_factor_desc: 'Sichern Sie Ihr Konto mit einem per E-Mail gesendeten Code',
+    two_factor_desc:
+      'Sichern Sie Ihr Konto mit einem per E-Mail gesendeten Code',
     two_factor_code_email: 'Sicherheitscode per E-Mail gesendet.',
     enabled: 'Aktiviert',
     disabled: 'Deaktiviert',
@@ -533,10 +577,11 @@ export const translations = {
     contact_send_btn: 'Nachricht senden',
     contact_success_toast: 'Nachricht gesendet!',
     contact_error_toast: 'Fehler beim Senden.',
-    
+
     // Pricing Page
     pricing_title: 'Bringen Sie Ihre Finanzen aufs nächste Level',
-    pricing_subtitle: 'Schalten Sie das volle Potenzial Ihres Finanzmanagements frei',
+    pricing_subtitle:
+      'Schalten Sie das volle Potenzial Ihres Finanzmanagements frei',
     plan_free: 'Kostenloser Plan',
     plan_pro: 'Premium-Plan',
     price_pro: '9,99 €',
@@ -545,8 +590,10 @@ export const translations = {
     current_plan: 'Ihr aktueller Plan',
     pro_member: 'Pro-Mitglied',
     subscription_active: 'Ihr Abonnement ist aktiv',
-    active_desc: 'Sie nutzen derzeit alle unbegrenzten Funktionen von Life-Track.',
-    stripe_portal_desc: 'Um Ihre Zahlungsmethode zu ändern, Rechnungen anzuzeigen oder Ihr Abonnement zu verwalten, rufen Sie Ihren sicheren Stripe-Bereich auf.',
+    active_desc:
+      'Sie nutzen derzeit alle unbegrenzten Funktionen von Life-Track.',
+    stripe_portal_desc:
+      'Um Ihre Zahlungsmethode zu ändern, Rechnungen anzuzeigen oder Ihr Abonnement zu verwalten, rufen Sie Ihren sicheren Stripe-Bereich auf.',
     manage_subscription: 'Abonnement verwalten',
     monthly: 'Monatlich',
     annual: 'Jährlich',
@@ -559,36 +606,44 @@ export const translations = {
     export_csv_pdf: 'CSV/PDF-Export',
     priority_support: 'Prioritärer Support',
     best_value: 'Bestes Angebot',
-    
+
     // Premium features list
     feature_bank_sync: 'Unbegrenzte automatische Banksynchronisierung',
     feature_ai_advice: 'Personalisierter KI-Finanzberater',
     feature_unlimited_export: 'Unbegrenzte CSV-Exporte & detaillierte Analysen',
     feature_multi_currency: 'Multi-Währungs- und Multi-Konto-Verwaltung',
     feature_priority_support: 'Prioritärer Kundensupport rund um die Uhr',
-    
+
     // Landing Page
     landing_hero_title_1: 'Ihr Geld verdiente',
     landing_hero_title_2: 'eine bessere Übersicht',
-    landing_hero_subtitle: 'Life-Track nutzt KI, um Ihre Gewohnheiten zu analysieren und jeden Euro zu identifizieren, den Sie sparen können',
+    landing_hero_subtitle:
+      'Life-Track nutzt KI, um Ihre Gewohnheiten zu analysieren und jeden Euro zu identifizieren, den Sie sparen können',
     landing_hero_cta: 'Jetzt sparen',
     landing_login_btn: 'Anmelden',
     landing_trust_title: 'Warum uns vertrauen',
     landing_security_title: 'Banksicherheit',
-    landing_security_desc: 'Ihre Anmeldedaten gelangen niemals auf unsere Server. Wir verwenden eine Verschlüsselung nach Militärstandard (AES-256) zum Schutz Ihrer Daten.',
+    landing_security_desc:
+      'Ihre Anmeldedaten gelangen niemals auf unsere Server. Wir verwenden eine Verschlüsselung nach Militärstandard (AES-256) zum Schutz Ihrer Daten.',
     landing_privacy_title: 'Privatsphäre',
-    landing_privacy_desc: 'Kein Weiterverkauf von Daten. Ihr Finanzleben ist und bleibt privat.',
+    landing_privacy_desc:
+      'Kein Weiterverkauf von Daten. Ihr Finanzleben ist und bleibt privat.',
     landing_sovereignty_title: 'Europäische Souveränität',
-    landing_sovereignty_desc: 'Alle Ihre Daten werden auf sicheren Servern in Europa gespeichert. Vollständige DSGVO-Konformität für absolute Sicherheit.',
+    landing_sovereignty_desc:
+      'Alle Ihre Daten werden auf sicheren Servern in Europa gespeichert. Vollständige DSGVO-Konformität für absolute Sicherheit.',
     landing_faq_title: 'Häufig gestellte Fragen',
     landing_faq_q_sync: 'Wie funktioniert die Synchronisation mit meiner Bank?',
-    landing_faq_a_sync: 'Life-Track nutzt Plaid, den weltweiten Sicherheitsstandard, dem Millionen vertrauen. Ihre Verbindung ist schreibgeschützt: Die KI analysiert Transaktionen, um Einsparungen zu erkennen, Überweisungen oder Änderungen sind technisch unmöglich.',
+    landing_faq_a_sync:
+      'Life-Track nutzt Plaid, den weltweiten Sicherheitsstandard, dem Millionen vertrauen. Ihre Verbindung ist schreibgeschützt: Die KI analysiert Transaktionen, um Einsparungen zu erkennen, Überweisungen oder Änderungen sind technisch unmöglich.',
     landing_faq_q1: 'Kann Life-Track Überweisungen von meinem Konto tätigen?',
-    landing_faq_a1: 'Absolut nicht. Wir verwenden Plaid, den weltweiten Standard für Banksicherheit. Ihre Verbindung ist schreibgeschützt: Wir können Transaktionen nur analysieren, aber niemals Geld bewegen.',
+    landing_faq_a1:
+      'Absolut nicht. Wir verwenden Plaid, den weltweiten Standard für Banksicherheit. Ihre Verbindung ist schreibgeschützt: Wir können Transaktionen nur analysieren, aber niemals Geld bewegen.',
     landing_faq_q2: 'Hat die KI Zugriff auf meine echte Identität?',
-    landing_faq_a2: 'Nein. Vor der Analyse durch Gemini werden Ihre Daten anonymisiert. Die KI sieht nur Beträge und Beschreibungen, aber niemals Ihren Namen, Ihre Adresse oder Kontonummer.',
+    landing_faq_a2:
+      'Nein. Vor der Analyse durch Gemini werden Ihre Daten anonymisiert. Die KI sieht nur Beträge und Beschreibungen, aber niemals Ihren Namen, Ihre Adresse oder Kontonummer.',
     landing_faq_q3: 'Kann ich mein Abonnement einfach kündigen?',
-    landing_faq_a3: 'Ja, jederzeit mit einem Klick in Ihrem Dashboard. Es gibt keine Mindestlaufzeit. Nach der Kündigung behalten Sie Ihren Premium-Zugang bis zum Ende des bezahlten Zeitraums.',
+    landing_faq_a3:
+      'Ja, jederzeit mit einem Klick in Ihrem Dashboard. Es gibt keine Mindestlaufzeit. Nach der Kündigung behalten Sie Ihren Premium-Zugang bis zum Ende des bezahlten Zeitraums.',
     landing_footer_rights: 'Alle Rechte vorbehalten.',
     landing_footer_cgv: 'AGB & Impressum',
 
@@ -604,7 +659,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Espacio seguro',
     pro_badge: 'PRO',
-    
+
     // Sidebar
     nav_dashboard: 'Panel de control',
     nav_pricing: 'Suscripción',
@@ -615,7 +670,7 @@ export const translations = {
     sync_active: 'Banco Conectado',
     sync_inactive: 'Conectar mi banco',
     plaid_tooltip: 'Conexión 100% segura mediante Plaid (Solo lectura)',
-    
+
     // Dashboard Page
     dashboard_title: 'Resumen Financiero',
     dashboard_subtitle: 'Siga sus gastos y optimice su presupuesto diario',
@@ -626,9 +681,10 @@ export const translations = {
 
     // Welcome State
     welcome_title: 'Bienvenido a Life-Track',
-    welcome_desc: 'Su panel de control está listo. Empiece añadiendo sus primeros gastos para que la IA pueda analizar su presupuesto.',
+    welcome_desc:
+      'Su panel de control está listo. Empiece añadiendo sus primeros gastos para que la IA pueda analizar su presupuesto.',
     bank_sync_pro: 'Sincro bancaria (Pro)',
-    
+
     // Stats Cards & Dashboard
     total_spent: 'Gastos de este mes',
     monthly_budget: 'Presupuesto mensual',
@@ -652,7 +708,7 @@ export const translations = {
     activity_30d: 'Actividad (30D)',
     breakdown_title: 'Desglose',
     by_category: 'Por categoría de gastos',
-    
+
     // AI & Advice
     ai_advisor_title: 'Asesor Financiero IA',
     ai_advisor_badge: 'INTELIGENCIA ARTIFICIAL',
@@ -663,19 +719,24 @@ export const translations = {
     analyzing_transactions: 'Analizando sus transacciones...',
     calculating_savings: 'Calculando ahorros potenciales con Gemini Flash',
     analysis_complete: '¡Análisis completado!',
-    analysis_complete_desc: 'Sus nuevos consejos de ahorro están disponibles justo abajo.',
+    analysis_complete_desc:
+      'Sus nuevos consejos de ahorro están disponibles justo abajo.',
     info_label: 'Información',
-    ai_ready_desc: 'La IA está lista para identificar ahorros en sus contratos.',
-    add_more_expenses_desc: 'Añada algunas dazas más para permitir un análisis preciso.',
+    ai_ready_desc:
+      'La IA está lista para identificar ahorros en sus contratos.',
+    add_more_expenses_desc:
+      'Añada algunas dazas más para permitir un análisis preciso.',
     calculating_btn: 'Calculando...',
     activate_pro_coach: 'Activar Coach Pro',
     launch_ai_audit: 'Iniciar Auditoría IA',
-    ai_disclaimer: 'Recomendaciones generadas por IA solo con fines informativos. No constituye asesoramiento financiero personalizado.',
+    ai_disclaimer:
+      'Recomendaciones generadas por IA solo con fines informativos. No constituye asesoramiento financiero personalizado.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Gasto',
     add_expense_dialog_title: 'Añadir un gasto',
-    add_expense_dialog_desc: 'Rellene los detalles a continuación. Haga clic en guardar al finalizar.',
+    add_expense_dialog_desc:
+      'Rellene los detalles a continuación. Haga clic en guardar al finalizar.',
     edit_expense: 'Editar gasto',
     new_expense: 'Nuevo gasto',
     description: 'Descripción',
@@ -704,7 +765,7 @@ export const translations = {
     syncing_btn: 'Sincronizando...',
     disconnect_btn: 'Desconectar',
     disconnecting_btn: 'Desconectando...',
-    
+
     // Settings Page
     settings_title: 'Configuración de la cuenta',
     settings_subtitle: 'Gestione su seguridad y preferencias',
@@ -714,8 +775,10 @@ export const translations = {
     security_title: 'Seguridad de la cuenta',
     security: 'Seguridad',
     two_factor_title: 'Autenticación de dos factores (2FA)',
-    two_factor_desc: 'Asegure su cuenta con un código enviado por correo electrónico',
-    two_factor_code_email: 'Código de seguridad enviado por correo electrónico.',
+    two_factor_desc:
+      'Asegure su cuenta con un código enviado por correo electrónico',
+    two_factor_code_email:
+      'Código de seguridad enviado por correo electrónico.',
     enabled: 'Activado',
     disabled: 'Desactivado',
     two_factor_enabled_toast: '2FA activado',
@@ -730,7 +793,7 @@ export const translations = {
     contact_send_btn: 'Enviar mensaje',
     contact_success_toast: '¡Mensaje enviado!',
     contact_error_toast: 'Error al enviar.',
-    
+
     // Pricing Page
     pricing_title: 'Pase al siguiente nivel',
     pricing_subtitle: 'Desbloquee todo el potencial de su gestión financiera',
@@ -742,8 +805,10 @@ export const translations = {
     current_plan: 'Su plan actual',
     pro_member: 'Miembro Pro',
     subscription_active: 'Su suscripción está activa',
-    active_desc: 'Actualmente disfruta de todas las funciones ilimitadas de Life-Track.',
-    stripe_portal_desc: 'Para modificar su método de pago, consultar facturas o gestionar su suscripción, acceda a su área segura de Stripe.',
+    active_desc:
+      'Actualmente disfruta de todas las funciones ilimitadas de Life-Track.',
+    stripe_portal_desc:
+      'Para modificar su método de pago, consultar facturas o gestionar su suscripción, acceda a su área segura de Stripe.',
     manage_subscription: 'Gestionar mi suscripción',
     monthly: 'Mensual',
     annual: 'Anual',
@@ -756,36 +821,45 @@ export const translations = {
     export_csv_pdf: 'Exportación CSV/PDF',
     priority_support: 'Soporte prioritario',
     best_value: 'Mejor oferta',
-    
+
     // Premium features list
     feature_bank_sync: 'Sincronización bancaria automática e ilimitada',
     feature_ai_advice: 'Asesor financiero IA personalizado',
-    feature_unlimited_export: 'Exportaciones CSV e informes detallados ilimitados',
+    feature_unlimited_export:
+      'Exportaciones CSV e informes detallados ilimitados',
     feature_multi_currency: 'Gestión multimoneda y multicuenta',
     feature_priority_support: 'Atención al cliente prioritaria 24/7',
-    
+
     // Landing Page
     landing_hero_title_1: 'Tu dinero merecía',
     landing_hero_title_2: 'una mejor visión',
-    landing_hero_subtitle: 'Life-Track utiliza IA para analizar tus hábitos e identificar cada euro que puedes ahorrar',
+    landing_hero_subtitle:
+      'Life-Track utiliza IA para analizar tus hábitos e identificar cada euro que puedes ahorrar',
     landing_hero_cta: 'Empezar a ahorrar',
     landing_login_btn: 'Iniciar sesión',
     landing_trust_title: 'Por qué confiar en nosotros',
     landing_security_title: 'Seguridad Bancaria',
-    landing_security_desc: 'Tus credenciales nunca pasan por nuestros servidores. Utilizamos cifrado de nivel militar (AES-256) para proteger tus datos.',
+    landing_security_desc:
+      'Tus credenciales nunca pasan por nuestros servidores. Utilizamos cifrado de nivel militar (AES-256) para proteger tus datos.',
     landing_privacy_title: 'Privacidad',
-    landing_privacy_desc: 'Cero reventa de datos. Tu vida financiera es privada y seguirá siéndolo.',
+    landing_privacy_desc:
+      'Cero reventa de datos. Tu vida financiera es privada y seguirá siéndolo.',
     landing_sovereignty_title: 'Soberanía Europea',
-    landing_sovereignty_desc: 'Todos tus datos se almacenan en servidores seguros en Europa. Cumplimiento total del RGPD para una tranquilidad absoluta.',
+    landing_sovereignty_desc:
+      'Todos tus datos se almacenan en servidores seguros en Europa. Cumplimiento total del RGPD para una tranquilidad absoluta.',
     landing_faq_title: 'Preguntas frecuentes',
     landing_faq_q_sync: '¿Cómo funciona la sincronización con mi banco?',
-    landing_faq_a_sync: 'Life-Track utiliza Plaid, el estándar mundial de seguridad utilizado por millones de usuarios. Tu conexión es de solo lectura: la IA analiza tus transacciones para identificar ahorros, pero es técnicamente imposible realizar transferencias o modificar tus cuentas.',
+    landing_faq_a_sync:
+      'Life-Track utiliza Plaid, el estándar mundial de seguridad utilizado por millones de usuarios. Tu conexión es de solo lectura: la IA analiza tus transacciones para identificar ahorros, pero es técnicamente imposible realizar transferencias o modificar tus cuentas.',
     landing_faq_q1: '¿Puede Life-Track hacer transferencias desde mi cuenta?',
-    landing_faq_a1: 'En absoluto. Utilizamos Plaid, el estándar mundial de seguridad bancaria. Tu conexión es de solo lectura: podemos ver las transacciones para analizarlas, pero es técnicamente imposible mover tu dinero.',
+    landing_faq_a1:
+      'En absoluto. Utilizamos Plaid, el estándar mundial de seguridad bancaria. Tu conexión es de solo lectura: podemos ver las transacciones para analizarlas, pero es técnicamente imposible mover tu dinero.',
     landing_faq_q2: '¿La IA tiene acceso a mi identidad real?',
-    landing_faq_a2: 'No. Antes de ser analizados por Gemini, tus datos son anonimizados. La IA ve importes y conceptos (ej: Starbucks 5€), pero nunca tu nombre, dirección o número de cuenta.',
+    landing_faq_a2:
+      'No. Antes de ser analizados por Gemini, tus datos son anonimizados. La IA ve importes y conceptos (ej: Starbucks 5€), pero nunca tu nombre, dirección o número de cuenta.',
     landing_faq_q3: '¿Puedo cancelar mi suscripción fácilmente?',
-    landing_faq_a3: 'Sí, en cualquier momento y con un solo clic desde tu Panel. No hay ningún compromiso. Una vez cancelado, conservas el acceso Premium hasta el final del periodo pagado.',
+    landing_faq_a3:
+      'Sí, en cualquier momento y con un solo clic desde tu Panel. No hay ningún compromiso. Una vez cancelado, conservas el acceso Premium hasta el final del periodo pagado.',
     landing_footer_rights: 'Todos los derechos reservados.',
     landing_footer_cgv: 'Términos y Aviso Legal',
 
@@ -801,7 +875,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Espaço seguro',
     pro_badge: 'PRO',
-    
+
     // Sidebar
     nav_dashboard: 'Painel principal',
     nav_pricing: 'Subscrição',
@@ -812,7 +886,7 @@ export const translations = {
     sync_active: 'Banco Conectado',
     sync_inactive: 'Conectar banco',
     plaid_tooltip: 'Ligação 100% segura via Plaid (Apenas leitura)',
-    
+
     // Dashboard Page
     dashboard_title: 'Resumo Financeiro',
     dashboard_subtitle: 'Acompanhe as suas despesas e otimize o seu orçamento',
@@ -823,9 +897,10 @@ export const translations = {
 
     // Welcome State
     welcome_title: 'Bem-vindo ao Life-Track',
-    welcome_desc: 'O seu painel principal está pronto. Comece por adicionar as suas primeiras despesas para que a IA possa analisar o seu orçamento.',
+    welcome_desc:
+      'O seu painel principal está pronto. Comece por adicionar as suas primeiras despesas para que a IA possa analisar o seu orçamento.',
     bank_sync_pro: 'Sincro bancária (Pro)',
-    
+
     // Stats Cards & Dashboard
     total_spent: 'Despesas este mês',
     monthly_budget: 'Orçamento mensal',
@@ -849,7 +924,7 @@ export const translations = {
     activity_30d: 'Atividade (30D)',
     breakdown_title: 'Distribuição',
     by_category: 'Por categoria de despesas',
-    
+
     // AI & Advice
     ai_advisor_title: 'Conselheiro Financeiro IA',
     ai_advisor_badge: 'INTELIGÊNCIA ARTIFICIAL',
@@ -860,19 +935,24 @@ export const translations = {
     analyzing_transactions: 'A analisar as suas transações...',
     calculating_savings: 'A calcular poupanças potenciais via Gemini Flash',
     analysis_complete: 'Análise concluída!',
-    analysis_complete_desc: 'As suas novas dicas de poupança estão disponíveis abaixo.',
+    analysis_complete_desc:
+      'As suas novas dicas de poupança estão disponíveis abaixo.',
     info_label: 'Informação',
-    ai_ready_desc: 'A IA está pronta para identificar poupanças nos seus contratos.',
-    add_more_expenses_desc: 'Adicione mais algumas despesas para uma análise precisa.',
+    ai_ready_desc:
+      'A IA está pronta para identificar poupanças nos seus contratos.',
+    add_more_expenses_desc:
+      'Adicione mais algumas despesas para uma análise precisa.',
     calculating_btn: 'A calcular...',
     activate_pro_coach: 'Ativar Coach Pro',
     launch_ai_audit: 'Iniciar Auditoria IA',
-    ai_disclaimer: 'Recomendações geradas por IA apenas para fins informativos. Não constitui aconselhamento financeiro personalizado.',
+    ai_disclaimer:
+      'Recomendações geradas por IA apenas para fins informativos. Não constitui aconselhamento financeiro personalizado.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Despesa',
     add_expense_dialog_title: 'Adicionar uma despesa',
-    add_expense_dialog_desc: 'Preencha os detalhes abaixo. Clique em guardar quando terminar.',
+    add_expense_dialog_desc:
+      'Preencha os detalhes abaixo. Clique em guardar quando terminar.',
     edit_expense: 'Editar despesa',
     new_expense: 'Nova despesa',
     description: 'Descrição',
@@ -901,7 +981,7 @@ export const translations = {
     syncing_btn: 'A sincronizar...',
     disconnect_btn: 'Desconectar',
     disconnecting_btn: 'A desligar...',
-    
+
     // Settings Page
     settings_title: 'Definições da conta',
     settings_subtitle: 'Gerencie a sua segurança e preferências',
@@ -927,7 +1007,7 @@ export const translations = {
     contact_send_btn: 'Enviar mensagem',
     contact_success_toast: 'Mensagem enviada!',
     contact_error_toast: 'Falha ao enviar.',
-    
+
     // Pricing Page
     pricing_title: 'Passe para o nível seguinte',
     pricing_subtitle: 'Desbloqueie todo o potencial da sua gestão financeira',
@@ -939,8 +1019,10 @@ export const translations = {
     current_plan: 'O seu plano atual',
     pro_member: 'Membro Pro',
     subscription_active: 'A sua subscrição está ativa',
-    active_desc: 'Atualmente desfruta de todas as funcionalidades ilimitadas do Life-Track.',
-    stripe_portal_desc: 'Para alterar o seu método de pagamento, consultar faturas ou gerir a sua subscrição, aceda à sua área segura do Stripe.',
+    active_desc:
+      'Atualmente desfruta de todas as funcionalidades ilimitadas do Life-Track.',
+    stripe_portal_desc:
+      'Para alterar o seu método de pagamento, consultar faturas ou gerir a sua subscrição, aceda à sua área segura do Stripe.',
     manage_subscription: 'Gerir a minha subscrição',
     monthly: 'Mensal',
     annual: 'Anual',
@@ -953,36 +1035,45 @@ export const translations = {
     export_csv_pdf: 'Exportação CSV/PDF',
     priority_support: 'Suporte prioritário',
     best_value: 'Melhor oferta',
-    
+
     // Premium features list
     feature_bank_sync: 'Sincronização bancária automática e ilimitada',
     feature_ai_advice: 'Conselheiro financeiro IA personalizado',
-    feature_unlimited_export: 'Exportações CSV e relatórios detalhados ilimitados',
+    feature_unlimited_export:
+      'Exportações CSV e relatórios detalhados ilimitados',
     feature_multi_currency: 'Gestão multi-moeda e multi-conta',
     feature_priority_support: 'Apoio ao cliente prioritário 24/7',
-    
+
     // Landing Page
     landing_hero_title_1: 'O seu dinheiro merecia',
     landing_hero_title_2: 'uma melhor visão',
-    landing_hero_subtitle: 'O Life-Track utiliza IA para analisar os seus hábitos e identificar cada euro que pode poupar',
+    landing_hero_subtitle:
+      'O Life-Track utiliza IA para analisar os seus hábitos e identificar cada euro que pode poupar',
     landing_hero_cta: 'Começar a poupar',
     landing_login_btn: 'Iniciar sessão',
     landing_trust_title: 'Por que confiar em nós',
     landing_security_title: 'Segurança Bancária',
-    landing_security_desc: 'As suas credenciais nunca passam pelos nossos servidores. Utilizamos encriptação de nível militar (AES-256) para proteger os seus dados.',
+    landing_security_desc:
+      'As suas credenciais nunca passam pelos nossos servidores. Utilizamos encriptação de nível militar (AES-256) para proteger os seus dados.',
     landing_privacy_title: 'Privacidade',
-    landing_privacy_desc: 'Zero revenda de dados. A sua vida financeira é privada e continuará a sê-lo.',
+    landing_privacy_desc:
+      'Zero revenda de dados. A sua vida financeira é privada e continuará a sê-lo.',
     landing_sovereignty_title: 'Soberania Europeia',
-    landing_sovereignty_desc: 'Todos os seus dados são armazenados em servidores seguros na Europa. Conformidade total com o RGPD para absoluta tranquilidade.',
+    landing_sovereignty_desc:
+      'Todos os seus dados são armazenados em servidores seguros na Europa. Conformidade total com o RGPD para absoluta tranquilidade.',
     landing_faq_title: 'Perguntas frequentes',
     landing_faq_q_sync: 'Como funciona a sincronização com o meu banco?',
-    landing_faq_a_sync: 'O Life-Track utiliza o Plaid, o padrão global de segurança utilizado por milhões de utilizadores. A sua ligação é apenas de leitura: a IA analisa as transações para identificar poupanças, sendo tecnicamente impossível realizar transferências ou alterar as suas contas.',
+    landing_faq_a_sync:
+      'O Life-Track utiliza o Plaid, o padrão global de segurança utilizado por milhões de utilizadores. A sua ligação é apenas de leitura: a IA analisa as transações para identificar poupanças, sendo tecnicamente impossível realizar transferências ou alterar as suas contas.',
     landing_faq_q1: 'O Life-Track pode fazer transferências da minha conta?',
-    landing_faq_a1: 'De forma alguma. Utilizamos o Plaid, o padrão mundial de segurança bancária. A sua ligação é apenas de leitura: podemos ver as transações para as analisar, mas é tecnicamente impossível movimentar o seu dinheiro.',
+    landing_faq_a1:
+      'De forma alguma. Utilizamos o Plaid, o padrão mundial de segurança bancária. A sua ligação é apenas de leitura: podemos ver as transações para as analisar, mas é tecnicamente impossível movimentar o seu dinheiro.',
     landing_faq_q2: 'A IA tem acesso à minha identidade real?',
-    landing_faq_a2: 'Não. Antes de serem analisados pelo Gemini, os seus dados são anonimizados. A IA vê valores e descrições (ex: Starbucks 5€), mas nunca o seu nome, morada ou número de conta.',
+    landing_faq_a2:
+      'Não. Antes de serem analisados pelo Gemini, os seus dados são anonimizados. A IA vê valores e descrições (ex: Starbucks 5€), mas nunca o seu nome, morada ou número de conta.',
     landing_faq_q3: 'Posso cancelar a minha subscrição facilmente?',
-    landing_faq_a3: 'Sim, a qualquer momento e com um clique a partir do seu Painel. Não há fidelização. Após o cancelamento, mantém o acesso Premium até ao final do período pago.',
+    landing_faq_a3:
+      'Sim, a qualquer momento e com um clique a partir do seu Painel. Não há fidelização. Após o cancelamento, mantém o acesso Premium até ao final do período pago.',
     landing_footer_rights: 'Todos os direitos reservados.',
     landing_footer_cgv: 'Termos e Aviso Legal',
 

@@ -1,58 +1,236 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Language, TranslationKey, translations } from './translations';
+import React, { createContext, useContext, useSyncExternalStore } from 'react';
+import { translations, Language, TranslationKey } from './translations';
+
+export type Currency = 'EUR' | 'USD' | 'GBP' | 'CHF' | 'CAD' | 'BRL';
+
+export interface CurrencyConfig {
+  code: Currency;
+  symbol: string;
+  name: string;
+}
+
+export const currencies: CurrencyConfig[] = [
+  { code: 'EUR', symbol: '€', name: 'Euro (EUR)' },
+  { code: 'USD', symbol: '$', name: 'US Dollar (USD)' },
+  { code: 'GBP', symbol: '£', name: 'British Pound (GBP)' },
+  { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc (CHF)' },
+  { code: 'CAD', symbol: '$', name: 'Canadian Dollar (CAD)' },
+  { code: 'BRL', symbol: 'R$', name: 'Real Brasileiro (BRL)' },
+];
+
+const DEFAULT_CURRENCY_BY_LANG: Record<Language, Currency> = {
+  fr: 'EUR',
+  en: 'USD',
+  de: 'EUR',
+  es: 'EUR',
+  pt: 'EUR',
+};
+
+const LOCALE_MAP: Record<Language, string> = {
+  fr: 'fr-FR',
+  en: 'en-US',
+  de: 'de-DE',
+  es: 'es-ES',
+  pt: 'pt-PT',
+};
 
 interface I18nContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: TranslationKey) => string;
+  currency: Currency;
+  setCurrency: (cur: Currency) => void;
+  currencySymbol: string;
+  formatCurrency: (amount: number, customCurrency?: Currency) => string;
+  formatDate: (
+    date: Date | string,
+    options?: Intl.DateTimeFormatOptions,
+  ) => string;
+  t: (
+    key: TranslationKey | string,
+    params?: Record<string, string | number>,
+  ) => string;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('fr');
+let langListeners: Array<() => void> = [];
+let currencyListeners: Array<() => void> = [];
 
-  useEffect(() => {
-    // Lecture sécurisée du localStorage au montage côté client
-    try {
-      const saved = localStorage.getItem('life_track_lang') as Language | null;
-      if (saved && saved in translations) {
-        setLanguageState(saved);
-        return;
-      }
-      if (typeof navigator !== 'undefined') {
-        const browserLang = navigator.language?.toLowerCase() || '';
-        if (browserLang.startsWith('de')) setLanguageState('de');
-        else if (browserLang.startsWith('es')) setLanguageState('es');
-        else if (browserLang.startsWith('pt')) setLanguageState('pt');
-        else if (browserLang.startsWith('en')) setLanguageState('en');
-        else if (browserLang.startsWith('fr')) setLanguageState('fr');
-      }
-    } catch {
-      // Ignorer si localStorage est inaccessible
+function subscribeLang(callback: () => void) {
+  langListeners.push(callback);
+  return () => {
+    langListeners = langListeners.filter((l) => l !== callback);
+  };
+}
+
+function subscribeCurrency(callback: () => void) {
+  currencyListeners.push(callback);
+  return () => {
+    currencyListeners = currencyListeners.filter((l) => l !== callback);
+  };
+}
+
+function getLanguageSnapshot(): Language {
+  if (typeof window === 'undefined') return 'fr';
+  try {
+    const saved = localStorage.getItem('life_track_lang') as Language | null;
+    if (saved && ['fr', 'en', 'de', 'es', 'pt'].includes(saved)) {
+      return saved;
     }
-  }, []);
+    // Détecte la langue du navigateur (ex: 'fr-FR' -> 'fr')
+    if (typeof navigator !== 'undefined' && navigator.language) {
+      const browserLang = navigator.language.split('-')[0] as Language;
+      if (['fr', 'en', 'de', 'es', 'pt'].includes(browserLang)) {
+        return browserLang;
+      }
+    }
+  } catch {
+    // Ignorer si localStorage inaccessible
+  }
+  return 'fr';
+}
+
+function getCurrencySnapshot(): Currency {
+  if (typeof window === 'undefined') return 'EUR';
+  try {
+    const saved = localStorage.getItem(
+      'life_track_currency',
+    ) as Currency | null;
+    if (saved && currencies.some((c) => c.code === saved)) {
+      return saved;
+    }
+    const currentLang = getLanguageSnapshot();
+    if (DEFAULT_CURRENCY_BY_LANG[currentLang]) {
+      return DEFAULT_CURRENCY_BY_LANG[currentLang];
+    }
+  } catch {
+    // Ignorer si localStorage inaccessible
+  }
+  return 'EUR';
+}
+
+function getServerSnapshotLang(): Language {
+  return 'fr';
+}
+
+function getServerSnapshotCurrency(): Currency {
+  return 'EUR';
+}
+
+export function I18nProvider({ children }: { children: React.ReactNode }) {
+  const language = useSyncExternalStore(
+    subscribeLang,
+    getLanguageSnapshot,
+    getServerSnapshotLang,
+  );
+  const currency = useSyncExternalStore(
+    subscribeCurrency,
+    getCurrencySnapshot,
+    getServerSnapshotCurrency,
+  );
 
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('life_track_lang', lang);
+        const hasCustomCurrency = localStorage.getItem('life_track_currency');
+        if (!hasCustomCurrency && DEFAULT_CURRENCY_BY_LANG[lang]) {
+          localStorage.setItem(
+            'life_track_currency',
+            DEFAULT_CURRENCY_BY_LANG[lang],
+          );
+          currencyListeners.forEach((listener) => listener());
+        }
       } catch {
-        // Ignorer si localStorage est inaccessible
+        // Ignorer
       }
+      langListeners.forEach((listener) => listener());
     }
   };
 
-  const t = (key: TranslationKey): string => {
-    const langDict = translations[language] || translations.fr;
-    return langDict[key] || translations.fr[key] || key;
+  const setCurrency = (cur: Currency) => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('life_track_currency', cur);
+      } catch {
+        // Ignorer
+      }
+      currencyListeners.forEach((listener) => listener());
+    }
+  };
+
+  const currencyConfig =
+    currencies.find((c) => c.code === currency) || currencies[0];
+  const currencySymbol = currencyConfig.symbol;
+
+  const formatCurrency = (
+    amount: number,
+    customCurrency?: Currency,
+  ): string => {
+    const cur = customCurrency || currency;
+    const locale = LOCALE_MAP[language] || 'fr-FR';
+    try {
+      return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: cur,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(amount);
+    } catch {
+      return `${amount.toFixed(2)} ${cur}`;
+    }
+  };
+
+  const formatDate = (
+    date: Date | string,
+    options?: Intl.DateTimeFormatOptions,
+  ): string => {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    const locale = LOCALE_MAP[language] || 'fr-FR';
+    try {
+      return new Intl.DateTimeFormat(
+        locale,
+        options || { dateStyle: 'medium' },
+      ).format(d);
+    } catch {
+      return d.toLocaleDateString();
+    }
+  };
+
+  const t = (
+    key: TranslationKey | string,
+    params?: Record<string, string | number>,
+  ): string => {
+    const langDict = translations[language] as
+      | Record<string, string>
+      | undefined;
+    const frDict = translations.fr as Record<string, string>;
+    let text = (langDict && langDict[key]) || frDict[key] || key;
+
+    if (params) {
+      Object.entries(params).forEach(([paramKey, paramValue]) => {
+        text = text.replace(`{${paramKey}}`, String(paramValue));
+      });
+    }
+
+    return text;
   };
 
   return (
-    <I18nContext.Provider value={{ language, setLanguage, t }}>
+    <I18nContext.Provider
+      value={{
+        language,
+        setLanguage,
+        currency,
+        setCurrency,
+        currencySymbol,
+        formatCurrency,
+        formatDate,
+        t,
+      }}
+    >
       {children}
     </I18nContext.Provider>
   );
@@ -61,12 +239,15 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 export function useI18n() {
   const context = useContext(I18nContext);
   if (!context) {
-    // Sécurité au cas où utilisé hors du provider
-    return {
-      language: 'fr' as Language,
-      setLanguage: () => {},
-      t: (key: TranslationKey) => translations.fr[key] || key,
-    };
+    throw new Error('useI18n must be used within an I18nProvider');
   }
   return context;
 }
+
+export const languages: { code: Language; name: string; flag: string }[] = [
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'pt', name: 'Português', flag: '🇵🇹' },
+];

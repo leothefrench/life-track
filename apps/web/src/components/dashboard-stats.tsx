@@ -1,4 +1,4 @@
-'use client'; 
+'use client'; // Obligatoire pour utiliser dynamic avec ssr: false
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -48,6 +48,7 @@ export function DashboardStats({
   expensesCount,
 }: DashboardStatsProps) {
   const { t } = useI18n();
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-1 flex flex-col gap-6">
