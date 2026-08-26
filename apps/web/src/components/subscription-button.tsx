@@ -47,15 +47,21 @@ export function SubscriptionButton({
   const label =
     buttonText ||
     (isCurrentPlan
-      ? t('pricing_current_plan')
+      ? t('pricing_current_plan') !== 'pricing_current_plan'
+        ? t('pricing_current_plan')
+        : 'Plan actuel'
       : isSubscribed
-      ? t('pricing_manage')
-      : t('pricing_upgrade_pro'));
+      ? t('pricing_manage') !== 'pricing_manage'
+        ? t('pricing_manage')
+        : 'Gérer'
+      : t('pricing_upgrade_pro') !== 'pricing_upgrade_pro'
+      ? t('pricing_upgrade_pro')
+      : 'Passer à PRO');
 
   return (
     <Button
       variant={isCurrentPlan ? 'outline' : variant}
-      className={`w-full ${className}`}
+      className={className}
       disabled={disabled || isCurrentPlan || loading}
       onClick={handleSubscribe}
     >

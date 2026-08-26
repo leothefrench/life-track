@@ -31,7 +31,7 @@ export default async function DashboardPage() {
   const user = userId
     ? await prisma.user.findUnique({
         where: { id: userId },
-        include: { bankConnections: true }, // On demande à voir s'il y a une banque liée
+        include: { bankConnections: true },
       })
     : null;
 
@@ -61,7 +61,7 @@ export default async function DashboardPage() {
       })
     : [];
 
-  // 1. On récupère les audits de l'IA (Insights) qui n'ont pas été ignorés
+  // On récupère les audits de l'IA (Insights) qui n'ont pas été ignorés
   const insights = userId
     ? await prisma.insight.findMany({
         where: { userId, isDismissed: false },
@@ -126,19 +126,19 @@ export default async function DashboardPage() {
     })
     .reverse();
 
-  // 3. RENDU (Lisible en un coup d'oeil)
+  // 3. RENDU
   return (
     <div className="space-y-8">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center justify-between mb-8">
-        {/* BLOC TITRE */}
-        <DashboardHeader isPremium={isPremium} />
+        {/* BLOC TITRE AVEC IDENTITÉ UTILISATEUR */}
+        <DashboardHeader user={session?.user} isPremium={isPremium} />
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
           {/* 1. Bouton Banque (Sync ou Plaid) */}
           {isPremium && (isBankConnected ? <SyncButton /> : <PlaidLink />)}
 
-          {/* 2. Formulaire Abonnement */}
-          {isPremium && <SubscriptionButton />}
+          {/* 2. Bouton Abonnement */}
+          <SubscriptionButton isSubscribed={isPremium} />
 
           {/* 3. Bouton Dépense */}
           <AddExpenseDialog />
