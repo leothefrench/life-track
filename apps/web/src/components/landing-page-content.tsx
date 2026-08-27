@@ -1,20 +1,22 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ShieldCheck, Lock, MapPin } from 'lucide-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { ShieldCheck, Lock, MapPin, ChevronDown } from 'lucide-react';
 import { ContactModal } from '@/components/contact-modal';
 import { LanguageSelector } from '@/components/language-selector';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
+const emptySubscribe = () => () => {};
+
 export function LandingPageContent() {
   const { t } = useI18n();
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   return (
     <>
@@ -51,7 +53,10 @@ export function LandingPageContent() {
         </div>
       </header>
 
-      <main className="min-h-screen bg-black text-white selection:bg-blue-500/30 overflow-hidden">
+      <main
+        className="min-h-screen bg-black text-white selection:bg-blue-500/30 overflow-hidden"
+        suppressHydrationWarning
+      >
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px]" />
         </div>
@@ -128,61 +133,77 @@ export function LandingPageContent() {
             {t('landing_faq_title')}
           </h2>
 
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-sync" className="border-white/10">
-              <AccordionTrigger className="text-sm hover:no-underline text-left">
-                {t('landing_faq_q_sync')}
-              </AccordionTrigger>
-              <AccordionContent className="text-xs text-white/50 leading-relaxed">
+          <div
+            className="w-full divide-y divide-white/10 border-y border-white/10"
+            suppressHydrationWarning
+          >
+            <details className="group py-4 text-left transition-all">
+              <summary className="flex items-center justify-between text-sm font-medium cursor-pointer list-none text-white/90 hover:text-white select-none">
+                <span>{t('landing_faq_q_sync')}</span>
+                <ChevronDown className="h-4 w-4 text-white/50 transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" />
+              </summary>
+              <div className="pt-3 text-xs text-white/50 leading-relaxed">
                 {t('landing_faq_a_sync')}
-              </AccordionContent>
-            </AccordionItem>
+              </div>
+            </details>
 
-            <AccordionItem value="item-1" className="border-white/10">
-              <AccordionTrigger className="text-sm hover:no-underline text-left">
-                {t('landing_faq_q1')}
-              </AccordionTrigger>
-              <AccordionContent className="text-xs text-white/50 leading-relaxed">
+            <details className="group py-4 text-left transition-all">
+              <summary className="flex items-center justify-between text-sm font-medium cursor-pointer list-none text-white/90 hover:text-white select-none">
+                <span>{t('landing_faq_q1')}</span>
+                <ChevronDown className="h-4 w-4 text-white/50 transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" />
+              </summary>
+              <div className="pt-3 text-xs text-white/50 leading-relaxed">
                 {t('landing_faq_a1')}
-              </AccordionContent>
-            </AccordionItem>
+              </div>
+            </details>
 
-            <AccordionItem value="item-2" className="border-white/10">
-              <AccordionTrigger className="text-sm hover:no-underline text-left">
-                {t('landing_faq_q2')}
-              </AccordionTrigger>
-              <AccordionContent className="text-xs text-white/50 leading-relaxed">
+            <details className="group py-4 text-left transition-all">
+              <summary className="flex items-center justify-between text-sm font-medium cursor-pointer list-none text-white/90 hover:text-white select-none">
+                <span>{t('landing_faq_q2')}</span>
+                <ChevronDown className="h-4 w-4 text-white/50 transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" />
+              </summary>
+              <div className="pt-3 text-xs text-white/50 leading-relaxed">
                 {t('landing_faq_a2')}
-              </AccordionContent>
-            </AccordionItem>
+              </div>
+            </details>
 
-            <AccordionItem value="item-3" className="border-white/10">
-              <AccordionTrigger className="text-sm hover:no-underline text-left">
-                {t('landing_faq_q3')}
-              </AccordionTrigger>
-              <AccordionContent className="text-xs text-white/50 leading-relaxed">
+            <details className="group py-4 text-left transition-all">
+              <summary className="flex items-center justify-between text-sm font-medium cursor-pointer list-none text-white/90 hover:text-white select-none">
+                <span>{t('landing_faq_q3')}</span>
+                <ChevronDown className="h-4 w-4 text-white/50 transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" />
+              </summary>
+              <div className="pt-3 text-xs text-white/50 leading-relaxed">
                 {t('landing_faq_a3')}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+              </div>
+            </details>
+          </div>
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-white/5 py-12 bg-black">
+      <footer
+        className="relative z-10 border-t border-white/5 py-12 bg-black"
+        suppressHydrationWarning
+      >
         <div className="max-w-3xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <span className="text-xs text-white/60 font-medium tracking-tighter">
             © {new Date().getFullYear()} Life-Track.{' '}
             {t('landing_footer_rights')}
           </span>
 
-          <div className="flex gap-8">
+          <div className="flex gap-8 items-center">
             <Link
               href="/cgv"
               className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
             >
               {t('landing_footer_cgv')}
             </Link>
-            <ContactModal />
+            {mounted ? (
+              <ContactModal />
+            ) : (
+              <button className="text-[10px] uppercase tracking-widest text-white/60 font-bold">
+                {t('nav_support')}
+              </button>
+            )}
           </div>
         </div>
       </footer>

@@ -16,10 +16,12 @@ import {
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function NewPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token'); // On récupère le token dans l'URL
+  const { t } = useI18n();
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,15 +44,13 @@ export function NewPasswordForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Nouveau mot de passe</CardTitle>
-        <CardDescription>
-          Choisissez votre nouveau mot de passe sécurisé.
-        </CardDescription>
+        <CardTitle>{t('auth_new_password_title')}</CardTitle>
+        <CardDescription>{t('auth_new_password_desc')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="password">Mot de passe (8 car. min)</Label>
+            <Label htmlFor="password">{t('auth_password_min_label')}</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -62,6 +62,11 @@ export function NewPasswordForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
+                aria-label={
+                  showPassword
+                    ? t('auth_hide_password')
+                    : t('auth_show_password')
+                }
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 {showPassword ? (
@@ -73,12 +78,12 @@ export function NewPasswordForm() {
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Mise à jour...' : 'Enregistrer le mot de passe'}
+            {loading ? t('auth_updating') : t('auth_save_password_btn')}
           </Button>
         </form>
         <div className="mt-4 text-center text-sm">
           <Link href="/login" className="underline hover:text-primary">
-            Retour à la connexion
+            {t('auth_back_to_login')}
           </Link>
         </div>
       </CardContent>

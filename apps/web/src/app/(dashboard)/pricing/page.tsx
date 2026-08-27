@@ -15,13 +15,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Check, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { PricingHeader } from '@/components/pricing-header';
 
 export default function PricingPage() {
   const [accepted, setAccepted] = useState(false);
   const [isPremium, setIsPremium] = useState<boolean | null>(null);
-  const { t } = useI18n();
+  const { t, formatCurrency } = useI18n();
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -82,7 +83,7 @@ export default function PricingPage() {
   const plans = [
     {
       name: t('monthly'),
-      price: '9,99€',
+      price: formatCurrency(9.99),
       description: t('monthly_desc'),
       priceId: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID,
       features: [
@@ -97,7 +98,7 @@ export default function PricingPage() {
     },
     {
       name: t('annual'),
-      price: '99€',
+      price: formatCurrency(99),
       description: t('annual_desc'),
       priceId: process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID,
       features: [
@@ -125,18 +126,26 @@ export default function PricingPage() {
         </p>
       </div>
 
-      <div className="max-w-md mx-auto mb-12 flex items-start gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 shadow-xl">
+      <div className="max-w-2xl mx-auto mb-12 flex items-start gap-3 p-4 bg-white/5 rounded-2xl border border-white/10 shadow-xl">
         <input
           type="checkbox"
           id="global-terms"
-          className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10 text-blue-600 focus:ring-blue-500 cursor-pointer"
+          className="mt-1 h-4 w-4 rounded border-white/20 bg-white/10 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0"
           onChange={(e) => setAccepted(e.target.checked)}
         />
         <label
           htmlFor="global-terms"
-          className="text-[11px] text-white/50 leading-tight cursor-pointer"
+          className="text-xs text-white/70 leading-relaxed cursor-pointer select-none"
         >
-          {t('pricing_terms_agreement')}
+          {t('pricing_terms_agreement')}{' '}
+          <Link
+            href="/cgv"
+            target="_blank"
+            className="text-blue-400 hover:text-blue-300 underline font-medium ml-1 inline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            ({t('landing_footer_cgv')})
+          </Link>
         </label>
       </div>
 

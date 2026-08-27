@@ -21,11 +21,13 @@ import {
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isRegistered = searchParams.get('registered') === 'true';
+  const { t } = useI18n();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showTwoFactor, setShowTwoFactor] = useState(false);
@@ -64,7 +66,7 @@ export function LoginForm() {
 
       setShowTwoFactor(true);
       setLoading(false);
-      toast.info('Un code de sécurité a été envoyé par email.');
+      toast.info(t('auth_code_sent_toast'));
     }
 
     if (result?.success) {
@@ -76,11 +78,15 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>{showTwoFactor ? 'Vérification' : 'Connexion'}</CardTitle>
+        <CardTitle>
+          {showTwoFactor
+            ? t('auth_2fa_verification_title')
+            : t('auth_login_title')}
+        </CardTitle>
         <CardDescription>
           {showTwoFactor
-            ? 'Entrez le code reçu par email.'
-            : 'Accédez à votre espace Life-Track'}
+            ? t('auth_2fa_verification_desc')
+            : t('auth_login_desc')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -89,28 +95,28 @@ export function LoginForm() {
             <>
               {isRegistered && (
                 <div className="p-3 mb-4 text-sm font-medium text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-center">
-                  Compte créé ! Connectez-vous maintenant.
+                  {t('auth_registered_success')}
                 </div>
               )}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth_email_label')}</Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   autoCapitalize="none"
-                  placeholder="nom@exemple.com"
+                  placeholder={t('auth_email_placeholder')}
                   required
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Mot de passe</Label>
+                  <Label htmlFor="password">{t('auth_password_label')}</Label>
                   <Link
                     href="/reset"
                     className="text-xs text-muted-foreground hover:text-primary underline"
                   >
-                    Oublié ?
+                    {t('auth_forgot_password')}
                   </Link>
                 </div>
                 <div className="relative">
@@ -127,8 +133,8 @@ export function LoginForm() {
                     className="absolute right-0 top-0 h-full w-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                     aria-label={
                       showPassword
-                        ? 'Masquer le mot de passe'
-                        : 'Afficher le mot de passe'
+                        ? t('auth_hide_password')
+                        : t('auth_show_password')
                     }
                   >
                     {showPassword ? (
@@ -143,7 +149,7 @@ export function LoginForm() {
           ) : (
             <div className="space-y-4 flex flex-col items-center">
               <Label htmlFor="code" className="text-center w-full">
-                Code de sécurité
+                {t('auth_security_code')}
               </Label>
 
               <InputOTP
@@ -187,7 +193,7 @@ export function LoginForm() {
               </InputOTP>
 
               <p className="text-[10px] text-muted-foreground text-center uppercase tracking-widest">
-                Vérification en cours...
+                {t('auth_verifying_code')}
               </p>
             </div>
           )}
@@ -200,25 +206,31 @@ export function LoginForm() {
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading
-              ? 'Traitement...'
+              ? t('auth_processing')
               : showTwoFactor
-              ? 'Vérifier le code'
-              : 'Se connecter'}
+              ? t('auth_verify_code_btn')
+              : t('auth_login_btn')}
           </Button>
         </form>
 
         <div className="mt-6 space-y-2 text-center text-sm">
           {!showTwoFactor && (
             <div>
-              Nouveau sur Life-Track ?{' '}
-              <Link href="/register" className="underline hover:text-primary transition-colors">
-                Créer un compte
+              {t('auth_new_to_app')}{' '}
+              <Link
+                href="/register"
+                className="underline hover:text-primary transition-colors"
+              >
+                {t('auth_create_account')}
               </Link>
             </div>
           )}
           <div>
-            <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline">
-              Retourner à l'accueil
+            <Link
+              href="/"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
+            >
+              {t('auth_back_home')}
             </Link>
           </div>
         </div>

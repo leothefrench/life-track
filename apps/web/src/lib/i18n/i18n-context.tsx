@@ -43,18 +43,13 @@ interface I18nContextType {
   setCurrency: (cur: Currency) => void;
   currencySymbol: string;
   formatCurrency: (amount: number, customCurrency?: Currency) => string;
-  formatDate: (
-    date: Date | string,
-    options?: Intl.DateTimeFormatOptions,
-  ) => string;
-  t: (
-    key: TranslationKey | string,
-    params?: Record<string, string | number>,
-  ) => string;
+  formatDate: (date: Date | string, options?: Intl.DateTimeFormatOptions) => string;
+  t: (key: TranslationKey | string, params?: Record<string, string | number>) => string;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
+// Listeners pour propager les changements de localStorage de façon réactive
 let langListeners: Array<() => void> = [];
 let currencyListeners: Array<() => void> = [];
 
@@ -79,13 +74,6 @@ function getLanguageSnapshot(): Language {
     if (saved && ['fr', 'en', 'de', 'es', 'pt'].includes(saved)) {
       return saved;
     }
-    // Détecte la langue du navigateur (ex: 'fr-FR' -> 'fr')
-    if (typeof navigator !== 'undefined' && navigator.language) {
-      const browserLang = navigator.language.split('-')[0] as Language;
-      if (['fr', 'en', 'de', 'es', 'pt'].includes(browserLang)) {
-        return browserLang;
-      }
-    }
   } catch {
     // Ignorer si localStorage inaccessible
   }
@@ -95,9 +83,7 @@ function getLanguageSnapshot(): Language {
 function getCurrencySnapshot(): Currency {
   if (typeof window === 'undefined') return 'EUR';
   try {
-    const saved = localStorage.getItem(
-      'life_track_currency',
-    ) as Currency | null;
+    const saved = localStorage.getItem('life_track_currency') as Currency | null;
     if (saved && currencies.some((c) => c.code === saved)) {
       return saved;
     }
@@ -120,27 +106,20 @@ function getServerSnapshotCurrency(): Currency {
 }
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const language = useSyncExternalStore(
-    subscribeLang,
-    getLanguageSnapshot,
-    getServerSnapshotLang,
-  );
-  const currency = useSyncExternalStore(
-    subscribeCurrency,
-    getCurrencySnapshot,
-    getServerSnapshotCurrency,
-  );
+  // useSyncExternalStore est l'API React 18/19 recommandée par l'équipe React pour synchroniser avec localStorage
+  // sans aucun useEffect, sans warning ESLint et sans risque d'erreur d'hydratation
+  const language = useSyncExternalStore(subscribeLang, getLanguageSnapshot, getServerSnapshotLang);
+  const currency = useSyncExternalStore(subscribeCurrency, getCurrencySnapshot, getServerSnapshotCurrency);
 
   const setLanguage = (lang: Language) => {
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('life_track_lang', lang);
+        document.cookie = `life_track_lang=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+        // Si aucune devise spécifique n'a été choisie manuellement, adapter par défaut
         const hasCustomCurrency = localStorage.getItem('life_track_currency');
         if (!hasCustomCurrency && DEFAULT_CURRENCY_BY_LANG[lang]) {
-          localStorage.setItem(
-            'life_track_currency',
-            DEFAULT_CURRENCY_BY_LANG[lang],
-          );
+          localStorage.setItem('life_track_currency', DEFAULT_CURRENCY_BY_LANG[lang]);
           currencyListeners.forEach((listener) => listener());
         }
       } catch {
@@ -161,14 +140,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const currencyConfig =
-    currencies.find((c) => c.code === currency) || currencies[0];
+  const currencyConfig = currencies.find((c) => c.code === currency) || currencies[0];
   const currencySymbol = currencyConfig.symbol;
 
-  const formatCurrency = (
-    amount: number,
-    customCurrency?: Currency,
-  ): string => {
+  const formatCurrency = (amount: number, customCurrency?: Currency): string => {
     const cur = customCurrency || currency;
     const locale = LOCALE_MAP[language] || 'fr-FR';
     try {
@@ -183,29 +158,18 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const formatDate = (
-    date: Date | string,
-    options?: Intl.DateTimeFormatOptions,
-  ): string => {
+  const formatDate = (date: Date | string, options?: Intl.DateTimeFormatOptions): string => {
     const d = typeof date === 'string' ? new Date(date) : date;
     const locale = LOCALE_MAP[language] || 'fr-FR';
     try {
-      return new Intl.DateTimeFormat(
-        locale,
-        options || { dateStyle: 'medium' },
-      ).format(d);
+      return new Intl.DateTimeFormat(locale, options || { dateStyle: 'medium' }).format(d);
     } catch {
       return d.toLocaleDateString();
     }
   };
 
-  const t = (
-    key: TranslationKey | string,
-    params?: Record<string, string | number>,
-  ): string => {
-    const langDict = translations[language] as
-      | Record<string, string>
-      | undefined;
+  const t = (key: TranslationKey | string, params?: Record<string, string | number>): string => {
+    const langDict = (translations[language] as Record<string, string> | undefined);
     const frDict = translations.fr as Record<string, string>;
     let text = (langDict && langDict[key]) || frDict[key] || key;
 

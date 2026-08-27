@@ -14,9 +14,11 @@ import {
 } from '@/components/ui/card';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function ResetForm() {
   const [loading, setLoading] = useState(false);
+  const { t } = useI18n();
 
   async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,30 +39,28 @@ export function ResetForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Mot de passe oublié ?</CardTitle>
-        <CardDescription>
-          Entrez votre email pour recevoir un lien de réinitialisation.
-        </CardDescription>
+        <CardTitle>{t('auth_reset_title')}</CardTitle>
+        <CardDescription>{t('auth_reset_desc')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('auth_email_label')}</Label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder="nom@exemple.com"
+              placeholder={t('auth_email_placeholder')}
               required
             />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Envoi...' : 'Envoyer le lien'}
+            {loading ? t('auth_sending') : t('auth_send_link_btn')}
           </Button>
         </form>
         <div className="mt-4 text-center text-sm text-muted-foreground">
           <Link href="/login" className="hover:text-primary underline">
-            Retour à la connexion
+            {t('auth_back_to_login')}
           </Link>
         </div>
       </CardContent>

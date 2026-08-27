@@ -1,108 +1,104 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Scale, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LanguageSelector } from '@/components/language-selector';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export default function CGVPage() {
   const router = useRouter();
+  const { t } = useI18n();
 
   return (
-    <main className="max-w-4xl mx-auto py-20 px-6 text-white/80 leading-relaxed">
-      {/* BOUTON RETOUR */}
-      <Button
-        variant="ghost"
-        onClick={() => router.back()}
-        className="mb-8 -ml-4 text-white/50 hover:text-white"
-      >
-        <ChevronLeft className="h-4 w-4 mr-2" />
-        Retour
-      </Button>
+    <main className="max-w-4xl mx-auto py-16 px-6 text-white/80 leading-relaxed">
+      {/* HEADER BAR */}
+      <div className="flex items-center justify-between mb-8">
+        <Button
+          variant="ghost"
+          onClick={() => router.back()}
+          className="-ml-4 text-white/60 hover:text-white hover:bg-white/5 transition-colors"
+        >
+          <ChevronLeft className="h-4 w-4 mr-2" />
+          {t('cgv_back')}
+        </Button>
+        <LanguageSelector />
+      </div>
 
-      <h1 className="text-3xl font-bold text-white mb-8">
-        Conditions Générales de Vente (CGV)
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 tracking-tight">
+        {t('cgv_title')}
       </h1>
 
-      <section className="space-y-6 text-sm">
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-2">1. Objet</h2>
-          <p>
-            Les présentes CGV régissent la vente des abonnements
-            &apos;Premium&apos; de l&apos;application Life-Track, éditée par DA
-            SILVA COSTA Léandro José EI.
+      {/* BANDEAU CLAUSE DE PRIMAUTÉ JURIDIQUE */}
+      <div className="mb-8 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-200 flex items-start gap-3">
+        <Scale className="h-5 w-5 text-blue-400 shrink-0 mt-0.5" />
+        <div className="text-xs space-y-1">
+          <span className="font-bold uppercase tracking-wider text-blue-300 block">
+            {t('cgv_legal_precedence_badge')}
+          </span>
+          <p className="text-white/80 leading-relaxed">
+            {t('cgv_legal_precedence_text')}
+          </p>
+        </div>
+      </div>
+
+      <section className="space-y-8 text-sm text-white/75">
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-white">
+            {t('cgv_section1_title')}
+          </h2>
+          <p className="leading-relaxed">{t('cgv_section1_desc')}</p>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-white">
+            {t('cgv_section2_title')}
+          </h2>
+          <p className="leading-relaxed">{t('cgv_section2_desc')}</p>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-white">
+            {t('cgv_section3_title')}
+          </h2>
+          <p className="leading-relaxed">{t('cgv_section3_desc')}</p>
+        </div>
+
+        {/* SECTION 4: RENONCIATION AU DROIT DE RÉTRACTATION */}
+        <div className="bg-white/5 p-5 rounded-xl border border-white/10 space-y-2">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-5 w-5 text-amber-400" />
+            <h2 className="text-lg font-semibold text-white">
+              {t('cgv_section4_title')}
+            </h2>
+          </div>
+          <p className="text-white/85 leading-relaxed">
+            {t('cgv_section4_desc')}
           </p>
         </div>
 
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-2">2. Services</h2>
-          <p>
-            L&apos;abonnement Premium donne accès à l&apos;analyse par
-            Intelligence Artificielle, la synchronisation bancaire automatique
-            et les graphiques avancés.
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-white">
+            {t('cgv_section5_title')}
+          </h2>
+          <p className="leading-relaxed">{t('cgv_section5_desc')}</p>
+          <p className="text-xs text-white/50 italic leading-relaxed">
+            {t('cgv_section5_sub')}
           </p>
         </div>
 
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-2">
-            3. Tarifs et Paiement
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-white">
+            {t('cgv_section6_title')}
           </h2>
-          <p>
-            Le tarif est de 9,99€ TTC par mois ou 99€ TTC par an. Le paiement
-            est sécurisé et assuré par notre partenaire Stripe.
-          </p>
+          <p className="leading-relaxed">{t('cgv_section6_desc')}</p>
         </div>
 
-        <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-          <h2 className="text-xl font-semibold text-white mb-2">
-            4. Droit de rétractation
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-white">
+            {t('cgv_section7_title')}
           </h2>
-          <p>
-            Conformément à l&apos;article L221-28 du Code de la consommation, le
-            client accepte que l&apos;exécution du service commence
-            immédiatement après le paiement et renonce expressément à son droit
-            de rétractation de 14 jours pour accéder aux outils d&apos;IA sans
-            délai.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-2">
-            5. Responsabilité (IA)
-          </h2>
-          <p>
-            Life-Track fournit des analyses basées sur une IA. Ces informations
-            sont données à titre indicatif et ne constituent en aucun cas un
-            conseil financier, juridique ou une expertise comptable.
-            L&apos;utilisateur reste seul responsable de ses décisions
-            budgétaires.
-          </p>
-          <p className="mt-2">
-            L&apos;éditeur ne pourra être tenu responsable des dommages directs
-            ou indirects, financiers ou matériels, résultant de
-            l&apos;interprétation des analyses fournies par l&apos;intelligence
-            artificielle.
-          </p>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-2">
-            6. Données personnelles
-          </h2>
-          <p>
-            Vos données sont traitées conformément au RGPD. Vous disposez
-            d&apos;un droit d&apos;accès, de rectification et de suppression via
-            votre tableau de bord.
-          </p>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-2">
-            7. Droit applicable
-          </h2>
-          <p>
-            Les présentes CGV sont soumises à la loi française. En cas de
-            litige, et à défaut de résolution amiable, les tribunaux français
-            seront seuls compétents.
-          </p>
+          <p className="leading-relaxed">{t('cgv_section7_desc')}</p>
         </div>
       </section>
     </main>

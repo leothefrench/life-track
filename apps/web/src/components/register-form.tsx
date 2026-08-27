@@ -14,11 +14,13 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import Link from 'next/link';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const { t } = useI18n();
 
   async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,45 +48,50 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-2xl">Créer un compte</CardTitle>
-        <CardDescription>
-          Entrez vos informations pour rejoindre Life-Track
-        </CardDescription>
+        <CardTitle className="text-2xl">{t('auth_register_title')}</CardTitle>
+        <CardDescription>{t('auth_register_desc')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Nom complet</Label>
-            <Input id="name" name="name" placeholder="Jean Dupont" required />
+            <Label htmlFor="name">{t('auth_name_label')}</Label>
+            <Input
+              id="name"
+              name="name"
+              placeholder={t('auth_name_placeholder')}
+              required
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t('auth_email_label')}</Label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder="jean@exemple.com"
+              placeholder={t('auth_email_placeholder')}
               autoCapitalize="none"
               autoComplete="email"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Mot de passe (8 car. min)</Label>
+            <Label htmlFor="password">{t('auth_password_min_label')}</Label>
             <div className="relative">
-              {' '}
-              {/* On ajoute ce conteneur */}
               <Input
                 id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'} // Type dynamique
+                type={showPassword ? 'text' : 'password'}
                 required
-                className="pr-10" // Marge pour l'icône
+                className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? 'Masquer' : 'Afficher'}
+                aria-label={
+                  showPassword
+                    ? t('auth_hide_password')
+                    : t('auth_show_password')
+                }
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {showPassword ? (
@@ -99,19 +106,25 @@ export function RegisterForm() {
           {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Création en cours...' : "S'inscrire"}
+            {loading ? t('auth_creating_account') : t('auth_register_btn')}
           </Button>
         </form>
         <div className="mt-4 text-center text-sm space-y-2">
           <div>
-            Déjà un compte ?{' '}
-            <Link href="/login" className="underline hover:text-primary transition-colors">
-              Se connecter
+            {t('auth_already_have_account')}{' '}
+            <Link
+              href="/login"
+              className="underline hover:text-primary transition-colors"
+            >
+              {t('auth_login_btn')}
             </Link>
           </div>
           <div>
-            <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors underline">
-              Retourner à l'accueil
+            <Link
+              href="/"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
+            >
+              {t('auth_back_home')}
             </Link>
           </div>
         </div>
