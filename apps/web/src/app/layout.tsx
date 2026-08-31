@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { I18nProvider } from '@/lib/i18n/i18n-context';
+import { CookieBanner } from '@/components/cookie-banner';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -45,6 +46,7 @@ export default function RootLayout({
           >
             <TooltipProvider>
               {children}
+              <CookieBanner />
               <Toaster
                 position="bottom-right"
                 richColors

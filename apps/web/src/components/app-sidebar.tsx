@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { logoutUser } from '@/app/actions/auth';
 import { ContactModal } from './contact-modal';
+import { CookieSettingsButton } from './cookie-banner';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function AppSidebar() {
@@ -107,10 +108,7 @@ export function AppSidebar() {
 
         {/* LIENS JURIDIQUES DISCRETS */}
         <div className="pt-3 mt-2 border-t border-white/5 flex flex-wrap items-center justify-center gap-2 text-[11px] text-white/40">
-          <Link
-            href="/cgv"
-            className="hover:text-white/80 transition-colors"
-          >
+          <Link href="/cgv" className="hover:text-white/80 transition-colors">
             {t('nav_cgv')}
           </Link>
           <span>•</span>
@@ -127,6 +125,8 @@ export function AppSidebar() {
           >
             {t('nav_mentions_legales')}
           </Link>
+          <span>•</span>
+          <CookieSettingsButton className="hover:text-white/80 transition-colors cursor-pointer text-[11px]" />
         </div>
       </SidebarFooter>
     </Sidebar>
