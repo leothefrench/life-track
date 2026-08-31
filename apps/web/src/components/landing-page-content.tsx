@@ -15,26 +15,20 @@ export function LandingPageContent() {
   const mounted = useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false,
+    () => false
   );
 
   return (
     <>
       <header className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
-        <Link
-          href="/"
-          className="font-bold text-lg tracking-tight text-white flex items-center gap-2"
-        >
+        <Link href="/" className="font-bold text-lg tracking-tight text-white flex items-center gap-2">
           <div className="h-7 w-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-xs shadow-md shadow-blue-500/20">
             LT
           </div>
           <span>Life-Track</span>
         </Link>
         <div className="flex items-center gap-3">
-          <LanguageSelector
-            variant="outline"
-            className="border-white/10 text-white hover:bg-white/10"
-          />
+          <LanguageSelector variant="outline" className="border-white/10 text-white hover:bg-white/10" />
           <Button
             size="sm"
             variant="ghost"
@@ -53,10 +47,7 @@ export function LandingPageContent() {
         </div>
       </header>
 
-      <main
-        className="min-h-screen bg-black text-white selection:bg-blue-500/30 overflow-hidden"
-        suppressHydrationWarning
-      >
+      <main className="min-h-screen bg-black text-white selection:bg-blue-500/30 overflow-hidden" suppressHydrationWarning>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px]" />
         </div>
@@ -133,10 +124,7 @@ export function LandingPageContent() {
             {t('landing_faq_title')}
           </h2>
 
-          <div
-            className="w-full divide-y divide-white/10 border-y border-white/10"
-            suppressHydrationWarning
-          >
+          <div className="w-full divide-y divide-white/10 border-y border-white/10" suppressHydrationWarning>
             <details className="group py-4 text-left transition-all">
               <summary className="flex items-center justify-between text-sm font-medium cursor-pointer list-none text-white/90 hover:text-white select-none">
                 <span>{t('landing_faq_q_sync')}</span>
@@ -180,22 +168,30 @@ export function LandingPageContent() {
         </section>
       </main>
 
-      <footer
-        className="relative z-10 border-t border-white/5 py-12 bg-black"
-        suppressHydrationWarning
-      >
+      <footer className="relative z-10 border-t border-white/5 py-12 bg-black" suppressHydrationWarning>
         <div className="max-w-3xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <span className="text-xs text-white/60 font-medium tracking-tighter">
-            © {new Date().getFullYear()} Life-Track.{' '}
-            {t('landing_footer_rights')}
+            © {new Date().getFullYear()} Life-Track. {t('landing_footer_rights')}
           </span>
 
-          <div className="flex gap-8 items-center">
+          <div className="flex flex-wrap gap-6 items-center">
             <Link
               href="/cgv"
               className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
             >
               {t('landing_footer_cgv')}
+            </Link>
+            <Link
+              href="/confidentialite"
+              className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
+            >
+              {t('landing_footer_privacy')}
+            </Link>
+            <Link
+              href="/mentions-legales"
+              className="text-[10px] uppercase tracking-widest text-white/60 hover:text-white transition-colors font-bold"
+            >
+              {t('landing_footer_legal')}
             </Link>
             {mounted ? (
               <ContactModal />

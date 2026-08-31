@@ -104,6 +104,30 @@ export function AppSidebar() {
             {t('nav_logout')}
           </button>
         </form>
+
+        {/* LIENS JURIDIQUES DISCRETS */}
+        <div className="pt-3 mt-2 border-t border-white/5 flex flex-wrap items-center justify-center gap-2 text-[11px] text-white/40">
+          <Link
+            href="/cgv"
+            className="hover:text-white/80 transition-colors"
+          >
+            {t('nav_cgv')}
+          </Link>
+          <span>•</span>
+          <Link
+            href="/confidentialite"
+            className="hover:text-white/80 transition-colors"
+          >
+            {t('nav_privacy')}
+          </Link>
+          <span>•</span>
+          <Link
+            href="/mentions-legales"
+            className="hover:text-white/80 transition-colors"
+          >
+            {t('nav_mentions_legales')}
+          </Link>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

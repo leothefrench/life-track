@@ -1,9 +1,6 @@
 export type Language = 'fr' | 'en' | 'de' | 'es' | 'pt';
 
-export const LANGUAGE_NAMES: Record<
-  Language,
-  { name: string; flag: string; label: string }
-> = {
+export const LANGUAGE_NAMES: Record<Language, { name: string; flag: string; label: string }> = {
   fr: { name: 'Français', flag: '🇫🇷', label: 'FR' },
   en: { name: 'English', flag: '🇬🇧', label: 'EN' },
   de: { name: 'Deutsch', flag: '🇩🇪', label: 'DE' },
@@ -16,7 +13,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Espace sécurisé',
     pro_badge: 'PRO',
-
+    
     // Sidebar
     nav_dashboard: 'Tableau de bord',
     nav_pricing: 'Abonnement',
@@ -27,20 +24,18 @@ export const translations = {
     sync_active: 'Banque Connectée',
     sync_inactive: 'Connecter ma banque',
     plaid_tooltip: 'Liaison 100% sécurisée via Plaid (Lecture seule)',
-
+    
     // Dashboard Page
     dashboard_title: 'Aperçu Financier',
-    dashboard_subtitle:
-      'Suivez vos dépenses et optimisez votre budget au quotidien',
+    dashboard_subtitle: 'Suivez vos dépenses et optimisez votre budget au quotidien',
     dashboard_header_title: 'Dashboard',
     dashboard_header_subtitle: 'Suivi de vos dépenses et abonnements.',
     add_expense: 'Ajouter une dépense',
     export_csv: 'Exporter en CSV',
-
+    
     // Welcome State
     welcome_title: 'Bienvenue sur Life-Track',
-    welcome_desc:
-      "Votre tableau de bord est prêt. Commencez par ajouter vos premières dépenses pour que l'IA puisse analyser votre budget.",
+    welcome_desc: 'Votre tableau de bord est prêt. Commencez par ajouter vos premières dépenses pour que l\'IA puisse analyser votre budget.',
     bank_sync_pro: 'Synchro bancaire (Pro)',
 
     // Stats Cards & Dashboard
@@ -61,12 +56,12 @@ export const translations = {
     recent_transactions: 'Dernières transactions',
     no_transactions: 'Aucune transaction enregistrée',
     compare_offers: 'Comparer les offres',
-    check_error: "Vérifier l'erreur",
+    check_error: 'Vérifier l\'erreur',
     learn_more: 'En savoir plus',
     activity_30d: 'Activité (30J)',
     breakdown_title: 'Répartition',
     by_category: 'Par catégorie de dépenses',
-
+    
     // AI & Advice
     ai_advisor_title: 'Conseil Budgétaire IA',
     ai_advisor_badge: 'INTELLIGENCE ARTIFICIELLE',
@@ -77,24 +72,19 @@ export const translations = {
     analyzing_transactions: 'Analyse de vos transactions en cours...',
     calculating_savings: 'Calcul des économies potentielles via Gemini Flash',
     analysis_complete: 'Analyse terminée !',
-    analysis_complete_desc:
-      "Vos nouveaux conseils d'économies sont disponibles juste en dessous.",
+    analysis_complete_desc: 'Vos nouveaux conseils d\'économies sont disponibles juste en dessous.',
     info_label: 'Information',
-    ai_ready_desc:
-      "L'IA est prête à identifier vos économies sur vos contrats (énergie, assurances...).",
-    add_more_expenses_desc:
-      'Ajoutez encore quelques dépenses pour permettre une analyse précise.',
+    ai_ready_desc: 'L\'IA est prête à identifier vos économies sur vos contrats (énergie, assurances...).',
+    add_more_expenses_desc: 'Ajoutez encore quelques dépenses pour permettre une analyse précise.',
     calculating_btn: 'Calcul en cours...',
     activate_pro_coach: 'Activer le Coach Pro',
     launch_ai_audit: 'Lancer l’Audit IA',
-    ai_disclaimer:
-      'Recommandations générées par IA à titre purement indicatif. Ne constitue pas un conseil financier personnalisé.',
+    ai_disclaimer: 'Recommandations générées par IA à titre purement indicatif. Ne constitue pas un conseil financier personnalisé.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Dépense',
     add_expense_dialog_title: 'Ajouter une dépense',
-    add_expense_dialog_desc:
-      'Remplissez les détails ci-dessous. Cliquez sur enregistrer une fois terminé.',
+    add_expense_dialog_desc: 'Remplissez les détails ci-dessous. Cliquez sur enregistrer une fois terminé.',
     edit_expense: 'Modifier la dépense',
     new_expense: 'Nouvelle dépense',
     description: 'Description',
@@ -123,7 +113,7 @@ export const translations = {
     syncing_btn: 'Synchronisation...',
     disconnect_btn: 'Déconnecter',
     disconnecting_btn: 'Déconnexion...',
-
+    
     // Settings Page
     settings_title: 'Paramètres du compte',
     settings_subtitle: 'Gérez la sécurité et vos préférences',
@@ -141,8 +131,7 @@ export const translations = {
     two_factor_disabled_toast: '2FA désactivé',
     two_factor_error_toast: 'Erreur lors de la modification',
     change_password_title: 'Changer le mot de passe',
-    change_password_desc:
-      'Mettez à jour votre mot de passe pour sécuriser votre compte',
+    change_password_desc: 'Mettez à jour votre mot de passe pour sécuriser votre compte',
     current_password: 'Mot de passe actuel',
     current_password_placeholder: '••••••••',
     new_password: 'Nouveau mot de passe',
@@ -153,26 +142,22 @@ export const translations = {
     updating_password: 'Mise à jour...',
     password_changed_success: 'Mot de passe mis à jour avec succès !',
     password_mismatch: 'Les mots de passe ne correspondent pas',
-    password_invalid_length:
-      'Le mot de passe doit comporter au moins 8 caractères',
+    password_invalid_length: 'Le mot de passe doit comporter au moins 8 caractères',
     current_password_incorrect: 'Le mot de passe actuel est incorrect',
     danger_zone_title: 'Zone de danger',
     danger_zone_desc: 'Actions irréversibles sur votre compte',
     delete_account_title: 'Supprimer mon compte',
-    delete_account_desc:
-      "Supprime définitivement votre compte et l'ensemble de vos données",
-    delete_account_warning:
-      'Cette action est irréversible. Toutes vos dépenses, vos audits IA et vos liaisons bancaires seront définitivement supprimés de nos serveurs.',
+    delete_account_desc: 'Supprime définitivement votre compte et l\'ensemble de vos données',
+    delete_account_warning: 'Cette action est irréversible. Toutes vos dépenses, vos audits IA et vos liaisons bancaires seront définitivement supprimés de nos serveurs.',
     delete_account_btn: 'Supprimer mon compte',
     delete_account_confirm_title: 'Êtes-vous absolument certain ?',
-    delete_account_confirm_desc:
-      'Veuillez taper "SUPPRIMER" ci-dessous pour confirmer la suppression définitive de votre compte.',
+    delete_account_confirm_desc: 'Veuillez taper "SUPPRIMER" ci-dessous pour confirmer la suppression définitive de votre compte.',
     delete_account_confirm_input_placeholder: 'Tapez SUPPRIMER pour confirmer',
     delete_account_confirm_keyword: 'SUPPRIMER',
     deleting_account: 'Suppression...',
     delete_account_success: 'Votre compte a été supprimé avec succès.',
     language_title: 'Langue & Devise',
-    language_desc: "Choisissez votre langue et votre devise d'affichage",
+    language_desc: 'Choisissez votre langue et votre devise d\'affichage',
     language_select_label: 'Sélectionner la langue',
     currency_select_label: 'Sélectionner la devise',
     contact_modal_title: 'Contacter le support',
@@ -181,8 +166,8 @@ export const translations = {
     contact_message_placeholder: 'Comment pouvons-nous vous aider ?',
     contact_send_btn: 'Envoyer le message',
     contact_success_toast: 'Message envoyé !',
-    contact_error_toast: "Échec de l'envoi.",
-
+    contact_error_toast: 'Échec de l\'envoi.',
+    
     // Pricing Page
     pricing_title: 'Passez au niveau supérieur',
     pricing_subtitle: 'Débloquez tout le potentiel de votre gestion financière',
@@ -190,69 +175,62 @@ export const translations = {
     plan_pro: 'Plan Premium',
     price_pro: '9,99 €',
     per_month: '/ mois',
-    subscribe_button: "S'abonner maintenant",
+    subscribe_button: 'S\'abonner maintenant',
     current_plan: 'Votre plan actuel',
     pro_member: 'Membre Pro',
     subscription_active: 'Votre abonnement est actif',
-    active_desc:
-      'Vous profitez actuellement de toutes les fonctionnalités illimitées de Life-Track.',
-    stripe_portal_desc:
-      'Pour modifier votre mode de paiement, consulter vos factures ou gérer votre abonnement, accédez à votre espace sécurisé Stripe.',
+    active_desc: 'Vous profitez actuellement de toutes les fonctionnalités illimitées de Life-Track.',
+    stripe_portal_desc: 'Pour modifier votre mode de paiement, consulter vos factures ou gérer votre abonnement, accédez à votre espace sécurisé Stripe.',
     manage_subscription: 'Gérer mon abonnement',
     monthly: 'Mensuel',
     annual: 'Annuel',
     monthly_desc: 'La flexibilité totale, mois après mois.',
     annual_desc: 'Le meilleur choix pour transformer vos finances.',
-    subscribe_monthly: "S'abonner au mois",
-    subscribe_annual: "S'abonner à l'année",
+    subscribe_monthly: 'S\'abonner au mois',
+    subscribe_annual: 'S\'abonner à l\'année',
     unlimited_ai: 'Analyses IA illimitées',
     detailed_charts: 'Graphiques détaillés',
     export_csv_pdf: 'Export CSV/PDF',
     priority_support: 'Support prioritaire',
     best_value: 'Meilleure offre',
-
+    
     // Premium features list
     feature_bank_sync: 'Connexion bancaire automatique illimitée',
     feature_ai_advice: 'Conseiller IA financier personnalisé',
     feature_unlimited_export: 'Exports CSV et rapports détaillés illimités',
     feature_multi_currency: 'Gestion multi-devises et multi-comptes',
     feature_priority_support: 'Support client prioritaire 7j/7',
-
+    
     // Landing Page
     landing_hero_title_1: 'Votre argent méritait',
     landing_hero_title_2: 'une meilleure vision',
-    landing_hero_subtitle:
-      "Life-Track utilise l'IA pour analyser vos habitudes et identifier chaque euro que vous pouvez économiser",
+    landing_hero_subtitle: "Life-Track utilise l'IA pour analyser vos habitudes et identifier chaque euro que vous pouvez économiser",
     landing_hero_cta: 'Commencer à économiser',
     landing_login_btn: 'Se connecter',
     landing_trust_title: 'Pourquoi nous faire confiance',
     landing_security_title: 'Sécurité Bancaire',
-    landing_security_desc:
-      'Vos identifiants ne transitent jamais par nos serveurs. Nous utilisons un cryptage de niveau militaire (AES-256) pour protéger vos données.',
+    landing_security_desc: 'Vos identifiants ne transitent jamais par nos serveurs. Nous utilisons un cryptage de niveau militaire (AES-256) pour protéger vos données.',
     landing_privacy_title: 'Vie Privée',
-    landing_privacy_desc:
-      'Zéro revente de données. Votre vie financière est privée, et le restera.',
+    landing_privacy_desc: 'Zéro revente de données. Votre vie financière est privée, et le restera.',
     landing_sovereignty_title: 'Souveraineté Européenne',
-    landing_sovereignty_desc:
-      "Toutes vos données sont stockées sur des serveurs sécurisés en Europe. Conformité RGPD totale pour une tranquillité d'esprit absolue.",
+    landing_sovereignty_desc: 'Toutes vos données sont stockées sur des serveurs sécurisés en Europe. Conformité RGPD totale pour une tranquillité d\'esprit absolue.',
     landing_faq_title: 'Questions fréquentes',
-    landing_faq_q_sync:
-      'Comment fonctionne la synchronisation avec ma banque ?',
-    landing_faq_a_sync:
-      "Life-Track utilise Plaid, le standard mondial de sécurité utilisé par des millions d'utilisateurs. Votre connexion est en lecture seule : l'IA analyse vos transactions pour identifier des économies, mais il est techniquement impossible pour nous (ou pour l'IA) d'effectuer des virements, de modifier vos comptes ou d'accéder à vos identifiants.",
-    landing_faq_q1:
-      'Est-ce que Life-Track peut faire des virements depuis mon compte ?',
-    landing_faq_a1:
-      'Absolument pas. Nous utilisons Plaid, le standard mondial de sécurité bancaire. Votre connexion est en lecture seule : nous pouvons voir les transactions pour les analyser, mais il est techniquement impossible pour nous de déplacer votre argent.',
-    landing_faq_q2: "L'IA a-t-elle accès à mon identité réelle ?",
-    landing_faq_a2:
-      "Non. Avant d'être analysées par Gemini, vos données sont anonymisées. L'IA voit des montants et des libellés (ex: Starbucks 5€), mais jamais votre nom, votre adresse ou votre numéro de compte.",
+    landing_faq_q_sync: 'Comment fonctionne la synchronisation avec ma banque ?',
+    landing_faq_a_sync: 'Life-Track utilise Plaid, le standard mondial de sécurité utilisé par des millions d\'utilisateurs. Votre connexion est en lecture seule : l\'IA analyse vos transactions pour identifier des économies, mais il est techniquement impossible pour nous (ou pour l\'IA) d\'effectuer des virements, de modifier vos comptes ou d\'accéder à vos identifiants.',
+    landing_faq_q1: 'Est-ce que Life-Track peut faire des virements depuis mon compte ?',
+    landing_faq_a1: 'Absolument pas. Nous utilisons Plaid, le standard mondial de sécurité bancaire. Votre connexion est en lecture seule : nous pouvons voir les transactions pour les analyser, mais il est techniquement impossible pour nous de déplacer votre argent.',
+    landing_faq_q2: 'L\'IA a-t-elle accès à mon identité réelle ?',
+    landing_faq_a2: 'Non. Avant d\'être analysées par Gemini, vos données sont anonymisées. L\'IA voit des montants et des libellés (ex: Starbucks 5€), mais jamais votre nom, votre adresse ou votre numéro de compte.',
     landing_faq_q3: 'Puis-je annuler mon abonnement facilement ?',
-    landing_faq_a3:
-      "Oui, à tout moment et en un seul clic depuis votre Dashboard. Il n'y a aucun engagement de durée. Une fois annulé, vous gardez vos accès Premium jusqu'à la fin de la période payée.",
+    landing_faq_a3: 'Oui, à tout moment et en un seul clic depuis votre Dashboard. Il n\'y a aucun engagement de durée. Une fois annulé, vous gardez vos accès Premium jusqu\'à la fin de la période payée.',
     landing_footer_rights: 'Tous droits réservés.',
-    landing_footer_cgv: 'CGV & Mentions Légales',
-
+    landing_footer_cgv: 'CGV',
+    landing_footer_privacy: 'Confidentialité',
+    landing_footer_legal: 'Mentions Légales',
+    nav_cgv: 'CGV',
+    nav_privacy: 'Confidentialité',
+    nav_mentions_legales: 'Mentions Légales',
+    
     // Authentication
     auth_login_title: 'Connexion',
     auth_login_desc: 'Accédez à votre espace Life-Track',
@@ -283,8 +261,7 @@ export const translations = {
     auth_creating_account: 'Création en cours...',
     auth_already_have_account: 'Déjà un compte ?',
     auth_reset_title: 'Mot de passe oublié ?',
-    auth_reset_desc:
-      'Entrez votre email pour recevoir un lien de réinitialisation.',
+    auth_reset_desc: 'Entrez votre email pour recevoir un lien de réinitialisation.',
     auth_send_link_btn: 'Envoyer le lien',
     auth_sending: 'Envoi...',
     auth_back_to_login: 'Retour à la connexion',
@@ -294,36 +271,89 @@ export const translations = {
     auth_updating: 'Mise à jour...',
 
     // Terms waiver & CGV
-    pricing_terms_agreement:
-      "J'accepte les CGV et je demande l'exécution immédiate du service numérique. Conformément à l'article L.221-28 13° du Code de la consommation, je renonce expressément à mon droit de rétractation de 14 jours pour accéder sans délai aux fonctionnalités Premium.",
+    pricing_terms_agreement: "J'accepte les CGV et je demande l'exécution immédiate du service numérique. Conformément à l'article L.221-28 13° du Code de la consommation, je renonce expressément à mon droit de rétractation de 14 jours pour accéder sans délai aux fonctionnalités Premium.",
     cgv_title: 'Conditions Générales de Vente (CGV)',
     cgv_back: 'Retour',
     cgv_legal_precedence_badge: 'Information Juridique',
-    cgv_legal_precedence_text:
-      'Les présentes Conditions Générales de Vente sont régies par le droit français. La version en langue française constitue la version contractuelle officielle et prévaut sur toute traduction en cas de divergence ou de litige.',
+    cgv_legal_precedence_text: 'Les présentes Conditions Générales de Vente sont régies par le droit français. La version en langue française constitue la version contractuelle officielle et prévaut sur toute traduction en cas de divergence ou de litige.',
     cgv_section1_title: '1. Objet',
-    cgv_section1_desc:
-      "Les présentes CGV régissent la souscription aux abonnements « Premium » de l'application Life-Track, éditée par DA SILVA COSTA Léandro José EI.",
+    cgv_section1_desc: 'Les présentes CGV régissent la souscription aux abonnements « Premium » de l\'application Life-Track, éditée par DA SILVA COSTA Léandro José EI.',
     cgv_section2_title: '2. Services et Fonctionnalités',
-    cgv_section2_desc:
-      "L'abonnement Premium confère l'accès aux analyses budgétaires par Intelligence Artificielle (Gemini), à la synchronisation bancaire automatique sécurisée (Plaid), aux graphiques détaillés, aux exports comptables illimités et au support prioritaire.",
+    cgv_section2_desc: 'L\'abonnement Premium confère l\'accès aux analyses budgétaires par Intelligence Artificielle (Gemini), à la synchronisation bancaire automatique sécurisée (Plaid), aux graphiques détaillés, aux exports comptables illimités et au support prioritaire.',
     cgv_section3_title: '3. Tarifs et Paiement',
-    cgv_section3_desc:
-      'Le tarif est de 9,99 € TTC par mois (sans engagement) ou 99,00 € TTC par an. Le traitement des paiements et prélèvements récurrents est sécurisé et certifié PCI-DSS via notre prestataire bancaire Stripe.',
+    cgv_section3_desc: 'Le tarif est de 9,99 € TTC par mois (sans engagement) ou 99,00 € TTC par an. Le traitement des paiements et prélèvements récurrents est sécurisé et certifié PCI-DSS via notre prestataire bancaire Stripe.',
     cgv_section4_title: '4. Droit de rétractation et Renonciation expresse',
-    cgv_section4_desc:
-      "Conformément à l'article L.221-28 13° du Code de la consommation (et à la directive européenne 2011/83/UE relative aux contenus et services numériques sans support matériel), le client demande expressément l'exécution immédiate du service dès validation du paiement et renonce expressément à son droit de rétractation de 14 jours afin d'accéder instantanément à l'ensemble des outils et de l'IA.",
+    cgv_section4_desc: 'Conformément à l\'article L.221-28 13° du Code de la consommation (et à la directive européenne 2011/83/UE relative aux contenus et services numériques sans support matériel), le client demande expressément l\'exécution immédiate du service dès validation du paiement et renonce expressément à son droit de rétractation de 14 jours afin d\'accéder instantanément à l\'ensemble des outils et de l\'IA.',
     cgv_section5_title: '5. Responsabilité et Avertissement IA',
-    cgv_section5_desc:
-      "Life-Track fournit des analyses et synthèses prédictives basées sur une Intelligence Artificielle. Ces données sont délivrées à titre purement indicatif et consultatif. Elles ne constituent en aucun cas un conseil en investissement, un conseil fiscal, juridique ou une expertise comptable. L'utilisateur demeure l'unique responsable de ses choix et arbitrages financiers.",
-    cgv_section5_sub:
-      "L'éditeur décline toute responsabilité pour tout préjudice direct ou indirect résultant de l'interprétation des analyses fournies par l'IA.",
+    cgv_section5_desc: 'Life-Track fournit des analyses et synthèses prédictives basées sur une Intelligence Artificielle. Ces données sont délivrées à titre purement indicatif et consultatif. Elles ne constituent en aucun cas un conseil en investissement, un conseil fiscal, juridique ou une expertise comptable. L\'utilisateur demeure l\'unique responsable de ses choix et arbitrages financiers.',
+    cgv_section5_sub: 'L\'éditeur décline toute responsabilité pour tout préjudice direct ou indirect résultant de l\'interprétation des analyses fournies par l\'IA.',
     cgv_section6_title: '6. Données personnelles et Confidentialité (RGPD)',
-    cgv_section6_desc:
-      "Vos données financières sont traitées dans le strict respect du Règlement Général sur la Protection des Données (RGPD). Elles sont chiffrées (AES-256) et ne font l'objet d'aucune cession commerciale. Vous bénéficiez d'un droit permanent d'accès, de rectification et d'effacement complet via votre espace utilisateur.",
+    cgv_section6_desc: 'Vos données financières sont traitées dans le strict respect du Règlement Général sur la Protection des Données (RGPD). Elles sont chiffrées (AES-256) et ne font l\'objet d\'aucune cession commerciale. Vous bénéficiez d\'un droit permanent d\'accès, de rectification et d\'effacement complet via votre espace utilisateur.',
     cgv_section7_title: '7. Droit applicable et Juridiction compétente',
-    cgv_section7_desc:
-      'Les présentes CGV sont soumises exclusivement au droit français. À défaut de résolution amiable préalable, tout litige relatif à leur validité, leur interprétation ou leur exécution sera porté devant les tribunaux français compétents.',
+    cgv_section7_desc: 'Les présentes CGV sont soumises exclusivement au droit français. À défaut de résolution amiable préalable, tout litige relatif à leur validité, leur interprétation ou leur exécution sera porté devant les tribunaux français compétents.',
+
+    // Mentions Légales
+    legal_title: 'Mentions Légales',
+    legal_back: 'Retour',
+    legal_precedence_badge: 'Information Juridique',
+    legal_precedence_text: 'Le présent service est édité en France et soumis à la législation française. La version française des mentions légales fait foi.',
+    legal_section1_title: '1. Éditeur de l\'application',
+    legal_section1_name: 'Dénomination / Éditeur',
+    legal_section1_name_val: 'DA SILVA COSTA Léandro José EI',
+    legal_section1_address: 'Adresse du siège',
+    legal_section1_address_val: '3 B Rue de Bailly - 76190 Yvetot, France',
+    legal_section1_siret: 'Numéro SIRET / RCS',
+    legal_section1_siret_val: 'En cours d\'immatriculation / [EN ATTENTE]',
+    legal_section1_email: 'Contact électronique',
+    legal_section1_email_val: 'leandro.dasilva@bbox.fr',
+    legal_section1_dir: 'Directeur de la publication',
+    legal_section1_dir_val: 'DA SILVA COSTA Léandro José',
+    legal_section2_title: '2. Hébergement de l\'application',
+    legal_section2_host: 'Hébergeur principal',
+    legal_section2_host_val: 'Vercel Inc.',
+    legal_section2_host_address: 'Adresse de l\'hébergeur',
+    legal_section2_host_address_val: '440 N Barranca Ave #4133, Covina, CA 91723, États-Unis',
+    legal_section2_host_site: 'Site web de l\'hébergeur',
+    legal_section3_title: '3. Propriété intellectuelle',
+    legal_section3_desc: 'La marque Life-Track, les logos, la charte graphique, les algorithmes et l\'ensemble des contenus textuels et visuels de l\'application sont protégés au titre du droit d\'auteur et de la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est strictement interdite.',
+    legal_section4_title: '4. Droit applicable et Litiges',
+    legal_section4_desc: 'Les présentes mentions légales sont régies par le droit français. Tout litige relatif à leur interprétation ou exécution sera soumis aux tribunaux français compétents.',
+
+    // Politique de Confidentialité
+    privacy_title: 'Politique de Confidentialité & RGPD',
+    privacy_back: 'Retour',
+    privacy_legal_precedence_badge: 'Information Juridique',
+    privacy_legal_precedence_text: 'La présente politique de protection des données est conforme au Règlement Général sur la Protection des Données (RGPD) et à la loi française "Informatique et Libertés". La version française fait foi.',
+    privacy_sec1_title: '1. Responsable du Traitement',
+    privacy_sec1_desc: 'La protection de votre vie privée est une priorité absolue. Vos données personnelles sont traitées conformément au Règlement Général sur la Protection des Données (RGPD - Règlement UE 2016/679).',
+    privacy_sec1_resp_label: 'Responsable',
+    privacy_sec1_resp_val: 'DA SILVA COSTA Léandro José EI',
+    privacy_sec1_contact_label: 'Délégué / Contact Données',
+    privacy_sec2_title: '2. Données collectées et Anonymisation',
+    privacy_sec2_desc: 'Nous appliquons le principe de minimisation des données (Art. 5 RGPD) : seules les données strictement nécessaires au fonctionnement de votre gestion budgétaire sont traitées.',
+    privacy_sec2_item1_title: 'Identité & Connexion',
+    privacy_sec2_item1_desc: 'Adresse email et mot de passe sécurisé (haché par algorithme cryptographique). Vos identifiants ne sont jamais transmis à des tiers.',
+    privacy_sec2_item2_title: 'Dépenses & Budgets',
+    privacy_sec2_item2_desc: 'Montants, catégories, dates et libellés saisis ou importés. Ces données sont stockées de façon isolée et sécurisée.',
+    privacy_sec2_item3_title: 'Analyse IA (Gemini Flash)',
+    privacy_sec2_item3_desc: 'Les calculs d\'optimisation budgétaire sont réalisés sur des flux strictement anonymisés (sans vos identifiants réels). L\'IA ne conserve aucune trace d\'apprentissage.',
+    privacy_sec2_item4_title: 'Synchronisation Bancaire (Plaid)',
+    privacy_sec2_item4_desc: 'Vos accès bancaires ne transitent jamais par nos serveurs. Plaid opère en lecture seule sécurisée (normes bancaires européennes DSP2).',
+    privacy_sec3_title: '3. Sécurité et Sous-traitants certifiés',
+    privacy_sec3_desc: 'Toutes les communications sont chiffrées de bout en bout (TLS/SSL, AES-256). Nous ne vendons et ne céderons JAMAIS vos données financières à des tiers à des fins publicitaires.',
+    privacy_sec3_sub1_title: 'Vercel Inc.',
+    privacy_sec3_sub1_desc: 'Hébergement sécurisé de l\'application et de l\'infrastructure.',
+    privacy_sec3_sub2_title: 'Stripe Inc.',
+    privacy_sec3_sub2_desc: 'Traitement certifié PCI-DSS des paiements et abonnements.',
+    privacy_sec3_sub3_title: 'Plaid Inc.',
+    privacy_sec3_sub3_desc: 'Agrégation bancaire sécurisée et chiffrée de niveau bancaire.',
+    privacy_sec4_title: '4. Conservation des Données et Droit à l\'Oubli',
+    privacy_sec4_desc: 'Vos données sont conservées tant que votre compte utilisateur reste actif. Conformément au droit à l\'effacement (Art. 17 RGPD), vous pouvez à tout instant supprimer définitivement l\'intégralité de vos données directement depuis l\'onglet « Paramètres » de l\'application.',
+    privacy_sec5_title: '5. Vos Droits et Réclamations (CNIL)',
+    privacy_sec5_desc: 'Conformément aux articles 15 à 22 du RGPD, vous disposez d\'un droit d\'accès, de rectification, de portabilité et de suppression de vos données personnelles.',
+    privacy_sec5_exercise_label: 'Pour exercer vos droits',
+    privacy_sec5_exercise_val: 'Écrivez à leandro.dasilva@bbox.fr (réponse garantie sous 30 jours max).',
+    privacy_sec5_cnil_info: 'En cas de contestation non résolue, vous avez le droit d\'introduire une réclamation auprès de la Commission Nationale de l\'Informatique et des Libertés (CNIL - www.cnil.fr).',
 
     // Common
     cancel: 'Annuler',
@@ -337,7 +367,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Secure space',
     pro_badge: 'PRO',
-
+    
     // Sidebar
     nav_dashboard: 'Dashboard',
     nav_pricing: 'Subscription',
@@ -348,7 +378,7 @@ export const translations = {
     sync_active: 'Bank Connected',
     sync_inactive: 'Connect Bank',
     plaid_tooltip: '100% secure connection via Plaid (Read only)',
-
+    
     // Dashboard Page
     dashboard_title: 'Financial Overview',
     dashboard_subtitle: 'Track your expenses and optimize your daily budget',
@@ -356,11 +386,10 @@ export const translations = {
     dashboard_header_subtitle: 'Track your expenses and subscriptions.',
     add_expense: 'Add Expense',
     export_csv: 'Export CSV',
-
+    
     // Welcome State
     welcome_title: 'Welcome to Life-Track',
-    welcome_desc:
-      'Your dashboard is ready. Start by adding your first expenses so AI can analyze your budget.',
+    welcome_desc: 'Your dashboard is ready. Start by adding your first expenses so AI can analyze your budget.',
     bank_sync_pro: 'Bank sync (Pro)',
 
     // Stats Cards & Dashboard
@@ -386,7 +415,7 @@ export const translations = {
     activity_30d: 'Activity (30D)',
     breakdown_title: 'Breakdown',
     by_category: 'By expense category',
-
+    
     // AI & Advice
     ai_advisor_title: 'AI Financial Advisor',
     ai_advisor_badge: 'ARTIFICIAL INTELLIGENCE',
@@ -399,20 +428,17 @@ export const translations = {
     analysis_complete: 'Analysis complete!',
     analysis_complete_desc: 'Your new savings advice is available right below.',
     info_label: 'Information',
-    ai_ready_desc:
-      'AI is ready to identify savings on your contracts (energy, insurance...).',
+    ai_ready_desc: 'AI is ready to identify savings on your contracts (energy, insurance...).',
     add_more_expenses_desc: 'Add a few more expenses for an accurate analysis.',
     calculating_btn: 'Calculating...',
     activate_pro_coach: 'Activate Pro Coach',
     launch_ai_audit: 'Launch AI Audit',
-    ai_disclaimer:
-      'AI-generated recommendations for informational purposes only. Does not constitute personalized financial advice.',
+    ai_disclaimer: 'AI-generated recommendations for informational purposes only. Does not constitute personalized financial advice.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Expense',
     add_expense_dialog_title: 'Add an Expense',
-    add_expense_dialog_desc:
-      'Fill in the details below. Click save when finished.',
+    add_expense_dialog_desc: 'Fill in the details below. Click save when finished.',
     edit_expense: 'Edit expense',
     new_expense: 'New expense',
     description: 'Description',
@@ -441,7 +467,7 @@ export const translations = {
     syncing_btn: 'Syncing...',
     disconnect_btn: 'Disconnect',
     disconnecting_btn: 'Disconnecting...',
-
+    
     // Settings Page
     settings_title: 'Account Settings',
     settings_subtitle: 'Manage your security and preferences',
@@ -451,8 +477,7 @@ export const translations = {
     security_title: 'Account Security',
     security: 'Security',
     two_factor_title: 'Two-Factor Authentication (2FA)',
-    two_factor_desc:
-      'Protect your account with a verification code sent via email',
+    two_factor_desc: 'Protect your account with a verification code sent via email',
     two_factor_code_email: 'Security code sent via email.',
     enabled: 'Enabled',
     disabled: 'Disabled',
@@ -476,14 +501,11 @@ export const translations = {
     danger_zone_title: 'Danger Zone',
     danger_zone_desc: 'Irreversible actions for your account',
     delete_account_title: 'Delete Account',
-    delete_account_desc:
-      'Permanently delete your account and all associated data',
-    delete_account_warning:
-      'This action cannot be undone. All your expenses, AI audits, and bank connections will be permanently wiped.',
+    delete_account_desc: 'Permanently delete your account and all associated data',
+    delete_account_warning: 'This action cannot be undone. All your expenses, AI audits, and bank connections will be permanently wiped.',
     delete_account_btn: 'Delete My Account',
     delete_account_confirm_title: 'Are you absolutely sure?',
-    delete_account_confirm_desc:
-      'Please type "DELETE" below to confirm the permanent deletion of your account.',
+    delete_account_confirm_desc: 'Please type "DELETE" below to confirm the permanent deletion of your account.',
     delete_account_confirm_input_placeholder: 'Type DELETE to confirm',
     delete_account_confirm_keyword: 'DELETE',
     deleting_account: 'Deleting...',
@@ -499,7 +521,7 @@ export const translations = {
     contact_send_btn: 'Send message',
     contact_success_toast: 'Message sent!',
     contact_error_toast: 'Failed to send message.',
-
+    
     // Pricing Page
     pricing_title: 'Upgrade your experience',
     pricing_subtitle: 'Unlock the full potential of your financial management',
@@ -512,8 +534,7 @@ export const translations = {
     pro_member: 'Pro Member',
     subscription_active: 'Your subscription is active',
     active_desc: 'You currently enjoy all unlimited features of Life-Track.',
-    stripe_portal_desc:
-      'To update your payment method, view invoices, or manage your subscription, access your secure Stripe area.',
+    stripe_portal_desc: 'To update your payment method, view invoices, or manage your subscription, access your secure Stripe area.',
     manage_subscription: 'Manage my subscription',
     monthly: 'Monthly',
     annual: 'Annual',
@@ -526,46 +547,43 @@ export const translations = {
     export_csv_pdf: 'CSV/PDF exports',
     priority_support: 'Priority support',
     best_value: 'Best value',
-
+    
     // Premium features list
     feature_bank_sync: 'Unlimited automatic bank synchronization',
     feature_ai_advice: 'Personalized AI financial advisor',
     feature_unlimited_export: 'Unlimited CSV exports & detailed analytics',
     feature_multi_currency: 'Multi-currency and multi-account support',
     feature_priority_support: '24/7 Priority customer support',
-
+    
     // Landing Page
     landing_hero_title_1: 'Your money deserved',
     landing_hero_title_2: 'a better vision',
-    landing_hero_subtitle:
-      'Life-Track uses AI to analyze your habits and identify every dollar you can save',
+    landing_hero_subtitle: 'Life-Track uses AI to analyze your habits and identify every dollar you can save',
     landing_hero_cta: 'Start saving now',
     landing_login_btn: 'Log in',
     landing_trust_title: 'Why trust us',
     landing_security_title: 'Banking Security',
-    landing_security_desc:
-      'Your credentials never pass through our servers. We use military-grade encryption (AES-256) to protect your data.',
+    landing_security_desc: 'Your credentials never pass through our servers. We use military-grade encryption (AES-256) to protect your data.',
     landing_privacy_title: 'Privacy',
-    landing_privacy_desc:
-      'Zero data resale. Your financial life is private, and will stay that way.',
+    landing_privacy_desc: 'Zero data resale. Your financial life is private, and will stay that way.',
     landing_sovereignty_title: 'European Sovereignty',
-    landing_sovereignty_desc:
-      'All your data is stored on secure servers in Europe. Full GDPR compliance for absolute peace of mind.',
+    landing_sovereignty_desc: 'All your data is stored on secure servers in Europe. Full GDPR compliance for absolute peace of mind.',
     landing_faq_title: 'Frequently Asked Questions',
     landing_faq_q_sync: 'How does bank synchronization work?',
-    landing_faq_a_sync:
-      'Life-Track uses Plaid, the global security standard used by millions of users. Your connection is read-only: AI analyzes your transactions to identify savings, but it is technically impossible for us (or the AI) to make transfers, modify your accounts, or access your credentials.',
+    landing_faq_a_sync: 'Life-Track uses Plaid, the global security standard used by millions of users. Your connection is read-only: AI analyzes your transactions to identify savings, but it is technically impossible for us (or the AI) to make transfers, modify your accounts, or access your credentials.',
     landing_faq_q1: 'Can Life-Track make transfers from my account?',
-    landing_faq_a1:
-      'Absolutely not. We use Plaid, the global banking security standard. Your connection is read-only: we can see transactions to analyze them, but it is technically impossible for us to move your money.',
+    landing_faq_a1: 'Absolutely not. We use Plaid, the global banking security standard. Your connection is read-only: we can see transactions to analyze them, but it is technically impossible for us to move your money.',
     landing_faq_q2: 'Does AI have access to my real identity?',
-    landing_faq_a2:
-      'No. Before being analyzed by Gemini, your data is anonymized. The AI sees amounts and descriptions (e.g. Starbucks $5), but never your name, address, or account number.',
+    landing_faq_a2: 'No. Before being analyzed by Gemini, your data is anonymized. The AI sees amounts and descriptions (e.g. Starbucks $5), but never your name, address, or account number.',
     landing_faq_q3: 'Can I cancel my subscription easily?',
-    landing_faq_a3:
-      'Yes, anytime with a single click from your Dashboard. There is no long-term commitment. Once canceled, you keep your Premium access until the end of the billing cycle.',
+    landing_faq_a3: 'Yes, anytime with a single click from your Dashboard. There is no long-term commitment. Once canceled, you keep your Premium access until the end of the billing cycle.',
     landing_footer_rights: 'All rights reserved.',
-    landing_footer_cgv: 'Terms & Legal Notices',
+    landing_footer_cgv: 'Terms (CGV)',
+    landing_footer_privacy: 'Privacy Policy',
+    landing_footer_legal: 'Legal Notice',
+    nav_cgv: 'Terms (CGV)',
+    nav_privacy: 'Privacy Policy',
+    nav_mentions_legales: 'Legal Notice',
 
     // Authentication
     auth_login_title: 'Sign In',
@@ -607,36 +625,89 @@ export const translations = {
     auth_updating: 'Updating...',
 
     // Terms waiver & CGV
-    pricing_terms_agreement:
-      'I accept the Terms of Service and request immediate access to the digital service. In accordance with consumer regulations (Directive 2011/83/EU), I expressly waive my 14-day right of withdrawal in order to instantly access Premium features.',
+    pricing_terms_agreement: 'I accept the Terms of Service and request immediate access to the digital service. In accordance with consumer regulations (Directive 2011/83/EU), I expressly waive my 14-day right of withdrawal in order to instantly access Premium features.',
     cgv_title: 'Terms and Conditions (CGV)',
     cgv_back: 'Back',
     cgv_legal_precedence_badge: 'Legal Notice',
-    cgv_legal_precedence_text:
-      'These General Terms and Conditions are governed by French law. The French language version constitutes the official contractual version and shall prevail over any translation in case of discrepancy or dispute.',
+    cgv_legal_precedence_text: 'These General Terms and Conditions are governed by French law. The French language version constitutes the official contractual version and shall prevail over any translation in case of discrepancy or dispute.',
     cgv_section1_title: '1. Purpose',
-    cgv_section1_desc:
-      'These Terms govern the subscription to "Premium" plans of the Life-Track application, published by DA SILVA COSTA Léandro José EI.',
+    cgv_section1_desc: 'These Terms govern the subscription to "Premium" plans of the Life-Track application, published by DA SILVA COSTA Léandro José EI.',
     cgv_section2_title: '2. Services and Features',
-    cgv_section2_desc:
-      'The Premium subscription provides access to AI financial analysis (Gemini), secure automated bank synchronization (Plaid), advanced financial charts, unlimited CSV/PDF exports, and priority customer support.',
+    cgv_section2_desc: 'The Premium subscription provides access to AI financial analysis (Gemini), secure automated bank synchronization (Plaid), advanced financial charts, unlimited CSV/PDF exports, and priority customer support.',
     cgv_section3_title: '3. Pricing and Payment',
-    cgv_section3_desc:
-      'Pricing is €9.99 incl. VAT per month (no commitment) or €99.00 incl. VAT per year. Payment processing and recurring billing are secured and PCI-DSS certified via our payment partner Stripe.',
+    cgv_section3_desc: 'Pricing is €9.99 incl. VAT per month (no commitment) or €99.00 incl. VAT per year. Payment processing and recurring billing are secured and PCI-DSS certified via our payment partner Stripe.',
     cgv_section4_title: '4. Right of Withdrawal and Express Waiver',
-    cgv_section4_desc:
-      'In accordance with Article L.221-28 13° of the French Consumer Code and EU Directive 2011/83/EU on digital content/services supplied without a physical medium, the customer expressly requests the immediate performance of the service upon payment and expressly waives their 14-day right of withdrawal in order to gain immediate access to all tools and AI capabilities.',
+    cgv_section4_desc: 'In accordance with Article L.221-28 13° of the French Consumer Code and EU Directive 2011/83/EU on digital content/services supplied without a physical medium, the customer expressly requests the immediate performance of the service upon payment and expressly waives their 14-day right of withdrawal in order to gain immediate access to all tools and AI capabilities.',
     cgv_section5_title: '5. AI Liability and Disclaimer',
-    cgv_section5_desc:
-      'Life-Track provides automated insights generated by Artificial Intelligence. This information is provided for informational and guidance purposes only and does not constitute certified financial, tax, legal, or accounting advice. The user remains solely responsible for their financial decisions.',
-    cgv_section5_sub:
-      'The publisher shall not be held liable for any direct or indirect financial losses resulting from the interpretation of AI-generated insights.',
+    cgv_section5_desc: 'Life-Track provides automated insights generated by Artificial Intelligence. This information is provided for informational and guidance purposes only and does not constitute certified financial, tax, legal, or accounting advice. The user remains solely responsible for their financial decisions.',
+    cgv_section5_sub: 'The publisher shall not be held liable for any direct or indirect financial losses resulting from the interpretation of AI-generated insights.',
     cgv_section6_title: '6. Personal Data and Privacy (GDPR)',
-    cgv_section6_desc:
-      'Your data is processed in strict compliance with the GDPR. Data is encrypted (AES-256) and never resold. You have full rights to access, rectify, and delete your data at any time from your user account.',
+    cgv_section6_desc: 'Your data is processed in strict compliance with the GDPR. Data is encrypted (AES-256) and never resold. You have full rights to access, rectify, and delete your data at any time from your user account.',
     cgv_section7_title: '7. Applicable Law and Competent Jurisdiction',
-    cgv_section7_desc:
-      'These Terms are exclusively governed by French law. In the absence of an amicable settlement, any dispute relating to their validity, interpretation, or performance shall be submitted to the competent French courts.',
+    cgv_section7_desc: 'These Terms are exclusively governed by French law. In the absence of an amicable settlement, any dispute relating to their validity, interpretation, or performance shall be submitted to the competent French courts.',
+
+    // Legal Notices
+    legal_title: 'Legal Notice',
+    legal_back: 'Back',
+    legal_precedence_badge: 'Legal Information',
+    legal_precedence_text: 'This service is operated from France and governed by French law. The French version of this legal notice prevails.',
+    legal_section1_title: '1. App Publisher',
+    legal_section1_name: 'Name / Company',
+    legal_section1_name_val: 'DA SILVA COSTA Léandro José EI',
+    legal_section1_address: 'Registered Address',
+    legal_section1_address_val: '3 B Rue de Bailly - 76190 Yvetot, France',
+    legal_section1_siret: 'Registration / SIRET',
+    legal_section1_siret_val: 'Registration in progress / [PENDING]',
+    legal_section1_email: 'Email Contact',
+    legal_section1_email_val: 'leandro.dasilva@bbox.fr',
+    legal_section1_dir: 'Publication Director',
+    legal_section1_dir_val: 'DA SILVA COSTA Léandro José',
+    legal_section2_title: '2. Hosting Provider',
+    legal_section2_host: 'Primary Host',
+    legal_section2_host_val: 'Vercel Inc.',
+    legal_section2_host_address: 'Host Address',
+    legal_section2_host_address_val: '440 N Barranca Ave #4133, Covina, CA 91723, United States',
+    legal_section2_host_site: 'Host Website',
+    legal_section3_title: '3. Intellectual Property',
+    legal_section3_desc: 'The Life-Track trademark, logo, design system, algorithms, and all textual and visual contents of the app are protected by copyright and intellectual property laws. Any unauthorized reproduction or use is strictly prohibited.',
+    legal_section4_title: '4. Applicable Law & Jurisdiction',
+    legal_section4_desc: 'This legal notice is governed by French law. Any dispute relating to its interpretation or execution will be subject to the competent French courts.',
+
+    // Privacy Policy
+    privacy_title: 'Privacy Policy & GDPR',
+    privacy_back: 'Back',
+    privacy_legal_precedence_badge: 'Legal Information',
+    privacy_legal_precedence_text: 'This data protection policy complies with the General Data Protection Regulation (GDPR) and French Data Protection legislation. The French version prevails in case of dispute.',
+    privacy_sec1_title: '1. Data Controller',
+    privacy_sec1_desc: 'Protecting your privacy is an absolute priority. Your personal data is processed in full compliance with the General Data Protection Regulation (GDPR - EU Regulation 2016/679).',
+    privacy_sec1_resp_label: 'Controller',
+    privacy_sec1_resp_val: 'DA SILVA COSTA Léandro José EI',
+    privacy_sec1_contact_label: 'Privacy Contact',
+    privacy_sec2_title: '2. Collected Data and Anonymization',
+    privacy_sec2_desc: 'We strictly apply the data minimization principle (Art. 5 GDPR): only data strictly necessary for your budget management is processed.',
+    privacy_sec2_item1_title: 'Identity & Login',
+    privacy_sec2_item1_desc: 'Email address and securely hashed password. Your credentials are never shared with any third party.',
+    privacy_sec2_item2_title: 'Expenses & Budgets',
+    privacy_sec2_item2_desc: 'Amounts, categories, dates, and labels entered or imported. This data is stored in isolated and secure environments.',
+    privacy_sec2_item3_title: 'AI Analysis (Gemini Flash)',
+    privacy_sec2_item3_desc: 'Budget optimization calculations are performed on strictly anonymized payloads (no personal identities). The AI retains no user data for training.',
+    privacy_sec2_item4_title: 'Bank Synchronization (Plaid)',
+    privacy_sec2_item4_desc: 'Your banking credentials never touch our servers. Plaid operates in secure, read-only mode compliant with PSD2 regulations.',
+    privacy_sec3_title: '3. Security & Certified Sub-processors',
+    privacy_sec3_desc: 'All communications are end-to-end encrypted (TLS/SSL, AES-256). We do NOT and will NEVER sell or monetize your financial data.',
+    privacy_sec3_sub1_title: 'Vercel Inc.',
+    privacy_sec3_sub1_desc: 'Secure hosting for application and infrastructure.',
+    privacy_sec3_sub2_title: 'Stripe Inc.',
+    privacy_sec3_sub2_desc: 'PCI-DSS certified payment and subscription processing.',
+    privacy_sec3_sub3_title: 'Plaid Inc.',
+    privacy_sec3_sub3_desc: 'Bank-grade encrypted banking aggregation service.',
+    privacy_sec4_title: '4. Data Retention & Right to be Forgotten',
+    privacy_sec4_desc: 'Your data is retained as long as your account remains active. Under the right to erasure (Art. 17 GDPR), you can permanently delete all your data at any moment from your Settings.',
+    privacy_sec5_title: '5. Your Rights & Regulatory Authorities (CNIL)',
+    privacy_sec5_desc: 'Under Articles 15 to 22 of the GDPR, you have the right to access, rectify, export, and delete your personal data.',
+    privacy_sec5_exercise_label: 'To exercise your rights',
+    privacy_sec5_exercise_val: 'Email leandro.dasilva@bbox.fr (guaranteed response within 30 days).',
+    privacy_sec5_cnil_info: 'In case of unresolved dispute, you have the right to lodge a complaint with the French Data Protection Authority (CNIL - www.cnil.fr).',
 
     // Common
     cancel: 'Cancel',
@@ -650,7 +721,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Sicherer Bereich',
     pro_badge: 'PRO',
-
+    
     // Sidebar
     nav_dashboard: 'Dashboard',
     nav_pricing: 'Abonnement',
@@ -661,20 +732,18 @@ export const translations = {
     sync_active: 'Bank verbunden',
     sync_inactive: 'Bank verbinden',
     plaid_tooltip: '100% sichere Verbindung über Plaid (Nur Lesen)',
-
+    
     // Dashboard Page
     dashboard_title: 'Finanzübersicht',
-    dashboard_subtitle:
-      'Verfolgen Sie Ihre Ausgaben und optimieren Sie Ihr Budget',
+    dashboard_subtitle: 'Verfolgen Sie Ihre Ausgaben und optimieren Sie Ihr Budget',
     dashboard_header_title: 'Dashboard',
     dashboard_header_subtitle: 'Verfolgen Sie Ihre Ausgaben und Abonnements.',
     add_expense: 'Ausgabe hinzufügen',
     export_csv: 'Als CSV exportieren',
-
+    
     // Welcome State
     welcome_title: 'Willkommen bei Life-Track',
-    welcome_desc:
-      'Ihr Dashboard ist bereit. Fügen Sie Ihre ersten Ausgaben hinzu, damit die KI Ihr Budget analysieren kann.',
+    welcome_desc: 'Ihr Dashboard ist bereit. Fügen Sie Ihre ersten Ausgaben hinzu, damit die KI Ihr Budget analysieren kann.',
     bank_sync_pro: 'Bank-Synchro (Pro)',
 
     // Stats Cards & Dashboard
@@ -686,8 +755,7 @@ export const translations = {
     remaining: 'verbleibend',
     spent_30d: 'Ausgaben (30T)',
     pro_analytics: 'Pro-Analysen',
-    visualize_expenses:
-      'Visualisieren Sie Ihre Ausgaben und Abonnements im Detail.',
+    visualize_expenses: 'Visualisieren Sie Ihre Ausgaben und Abonnements im Detail.',
     upgrade_premium_btn: 'Auf Premium upgraden',
 
     // Charts & Analytics & Insights
@@ -701,7 +769,7 @@ export const translations = {
     activity_30d: 'Aktivität (30T)',
     breakdown_title: 'Aufschlüsselung',
     by_category: 'Nach Ausgabenkategorie',
-
+    
     // AI & Advice
     ai_advisor_title: 'KI-Finanzberater',
     ai_advisor_badge: 'KÜNSTLICHE INTELLIGENZ',
@@ -714,21 +782,17 @@ export const translations = {
     analysis_complete: 'Analyse abgeschlossen!',
     analysis_complete_desc: 'Ihre neuen Spartipps sind direkt unten verfügbar.',
     info_label: 'Information',
-    ai_ready_desc:
-      'Die KI ist bereit, Einsparungen bei Ihren Verträgen zu identifizieren.',
-    add_more_expenses_desc:
-      'Fügen Sie noch ein paar Ausgaben hinzu für eine genaue Analyse.',
+    ai_ready_desc: 'Die KI ist bereit, Einsparungen bei Ihren Verträgen zu identifizieren.',
+    add_more_expenses_desc: 'Fügen Sie noch ein paar Ausgaben hinzu für eine genaue Analyse.',
     calculating_btn: 'Berechnung läuft...',
     activate_pro_coach: 'Pro-Coach aktivieren',
     launch_ai_audit: 'KI-Audit starten',
-    ai_disclaimer:
-      'KI-generierte Empfehlungen dienen nur zu Informationszwecken. Stellt keine persönliche Finanzberatung dar.',
+    ai_disclaimer: 'KI-generierte Empfehlungen dienen nur zu Informationszwecken. Stellt keine persönliche Finanzberatung dar.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Ausgabe',
     add_expense_dialog_title: 'Ausgabe hinzufügen',
-    add_expense_dialog_desc:
-      'Füllen Sie die Details unten aus. Klicken Sie nach Abschluss auf Speichern.',
+    add_expense_dialog_desc: 'Füllen Sie die Details unten aus. Klicken Sie nach Abschluss auf Speichern.',
     edit_expense: 'Ausgabe bearbeiten',
     new_expense: 'Neue Ausgabe',
     description: 'Beschreibung',
@@ -757,7 +821,7 @@ export const translations = {
     syncing_btn: 'Synchronisiere...',
     disconnect_btn: 'Trennen',
     disconnecting_btn: 'Trenne...',
-
+    
     // Settings Page
     settings_title: 'Kontoeinstellungen',
     settings_subtitle: 'Verwalten Sie Ihre Sicherheit und Einstellungen',
@@ -767,8 +831,7 @@ export const translations = {
     security_title: 'Konto-Sicherheit',
     security: 'Sicherheit',
     two_factor_title: 'Zwei-Faktor-Authentifizierung (2FA)',
-    two_factor_desc:
-      'Sichern Sie Ihr Konto mit einem per E-Mail gesendeten Code',
+    two_factor_desc: 'Sichern Sie Ihr Konto mit einem per E-Mail gesendeten Code',
     two_factor_code_email: 'Sicherheitscode per E-Mail gesendet.',
     enabled: 'Aktiviert',
     disabled: 'Deaktiviert',
@@ -776,8 +839,7 @@ export const translations = {
     two_factor_disabled_toast: '2FA deaktiviert',
     two_factor_error_toast: 'Fehler bei der Änderung',
     change_password_title: 'Passwort ändern',
-    change_password_desc:
-      'Aktualisieren Sie Ihr Passwort für maximale Sicherheit',
+    change_password_desc: 'Aktualisieren Sie Ihr Passwort für maximale Sicherheit',
     current_password: 'Aktuelles Passwort',
     current_password_placeholder: '••••••••',
     new_password: 'Neues Passwort',
@@ -793,14 +855,11 @@ export const translations = {
     danger_zone_title: 'Gefahrenzone',
     danger_zone_desc: 'Unwiderrufliche Aktionen für Ihr Konto',
     delete_account_title: 'Konto löschen',
-    delete_account_desc:
-      'Löscht Ihr Konto und alle zugehörigen Daten dauerhaft',
-    delete_account_warning:
-      'Diese Aktion kann nicht rückgängig gemacht werden. Alle Ausgaben, KI-Analysen und Bankverbindungen werden unwiderruflich gelöscht.',
+    delete_account_desc: 'Löscht Ihr Konto und alle zugehörigen Daten dauerhaft',
+    delete_account_warning: 'Diese Aktion kann nicht rückgängig gemacht werden. Alle Ausgaben, KI-Analysen und Bankverbindungen werden unwiderruflich gelöscht.',
     delete_account_btn: 'Mein Konto löschen',
     delete_account_confirm_title: 'Sind Sie absolut sicher?',
-    delete_account_confirm_desc:
-      'Bitte geben Sie unten "LÖSCHEN" ein, um das dauerhafte Löschen zu bestätigen.',
+    delete_account_confirm_desc: 'Bitte geben Sie unten "LÖSCHEN" ein, um das dauerhafte Löschen zu bestätigen.',
     delete_account_confirm_input_placeholder: 'Geben Sie LÖSCHEN ein',
     delete_account_confirm_keyword: 'LÖSCHEN',
     deleting_account: 'Wird gelöscht...',
@@ -816,11 +875,10 @@ export const translations = {
     contact_send_btn: 'Nachricht senden',
     contact_success_toast: 'Nachricht gesendet!',
     contact_error_toast: 'Fehler beim Senden.',
-
+    
     // Pricing Page
     pricing_title: 'Bringen Sie Ihre Finanzen aufs nächste Level',
-    pricing_subtitle:
-      'Schalten Sie das volle Potenzial Ihres Finanzmanagements frei',
+    pricing_subtitle: 'Schalten Sie das volle Potenzial Ihres Finanzmanagements frei',
     plan_free: 'Kostenloser Plan',
     plan_pro: 'Premium-Plan',
     price_pro: '9,99 €',
@@ -829,10 +887,8 @@ export const translations = {
     current_plan: 'Ihr aktueller Plan',
     pro_member: 'Pro-Mitglied',
     subscription_active: 'Ihr Abonnement ist aktiv',
-    active_desc:
-      'Sie nutzen derzeit alle unbegrenzten Funktionen von Life-Track.',
-    stripe_portal_desc:
-      'Um Ihre Zahlungsmethode zu ändern, Rechnungen anzuzeigen oder Ihr Abonnement zu verwalten, rufen Sie Ihren sicheren Stripe-Bereich auf.',
+    active_desc: 'Sie nutzen derzeit alle unbegrenzten Funktionen von Life-Track.',
+    stripe_portal_desc: 'Um Ihre Zahlungsmethode zu ändern, Rechnungen anzuzeigen oder Ihr Abonnement zu verwalten, rufen Sie Ihren sicheren Stripe-Bereich auf.',
     manage_subscription: 'Abonnement verwalten',
     monthly: 'Monatlich',
     annual: 'Jährlich',
@@ -845,46 +901,43 @@ export const translations = {
     export_csv_pdf: 'CSV/PDF-Export',
     priority_support: 'Prioritärer Support',
     best_value: 'Bestes Angebot',
-
+    
     // Premium features list
     feature_bank_sync: 'Unbegrenzte automatische Banksynchronisierung',
     feature_ai_advice: 'Personalisierter KI-Finanzberater',
     feature_unlimited_export: 'Unbegrenzte CSV-Exporte & detaillierte Analysen',
     feature_multi_currency: 'Multi-Währungs- und Multi-Konto-Verwaltung',
     feature_priority_support: 'Prioritärer Kundensupport rund um die Uhr',
-
+    
     // Landing Page
     landing_hero_title_1: 'Ihr Geld verdiente',
     landing_hero_title_2: 'eine bessere Übersicht',
-    landing_hero_subtitle:
-      'Life-Track nutzt KI, um Ihre Gewohnheiten zu analysieren und jeden Euro zu identifizieren, den Sie sparen können',
+    landing_hero_subtitle: 'Life-Track nutzt KI, um Ihre Gewohnheiten zu analysieren und jeden Euro zu identifizieren, den Sie sparen können',
     landing_hero_cta: 'Jetzt sparen',
     landing_login_btn: 'Anmelden',
     landing_trust_title: 'Warum uns vertrauen',
     landing_security_title: 'Banksicherheit',
-    landing_security_desc:
-      'Ihre Anmeldedaten gelangen niemals auf unsere Server. Wir verwenden eine Verschlüsselung nach Militärstandard (AES-256) zum Schutz Ihrer Daten.',
+    landing_security_desc: 'Ihre Anmeldedaten gelangen niemals auf unsere Server. Wir verwenden eine Verschlüsselung nach Militärstandard (AES-256) zum Schutz Ihrer Daten.',
     landing_privacy_title: 'Privatsphäre',
-    landing_privacy_desc:
-      'Kein Weiterverkauf von Daten. Ihr Finanzleben ist und bleibt privat.',
+    landing_privacy_desc: 'Kein Weiterverkauf von Daten. Ihr Finanzleben ist und bleibt privat.',
     landing_sovereignty_title: 'Europäische Souveränität',
-    landing_sovereignty_desc:
-      'Alle Ihre Daten werden auf sicheren Servern in Europa gespeichert. Vollständige DSGVO-Konformität für absolute Sicherheit.',
+    landing_sovereignty_desc: 'Alle Ihre Daten werden auf sicheren Servern in Europa gespeichert. Vollständige DSGVO-Konformität für absolute Sicherheit.',
     landing_faq_title: 'Häufig gestellte Fragen',
     landing_faq_q_sync: 'Wie funktioniert die Synchronisation mit meiner Bank?',
-    landing_faq_a_sync:
-      'Life-Track nutzt Plaid, den weltweiten Sicherheitsstandard, dem Millionen vertrauen. Ihre Verbindung ist schreibgeschützt: Die KI analysiert Transaktionen, um Einsparungen zu erkennen, Überweisungen oder Änderungen sind technisch unmöglich.',
+    landing_faq_a_sync: 'Life-Track nutzt Plaid, den weltweiten Sicherheitsstandard, dem Millionen vertrauen. Ihre Verbindung ist schreibgeschützt: Die KI analysiert Transaktionen, um Einsparungen zu erkennen, Überweisungen oder Änderungen sind technisch unmöglich.',
     landing_faq_q1: 'Kann Life-Track Überweisungen von meinem Konto tätigen?',
-    landing_faq_a1:
-      'Absolut nicht. Wir verwenden Plaid, den weltweiten Standard für Banksicherheit. Ihre Verbindung ist schreibgeschützt: Wir können Transaktionen nur analysieren, aber niemals Geld bewegen.',
+    landing_faq_a1: 'Absolut nicht. Wir verwenden Plaid, den weltweiten Standard für Banksicherheit. Ihre Verbindung ist schreibgeschützt: Wir können Transaktionen nur analysieren, aber niemals Geld bewegen.',
     landing_faq_q2: 'Hat die KI Zugriff auf meine echte Identität?',
-    landing_faq_a2:
-      'Nein. Vor der Analyse durch Gemini werden Ihre Daten anonymisiert. Die KI sieht nur Beträge und Beschreibungen, aber niemals Ihren Namen, Ihre Adresse oder Kontonummer.',
+    landing_faq_a2: 'Nein. Vor der Analyse durch Gemini werden Ihre Daten anonymisiert. Die KI sieht nur Beträge und Beschreibungen, aber niemals Ihren Namen, Ihre Adresse oder Kontonummer.',
     landing_faq_q3: 'Kann ich mein Abonnement einfach kündigen?',
-    landing_faq_a3:
-      'Ja, jederzeit mit einem Klick in Ihrem Dashboard. Es gibt keine Mindestlaufzeit. Nach der Kündigung behalten Sie Ihren Premium-Zugang bis zum Ende des bezahlten Zeitraums.',
+    landing_faq_a3: 'Ja, jederzeit mit einem Klick in Ihrem Dashboard. Es gibt keine Mindestlaufzeit. Nach der Kündigung behalten Sie Ihren Premium-Zugang bis zum Ende des bezahlten Zeitraums.',
     landing_footer_rights: 'Alle Rechte vorbehalten.',
-    landing_footer_cgv: 'AGB & Impressum',
+    landing_footer_cgv: 'AGB',
+    landing_footer_privacy: 'Datenschutz',
+    landing_footer_legal: 'Impressum',
+    nav_cgv: 'AGB',
+    nav_privacy: 'Datenschutz',
+    nav_mentions_legales: 'Impressum',
 
     // Authentication
     auth_login_title: 'Anmeldung',
@@ -916,8 +969,7 @@ export const translations = {
     auth_creating_account: 'Wird erstellt...',
     auth_already_have_account: 'Bereits ein Konto?',
     auth_reset_title: 'Passwort vergessen?',
-    auth_reset_desc:
-      'Geben Sie Ihre E-Mail ein, um einen Link zum Zurücksetzen zu erhalten.',
+    auth_reset_desc: 'Geben Sie Ihre E-Mail ein, um einen Link zum Zurücksetzen zu erhalten.',
     auth_send_link_btn: 'Link senden',
     auth_sending: 'Wird gesendet...',
     auth_back_to_login: 'Zurück zur Anmeldung',
@@ -927,36 +979,89 @@ export const translations = {
     auth_updating: 'Wird aktualisiert...',
 
     // Terms waiver & CGV
-    pricing_terms_agreement:
-      'Ich akzeptiere die AGB und verlange die sofortige Bereitstellung der digitalen Dienste. Gemäß den Verbraucherschutzrichtlinien (Richtlinie 2011/83/EU) verzichte ich ausdrücklich auf mein 14-tägiges Widerrufsrecht, um sofortigen Zugriff auf die Premium-Funktionen zu erhalten.',
+    pricing_terms_agreement: 'Ich akzeptiere die AGB und verlange die sofortige Bereitstellung der digitalen Dienste. Gemäß den Verbraucherschutzrichtlinien (Richtlinie 2011/83/EU) verzichte ich ausdrücklich auf mein 14-tägiges Widerrufsrecht, um sofortigen Zugriff auf die Premium-Funktionen zu erhalten.',
     cgv_title: 'Allgemeine Geschäftsbedingungen (AGB)',
     cgv_back: 'Zurück',
     cgv_legal_precedence_badge: 'Rechtlicher Hinweis',
-    cgv_legal_precedence_text:
-      'Diese Allgemeinen Geschäftsbedingungen unterliegen französischem Recht. Die französische Sprachfassung ist die offizielle Vertragsfassung und hat im Streitfall oder bei Auslegungsfragen Vorrang vor Übersetzungen.',
+    cgv_legal_precedence_text: 'Diese Allgemeinen Geschäftsbedingungen unterliegen französischem Recht. Die französische Sprachfassung ist die offizielle Vertragsfassung und hat im Streitfall oder bei Auslegungsfragen Vorrang vor Übersetzungen.',
     cgv_section1_title: '1. Vertragsgegenstand',
-    cgv_section1_desc:
-      'Diese AGB regeln den Erwerb von „Premium“-Abonnements der Life-Track-Anwendung, herausgegeben von DA SILVA COSTA Léandro José EI.',
+    cgv_section1_desc: 'Diese AGB regeln den Erwerb von „Premium“-Abonnements der Life-Track-Anwendung, herausgegeben von DA SILVA COSTA Léandro José EI.',
     cgv_section2_title: '2. Leistungen und Funktionen',
-    cgv_section2_desc:
-      'Das Premium-Abonnement umfasst den Zugriff auf KI-gestützte Finanzanalysen (Gemini), sichere automatische Banksynchronisation (Plaid), detaillierte Diagramme, unbegrenzte Exporte und bevorzugten Kundensupport.',
+    cgv_section2_desc: 'Das Premium-Abonnement umfasst den Zugriff auf KI-gestützte Finanzanalysen (Gemini), sichere automatische Banksynchronisation (Plaid), detaillierte Diagramme, unbegrenzte Exporte und bevorzugten Kundensupport.',
     cgv_section3_title: '3. Preise und Zahlung',
-    cgv_section3_desc:
-      'Der Preis beträgt 9,99 € inkl. MwSt. pro Monat (ohne Bindung) oder 99,00 € inkl. MwSt. pro Jahr. Die Zahlungsabwicklung erfolgt sicher und PCI-DSS-zertifiziert über Stripe.',
+    cgv_section3_desc: 'Der Preis beträgt 9,99 € inkl. MwSt. pro Monat (ohne Bindung) oder 99,00 € inkl. MwSt. pro Jahr. Die Zahlungsabwicklung erfolgt sicher und PCI-DSS-zertifiziert über Stripe.',
     cgv_section4_title: '4. Widerrufsrecht und ausdrücklicher Verzicht',
-    cgv_section4_desc:
-      'Gemäß Artikel L.221-28 13° des französischen Verbraucherschutzgesetzes und der EU-Richtlinie 2011/83/EU für digitale Inhalte verlangt der Kunde ausdrücklich die sofortige Bereitstellung der Dienstleistung nach Zahlung und verzichtet ausdrücklich auf das 14-tägige Widerrufsrecht für den sofortigen Zugriff auf die KI-Tools.',
+    cgv_section4_desc: 'Gemäß Artikel L.221-28 13° des französischen Verbraucherschutzgesetzes und der EU-Richtlinie 2011/83/EU für digitale Inhalte verlangt der Kunde ausdrücklich die sofortige Bereitstellung der Dienstleistung nach Zahlung und verzichtet ausdrücklich auf das 14-tägige Widerrufsrecht für den sofortigen Zugriff auf die KI-Tools.',
     cgv_section5_title: '5. Haftungsausschluss (Künstliche Intelligenz)',
-    cgv_section5_desc:
-      'Life-Track bietet auf künstlicher Intelligenz basierende Analysen. Diese dienen ausschließlich Informationszwecken und stellen keine Finanz-, Steuer-, Rechts- oder Buchhaltungsberatung dar. Der Nutzer bleibt allein verantwortlich für seine Finanzentscheidungen.',
-    cgv_section5_sub:
-      'Der Anbieter haftet nicht für direkte oder indirekte finanzielle Schäden, die sich aus der Interpretation von KI-Analysen ergeben.',
+    cgv_section5_desc: 'Life-Track bietet auf künstlicher Intelligenz basierende Analysen. Diese dienen ausschließlich Informationszwecken und stellen keine Finanz-, Steuer-, Rechts- oder Buchhaltungsberatung dar. Der Nutzer bleibt allein verantwortlich für seine Finanzentscheidungen.',
+    cgv_section5_sub: 'Der Anbieter haftet nicht für direkte oder indirekte finanzielle Schäden, die sich aus der Interpretation von KI-Analysen ergeben.',
     cgv_section6_title: '6. Datenschutz (DSGVO)',
-    cgv_section6_desc:
-      'Ihre Daten werden streng nach der DSGVO verarbeitet, sind mit AES-256 verschlüsselt und werden niemals weiterverkauft. Sie haben jederzeit das Recht auf Auskunft, Berichtigung und Löschung.',
+    cgv_section6_desc: 'Ihre Daten werden streng nach der DSGVO verarbeitet, sind mit AES-256 verschlüsselt und werden niemals weiterverkauft. Sie haben jederzeit das Recht auf Auskunft, Berichtigung und Löschung.',
     cgv_section7_title: '7. Anwendbares Recht und Gerichtsstand',
-    cgv_section7_desc:
-      'Diese Bedingungen unterliegen ausschließlich französischem Recht. Für alle Streitigkeiten sind ausschließlich die zuständigen französischen Gerichte zuständig.',
+    cgv_section7_desc: 'Diese Bedingungen unterliegen ausschließlich französischem Recht. Für alle Streitigkeiten sind ausschließlich die zuständigen französischen Gerichte zuständig.',
+
+    // Legal Notices
+    legal_title: 'Impressum / Rechtliche Hinweise',
+    legal_back: 'Zurück',
+    legal_precedence_badge: 'Rechtlicher Hinweis',
+    legal_precedence_text: 'Dieser Dienst wird in Frankreich betrieben und unterliegt französischem Recht. Die französische Version des Impressums ist maßgebend.',
+    legal_section1_title: '1. Diensteanbieter / Herausgeber',
+    legal_section1_name: 'Name / Unternehmen',
+    legal_section1_name_val: 'DA SILVA COSTA Léandro José EI',
+    legal_section1_address: 'Geschäftsadresse',
+    legal_section1_address_val: '3 B Rue de Bailly - 76190 Yvetot, Frankreich',
+    legal_section1_siret: 'Handelsregister / SIRET',
+    legal_section1_siret_val: 'Registrierung in Bearbeitung / [AUSSTEHEND]',
+    legal_section1_email: 'E-Mail-Kontakt',
+    legal_section1_email_val: 'leandro.dasilva@bbox.fr',
+    legal_section1_dir: 'Verantwortlich für den Inhalt',
+    legal_section1_dir_val: 'DA SILVA COSTA Léandro José',
+    legal_section2_title: '2. Webhosting',
+    legal_section2_host: 'Hosting-Anbieter',
+    legal_section2_host_val: 'Vercel Inc.',
+    legal_section2_host_address: 'Adresse des Hosters',
+    legal_section2_host_address_val: '440 N Barranca Ave #4133, Covina, CA 91723, Vereinigte Staaten',
+    legal_section2_host_site: 'Webseite des Hosters',
+    legal_section3_title: '3. Geistiges Eigentum',
+    legal_section3_desc: 'Die Marke Life-Track, Logos, Designelemente, Algorithmen und alle Inhalte sind urheberrechtlich geschützt. Jede unbefugte Nutzung oder Vervielfältigung ist strengstens untersagt.',
+    legal_section4_title: '4. Anwendbares Recht & Gerichtsstand',
+    legal_section4_desc: 'Dieses Impressum unterliegt französischem Recht. Für alle Streitigkeiten sind ausschließlich die zuständigen französischen Gerichte zuständig.',
+
+    // Datenschutz
+    privacy_title: 'Datenschutzerklärung & DSGVO',
+    privacy_back: 'Zurück',
+    privacy_legal_precedence_badge: 'Rechtlicher Hinweis',
+    privacy_legal_precedence_text: 'Diese Datenschutzrichtlinie entspricht der Datenschutz-Grundverordnung (DSGVO). Bei Streitigkeiten gilt die französische Fassung.',
+    privacy_sec1_title: '1. Verantwortliche Stelle',
+    privacy_sec1_desc: 'Der Schutz Ihrer Privatsphäre hat höchste Priorität. Ihre Daten werden gemäß der Datenschutz-Grundverordnung (DSGVO - EU 2016/679) verarbeitet.',
+    privacy_sec1_resp_label: 'Verantwortlicher',
+    privacy_sec1_resp_val: 'DA SILVA COSTA Léandro José EI',
+    privacy_sec1_contact_label: 'Datenschutzkontakt',
+    privacy_sec2_title: '2. Erhobene Daten & Anonymisierung',
+    privacy_sec2_desc: 'Wir wenden das Prinzip der Datenminimierung an (Art. 5 DSGVO): Es werden nur Daten verarbeitet, die für die Budgetverwaltung zwingend erforderlich sind.',
+    privacy_sec2_item1_title: 'Identität & Anmeldung',
+    privacy_sec2_item1_desc: 'E-Mail-Adresse und kryptografisch gehashtes Passwort. Ihre Zugangsdaten werden niemals an Dritte weitergegeben.',
+    privacy_sec2_item2_title: 'Ausgaben & Budgets',
+    privacy_sec2_item2_desc: 'Eingegebene oder importierte Beträge, Kategorien und Daten. Speicherung in isolierten und geschützten Umgebungen.',
+    privacy_sec2_item3_title: 'KI-Analyse (Gemini Flash)',
+    privacy_sec2_item3_desc: 'Budgetberechnungen erfolgen über vollständig anonymisierte Datenstrukturen. Die KI speichert keine Daten für Trainingszwecke.',
+    privacy_sec2_item4_title: 'Bank-Synchronisation (Plaid)',
+    privacy_sec2_item4_desc: 'Ihre Bankzugangsdaten erreichen niemals unsere Server. Plaid arbeitet im schreibgeschützten Modus (PSD2-Standard).',
+    privacy_sec3_title: '3. Sicherheit & Zertifizierte Auftragsverarbeiter',
+    privacy_sec3_desc: 'Alle Datenübertragungen sind durchgehend verschlüsselt (TLS/SSL, AES-256). Wir verkaufen NIEMALS Ihre Finanzdaten.',
+    privacy_sec3_sub1_title: 'Vercel Inc.',
+    privacy_sec3_sub1_desc: 'Sicheres Hosting für Anwendung und Infrastruktur.',
+    privacy_sec3_sub2_title: 'Stripe Inc.',
+    privacy_sec3_sub2_desc: 'PCI-DSS-zertifizierte Abwicklung von Zahlungen und Abonnements.',
+    privacy_sec3_sub3_title: 'Plaid Inc.',
+    privacy_sec3_sub3_desc: 'Sichere Banking-Integration auf Bankenniveau.',
+    privacy_sec4_title: '4. Datenspeicherung & Recht auf Vergessenwerden',
+    privacy_sec4_desc: 'Ihre Daten bleiben gespeichert, solange Ihr Konto aktiv ist. Gemäß Art. 17 DSGVO können Sie jederzeit alle Ihre Daten unwiderruflich in den Kontoeinstellungen löschen.',
+    privacy_sec5_title: '5. Ihre Rechte & Aufsichtsbehörden',
+    privacy_sec5_desc: 'Gemäß Art. 15 bis 22 DSGVO haben Sie das Recht auf Auskunft, Berichtigung, Datenübertragbarkeit und Löschung.',
+    privacy_sec5_exercise_label: 'Zur Ausübung Ihrer Rechte',
+    privacy_sec5_exercise_val: 'E-Mail an leandro.dasilva@bbox.fr (Antwort binnen maximal 30 Tagen).',
+    privacy_sec5_cnil_info: 'Bei ungelösten Beschwerden können Sie sich an die zuständige Datenschutzbehörde wenden (CNIL - www.cnil.fr).',
 
     // Common
     cancel: 'Abbrechen',
@@ -970,7 +1075,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Espacio seguro',
     pro_badge: 'PRO',
-
+    
     // Sidebar
     nav_dashboard: 'Panel de control',
     nav_pricing: 'Suscripción',
@@ -981,7 +1086,7 @@ export const translations = {
     sync_active: 'Banco Conectado',
     sync_inactive: 'Conectar mi banco',
     plaid_tooltip: 'Conexión 100% segura mediante Plaid (Solo lectura)',
-
+    
     // Dashboard Page
     dashboard_title: 'Resumen Financiero',
     dashboard_subtitle: 'Siga sus gastos y optimice su presupuesto diario',
@@ -992,10 +1097,9 @@ export const translations = {
 
     // Welcome State
     welcome_title: 'Bienvenido a Life-Track',
-    welcome_desc:
-      'Su panel de control está listo. Empiece añadiendo sus primeros gastos para que la IA pueda analizar su presupuesto.',
+    welcome_desc: 'Su panel de control está listo. Empiece añadiendo sus primeros gastos para que la IA pueda analizar su presupuesto.',
     bank_sync_pro: 'Sincro bancaria (Pro)',
-
+    
     // Stats Cards & Dashboard
     total_spent: 'Gastos de este mes',
     monthly_budget: 'Presupuesto mensual',
@@ -1019,7 +1123,7 @@ export const translations = {
     activity_30d: 'Actividad (30D)',
     breakdown_title: 'Desglose',
     by_category: 'Por categoría de gastos',
-
+    
     // AI & Advice
     ai_advisor_title: 'Asesor Financiero IA',
     ai_advisor_badge: 'INTELIGENCIA ARTIFICIAL',
@@ -1030,24 +1134,19 @@ export const translations = {
     analyzing_transactions: 'Analizando sus transacciones...',
     calculating_savings: 'Calculando ahorros potenciales con Gemini Flash',
     analysis_complete: '¡Análisis completado!',
-    analysis_complete_desc:
-      'Sus nuevos consejos de ahorro están disponibles justo abajo.',
+    analysis_complete_desc: 'Sus nuevos consejos de ahorro están disponibles justo abajo.',
     info_label: 'Información',
-    ai_ready_desc:
-      'La IA está lista para identificar ahorros en sus contratos.',
-    add_more_expenses_desc:
-      'Añada algunas dazas más para permitir un análisis preciso.',
+    ai_ready_desc: 'La IA está lista para identificar ahorros en sus contratos.',
+    add_more_expenses_desc: 'Añada algunas dazas más para permitir un análisis preciso.',
     calculating_btn: 'Calculando...',
     activate_pro_coach: 'Activar Coach Pro',
     launch_ai_audit: 'Iniciar Auditoría IA',
-    ai_disclaimer:
-      'Recomendaciones generadas por IA solo con fines informativos. No constituye asesoramiento financiero personalizado.',
+    ai_disclaimer: 'Recomendaciones generadas por IA solo con fines informativos. No constituye asesoramiento financiero personalizado.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Gasto',
     add_expense_dialog_title: 'Añadir un gasto',
-    add_expense_dialog_desc:
-      'Rellene los detalles a continuación. Haga clic en guardar al finalizar.',
+    add_expense_dialog_desc: 'Rellene los detalles a continuación. Haga clic en guardar al finalizar.',
     edit_expense: 'Editar gasto',
     new_expense: 'Nuevo gasto',
     description: 'Descripción',
@@ -1076,7 +1175,7 @@ export const translations = {
     syncing_btn: 'Sincronizando...',
     disconnect_btn: 'Desconectar',
     disconnecting_btn: 'Desconectando...',
-
+    
     // Settings Page
     settings_title: 'Configuración de la cuenta',
     settings_subtitle: 'Gestione su seguridad y preferencias',
@@ -1086,10 +1185,8 @@ export const translations = {
     security_title: 'Seguridad de la cuenta',
     security: 'Seguridad',
     two_factor_title: 'Autenticación de dos factores (2FA)',
-    two_factor_desc:
-      'Asegure su cuenta con un código enviado por correo electrónico',
-    two_factor_code_email:
-      'Código de seguridad enviado por correo electrónico.',
+    two_factor_desc: 'Asegure su cuenta con un código enviado por correo electrónico',
+    two_factor_code_email: 'Código de seguridad enviado por correo electrónico.',
     enabled: 'Activado',
     disabled: 'Desactivado',
     two_factor_enabled_toast: '2FA activado',
@@ -1113,12 +1210,10 @@ export const translations = {
     danger_zone_desc: 'Acciones irreversibles en su cuenta',
     delete_account_title: 'Eliminar mi cuenta',
     delete_account_desc: 'Elimina permanentemente su cuenta y todos sus datos',
-    delete_account_warning:
-      'Esta acción no se puede deshacer. Todos sus gastos, auditorías de IA y conexiones bancarias se eliminarán definitivamente.',
+    delete_account_warning: 'Esta acción no se puede deshacer. Todos sus gastos, auditorías de IA y conexiones bancarias se eliminarán definitivamente.',
     delete_account_btn: 'Eliminar mi cuenta',
     delete_account_confirm_title: '¿Está absolutamente seguro?',
-    delete_account_confirm_desc:
-      'Por favor, escriba "ELIMINAR" abajo para confirmar la eliminación definitiva.',
+    delete_account_confirm_desc: 'Por favor, escriba "ELIMINAR" abajo para confirmar la eliminación definitiva.',
     delete_account_confirm_input_placeholder: 'Escriba ELIMINAR para confirmar',
     delete_account_confirm_keyword: 'ELIMINAR',
     deleting_account: 'Eliminando...',
@@ -1134,7 +1229,7 @@ export const translations = {
     contact_send_btn: 'Enviar mensaje',
     contact_success_toast: '¡Mensaje enviado!',
     contact_error_toast: 'Error al enviar.',
-
+    
     // Pricing Page
     pricing_title: 'Pase al siguiente nivel',
     pricing_subtitle: 'Desbloquee todo el potencial de su gestión financiera',
@@ -1146,10 +1241,8 @@ export const translations = {
     current_plan: 'Su plan actual',
     pro_member: 'Miembro Pro',
     subscription_active: 'Su suscripción está activa',
-    active_desc:
-      'Actualmente disfruta de todas las funciones ilimitadas de Life-Track.',
-    stripe_portal_desc:
-      'Para modificar su método de pago, consultar facturas o gestionar su suscripción, acceda a su área segura de Stripe.',
+    active_desc: 'Actualmente disfruta de todas las funciones ilimitadas de Life-Track.',
+    stripe_portal_desc: 'Para modificar su método de pago, consultar facturas o gestionar su suscripción, acceda a su área segura de Stripe.',
     manage_subscription: 'Gestionar mi suscripción',
     monthly: 'Mensual',
     annual: 'Anual',
@@ -1162,47 +1255,43 @@ export const translations = {
     export_csv_pdf: 'Exportación CSV/PDF',
     priority_support: 'Soporte prioritario',
     best_value: 'Mejor oferta',
-
+    
     // Premium features list
     feature_bank_sync: 'Sincronización bancaria automática e ilimitada',
     feature_ai_advice: 'Asesor financiero IA personalizado',
-    feature_unlimited_export:
-      'Exportaciones CSV e informes detallados ilimitados',
+    feature_unlimited_export: 'Exportaciones CSV e informes detallados ilimitados',
     feature_multi_currency: 'Gestión multimoneda y multicuenta',
     feature_priority_support: 'Atención al cliente prioritaria 24/7',
-
+    
     // Landing Page
     landing_hero_title_1: 'Tu dinero merecía',
     landing_hero_title_2: 'una mejor visión',
-    landing_hero_subtitle:
-      'Life-Track utiliza IA para analizar tus hábitos e identificar cada euro que puedes ahorrar',
+    landing_hero_subtitle: 'Life-Track utiliza IA para analizar tus hábitos e identificar cada euro que puedes ahorrar',
     landing_hero_cta: 'Empezar a ahorrar',
     landing_login_btn: 'Iniciar sesión',
     landing_trust_title: 'Por qué confiar en nosotros',
     landing_security_title: 'Seguridad Bancaria',
-    landing_security_desc:
-      'Tus credenciales nunca pasan por nuestros servidores. Utilizamos cifrado de nivel militar (AES-256) para proteger tus datos.',
+    landing_security_desc: 'Tus credenciales nunca pasan por nuestros servidores. Utilizamos cifrado de nivel militar (AES-256) para proteger tus datos.',
     landing_privacy_title: 'Privacidad',
-    landing_privacy_desc:
-      'Cero reventa de datos. Tu vida financiera es privada y seguirá siéndolo.',
+    landing_privacy_desc: 'Cero reventa de datos. Tu vida financiera es privada y seguirá siéndolo.',
     landing_sovereignty_title: 'Soberanía Europea',
-    landing_sovereignty_desc:
-      'Todos tus datos se almacenan en servidores seguros en Europa. Cumplimiento total del RGPD para una tranquilidad absoluta.',
+    landing_sovereignty_desc: 'Todos tus datos se almacenan en servidores seguros en Europa. Cumplimiento total del RGPD para una tranquilidad absoluta.',
     landing_faq_title: 'Preguntas frecuentes',
     landing_faq_q_sync: '¿Cómo funciona la sincronización con mi banco?',
-    landing_faq_a_sync:
-      'Life-Track utiliza Plaid, el estándar mundial de seguridad utilizado por millones de usuarios. Tu conexión es de solo lectura: la IA analiza tus transacciones para identificar ahorros, pero es técnicamente imposible realizar transferencias o modificar tus cuentas.',
+    landing_faq_a_sync: 'Life-Track utiliza Plaid, el estándar mundial de seguridad utilizado por millones de usuarios. Tu conexión es de solo lectura: la IA analiza tus transacciones para identificar ahorros, pero es técnicamente imposible realizar transferencias o modificar tus cuentas.',
     landing_faq_q1: '¿Puede Life-Track hacer transferencias desde mi cuenta?',
-    landing_faq_a1:
-      'En absoluto. Utilizamos Plaid, el estándar mundial de seguridad bancaria. Tu conexión es de solo lectura: podemos ver las transacciones para analizarlas, pero es técnicamente imposible mover tu dinero.',
+    landing_faq_a1: 'En absoluto. Utilizamos Plaid, el estándar mundial de seguridad bancaria. Tu conexión es de solo lectura: podemos ver las transacciones para analizarlas, pero es técnicamente imposible mover tu dinero.',
     landing_faq_q2: '¿La IA tiene acceso a mi identidad real?',
-    landing_faq_a2:
-      'No. Antes de ser analizados por Gemini, tus datos son anonimizados. La IA ve importes y conceptos (ej: Starbucks 5€), pero nunca tu nombre, dirección o número de cuenta.',
+    landing_faq_a2: 'No. Antes de ser analizados por Gemini, tus datos son anonimizados. La IA ve importes y conceptos (ej: Starbucks 5€), pero nunca tu nombre, dirección o número de cuenta.',
     landing_faq_q3: '¿Puedo cancelar mi suscripción fácilmente?',
-    landing_faq_a3:
-      'Sí, en cualquier momento y con un solo clic desde tu Panel. No hay ningún compromiso. Una vez cancelado, conservas el acceso Premium hasta el final del periodo pagado.',
+    landing_faq_a3: 'Sí, en cualquier momento y con un solo clic desde tu Panel. No hay ningún compromiso. Una vez cancelado, conservas el acceso Premium hasta el final del periodo pagado.',
     landing_footer_rights: 'Todos los derechos reservados.',
-    landing_footer_cgv: 'Términos y Aviso Legal',
+    landing_footer_cgv: 'CGV',
+    landing_footer_privacy: 'Privacidad',
+    landing_footer_legal: 'Aviso Legal',
+    nav_cgv: 'CGV',
+    nav_privacy: 'Privacidad',
+    nav_mentions_legales: 'Aviso Legal',
 
     // Authentication
     auth_login_title: 'Iniciar sesión',
@@ -1222,12 +1311,10 @@ export const translations = {
     auth_create_account: 'Crear una cuenta',
     auth_back_home: 'Volver al inicio',
     auth_2fa_verification_title: 'Verificación',
-    auth_2fa_verification_desc:
-      'Introduzca el código recibido por correo electrónico.',
+    auth_2fa_verification_desc: 'Introduzca el código recibido por correo electrónico.',
     auth_security_code: 'Código de seguridad',
     auth_verifying_code: 'Verificando...',
-    auth_code_sent_toast:
-      'Se ha enviado un código de seguridad por correo electrónico.',
+    auth_code_sent_toast: 'Se ha enviado un código de seguridad por correo electrónico.',
     auth_register_title: 'Crear una cuenta',
     auth_register_desc: 'Introduzca su información para unirse a Life-Track',
     auth_name_label: 'Nombre completo',
@@ -1236,8 +1323,7 @@ export const translations = {
     auth_creating_account: 'Creando cuenta...',
     auth_already_have_account: '¿Ya tiene una cuenta?',
     auth_reset_title: '¿Olvidó su contraseña?',
-    auth_reset_desc:
-      'Introduzca su correo electrónico para recibir un enlace de restablecimiento.',
+    auth_reset_desc: 'Introduzca su correo electrónico para recibir un enlace de restablecimiento.',
     auth_send_link_btn: 'Enviar enlace',
     auth_sending: 'Enviando...',
     auth_back_to_login: 'Volver a iniciar sesión',
@@ -1247,36 +1333,89 @@ export const translations = {
     auth_updating: 'Actualizando...',
 
     // Terms waiver & CGV
-    pricing_terms_agreement:
-      'Acepto los Términos y Condiciones y solicito la ejecución inmediata del servicio digital. De conformidad con la normativa de consumo (Directiva 2011/83/UE), renuncio expresamente a mi derecho de desistimiento de 14 días para acceder inmediatamente a las funciones Premium.',
+    pricing_terms_agreement: 'Acepto los Términos y Condiciones y solicito la ejecución inmediata del servicio digital. De conformidad con la normativa de consumo (Directiva 2011/83/UE), renuncio expresamente a mi derecho de desistimiento de 14 días para acceder inmediatamente a las funciones Premium.',
     cgv_title: 'Términos y Condiciones Generales (CGV)',
     cgv_back: 'Volver',
     cgv_legal_precedence_badge: 'Aviso Legal',
-    cgv_legal_precedence_text:
-      'Los presentes Términos y Condiciones se rigen por la legislación francesa. La versión en lengua francesa constituye la versión contractual oficial y prevalecerá sobre cualquier traducción en caso de discrepancia o litigio.',
+    cgv_legal_precedence_text: 'Los presentes Términos y Condiciones se rigen por la legislación francesa. La versión en lengua francesa constituye la versión contractual oficial y prevalecerá sobre cualquier traducción en caso de discrepancia o litigio.',
     cgv_section1_title: '1. Objeto',
-    cgv_section1_desc:
-      'Las presentes CGV rigen la suscripción a los planes «Premium» de la aplicación Life-Track, editada por DA SILVA COSTA Léandro José EI.',
+    cgv_section1_desc: 'Las presentes CGV rigen la suscripción a los planes «Premium» de la aplicación Life-Track, editada por DA SILVA COSTA Léandro José EI.',
     cgv_section2_title: '2. Servicios y Funcionalidades',
-    cgv_section2_desc:
-      'La suscripción Premium brinda acceso a análisis financieros por Inteligencia Artificial (Gemini), sincronización bancaria automática segura (Plaid), gráficos avanzados, exportaciones ilimitadas y soporte prioritario.',
+    cgv_section2_desc: 'La suscripción Premium brinda acceso a análisis financieros por Inteligencia Artificial (Gemini), sincronización bancaria automática segura (Plaid), gráficos avanzados, exportaciones ilimitadas y soporte prioritario.',
     cgv_section3_title: '3. Tarifas y Pago',
-    cgv_section3_desc:
-      'La tarifa es de 9,99 € IVA incl. al mes (sin permanencia) o 99,00 € IVA incl. al año. El procesamiento de pagos está asegurado y certificado PCI-DSS por Stripe.',
+    cgv_section3_desc: 'La tarifa es de 9,99 € IVA incl. al mes (sin permanencia) o 99,00 € IVA incl. al año. El procesamiento de pagos está asegurado y certificado PCI-DSS por Stripe.',
     cgv_section4_title: '4. Derecho de desistimiento y Renuncia expresa',
-    cgv_section4_desc:
-      'De conformidad con el artículo L.221-28 13° del Código de Consumo francés y la Directiva europea 2011/83/UE sobre contenidos y servicios digitales, el cliente solicita expresamente la ejecución inmediata del servicio tras el pago y renuncia expresamente a su derecho de desistimiento de 14 días.',
+    cgv_section4_desc: 'De conformidad con el artículo L.221-28 13° del Código de Consumo francés y la Directiva europea 2011/83/UE sobre contenidos y servicios digitales, el cliente solicita expresamente la ejecución inmediata del servicio tras el pago y renuncia expresamente a su derecho de desistimiento de 14 días.',
     cgv_section5_title: '5. Responsabilidad y Advertencia sobre la IA',
-    cgv_section5_desc:
-      'Life-Track proporciona análisis basados en Inteligencia Artificial. Esta información se ofrece exclusivamente a título orientativo y no constituye asesoramiento financiero, fiscal, jurídico o contable. El usuario es el único responsable de sus decisiones financieras.',
-    cgv_section5_sub:
-      'El editor no se responsabiliza de los daños directos o indirectos derivados de la interpretación de los análisis de la IA.',
+    cgv_section5_desc: 'Life-Track proporciona análisis basados en Inteligencia Artificial. Esta información se ofrece exclusivamente a título orientativo y no constituye asesoramiento financiero, fiscal, jurídico o contable. El usuario es el único responsable de sus decisiones financieras.',
+    cgv_section5_sub: 'El editor no se responsabiliza de los daños directos o indirectos derivados de la interpretación de los análisis de la IA.',
     cgv_section6_title: '6. Datos personales y Privacidad (RGPD)',
-    cgv_section6_desc:
-      'Sus datos se tratan con estricto cumplimiento del RGPD. Están encriptados (AES-256) y nunca se venden. Tiene derecho permanente de acceso, rectificación y supresión de sus datos.',
+    cgv_section6_desc: 'Sus datos se tratan con estricto cumplimiento del RGPD. Están encriptados (AES-256) y nunca se venden. Tiene derecho permanente de acceso, rectificación y supresión de sus datos.',
     cgv_section7_title: '7. Ley aplicable y Jurisdicción competente',
-    cgv_section7_desc:
-      'Las presentes condiciones se rigen exclusivamente por la legislación francesa. A falta de acuerdo amistoso, cualquier litigio se someterá a los tribunaux franceses competentes.',
+    cgv_section7_desc: 'Las presentes condiciones se rigen exclusivamente por la legislación francesa. A falta de acuerdo amistoso, cualquier litigio se someterá a los tribunaux franceses competentes.',
+
+    // Legal Notices
+    legal_title: 'Aviso Legal',
+    legal_back: 'Volver',
+    legal_precedence_badge: 'Información Legal',
+    legal_precedence_text: 'Este servicio está editado en Francia y sujeto a la legislación francesa. La versión en francés del aviso legal es la que prevalece.',
+    legal_section1_title: '1. Titular de la aplicación',
+    legal_section1_name: 'Denominación / Titular',
+    legal_section1_name_val: 'DA SILVA COSTA Léandro José EI',
+    legal_section1_address: 'Domicilio social',
+    legal_section1_address_val: '3 B Rue de Bailly - 76190 Yvetot, Francia',
+    legal_section1_siret: 'Registro / SIRET',
+    legal_section1_siret_val: 'En trámite de registro / [PENDIENTE]',
+    legal_section1_email: 'Contacto por correo electrónico',
+    legal_section1_email_val: 'leandro.dasilva@bbox.fr',
+    legal_section1_dir: 'Director de publicación',
+    legal_section1_dir_val: 'DA SILVA COSTA Léandro José',
+    legal_section2_title: '2. Alojamiento web',
+    legal_section2_host: 'Proveedor de alojamiento',
+    legal_section2_host_val: 'Vercel Inc.',
+    legal_section2_host_address: 'Dirección del alojamiento',
+    legal_section2_host_address_val: '440 N Barranca Ave #4133, Covina, CA 91723, Estados Unidos',
+    legal_section2_host_site: 'Sitio web del alojamiento',
+    legal_section3_title: '3. Propiedad intelectual',
+    legal_section3_desc: 'La marca Life-Track, los logotipos, el diseño gráfico, los algoritmos y todo el contenido de la aplicación están protegidos por derechos de autor y propiedad intelectual. Queda prohibida cualquier reproducción no autorizada.',
+    legal_section4_title: '4. Ley aplicable y Jurisdicción',
+    legal_section4_desc: 'El presente aviso legal se rige por la legislación francesa. Cualquier litigio se someterá a los tribunales franceses competentes.',
+
+    // Privacidad
+    privacy_title: 'Política de Privacidad y RGPD',
+    privacy_back: 'Volver',
+    privacy_legal_precedence_badge: 'Información Legal',
+    privacy_legal_precedence_text: 'Esta política de protección de datos cumple con el Reglamento General de Protección de Datos (RGPD). En caso de litigio, prevalece la versión francesa.',
+    privacy_sec1_title: '1. Responsable del Tratamiento',
+    privacy_sec1_desc: 'La protección de su privacidad es una prioridad absoluta. Sus datos personales se procesan de conformidad con el RGPD (Reglamento UE 2016/679).',
+    privacy_sec1_resp_label: 'Responsable',
+    privacy_sec1_resp_val: 'DA SILVA COSTA Léandro José EI',
+    privacy_sec1_contact_label: 'Contacto de Privacidad',
+    privacy_sec2_title: '2. Datos Recopilados y Anonimización',
+    privacy_sec2_desc: 'Aplicamos el principio de minimización de datos (Art. 5 RGPD): solo se procesan los datos estrictamente necesarios para su gestión presupuestaria.',
+    privacy_sec2_item1_title: 'Identidad y Acceso',
+    privacy_sec2_item1_desc: 'Correo electrónico y contraseña con cifrado seguro. Sus credenciales nunca se comparten con terceros.',
+    privacy_sec2_item2_title: 'Gastos y Presupuestos',
+    privacy_sec2_item2_desc: 'Importes, categorías, fechas y conceptos. Estos datos se almacenan en entornos aislados y seguros.',
+    privacy_sec2_item3_title: 'Análisis de IA (Gemini Flash)',
+    privacy_sec2_item3_desc: 'Los cálculos de optimización se realizan sobre datos estrictamente anonimizados (sin identidades). La IA no almacena datos de entrenamiento.',
+    privacy_sec2_item4_title: 'Sincronización Bancaria (Plaid)',
+    privacy_sec2_item4_desc: 'Sus credenciales bancarias nunca tocan nuestros servidores. Plaid opera en modo solo lectura seguro (normativa europea PSD2).',
+    privacy_sec3_title: '3. Seguridad y Proveedores Certificados',
+    privacy_sec3_desc: 'Todas las comunicaciones están cifradas de extremo a extremo (TLS/SSL, AES-256). NUNCA venderemos sus datos financieros a terceros.',
+    privacy_sec3_sub1_title: 'Vercel Inc.',
+    privacy_sec3_sub1_desc: 'Alojamiento seguro para la aplicación e infraestructura.',
+    privacy_sec3_sub2_title: 'Stripe Inc.',
+    privacy_sec3_sub2_desc: 'Procesamiento de pagos y suscripciones certificado PCI-DSS.',
+    privacy_sec3_sub3_title: 'Plaid Inc.',
+    privacy_sec3_sub3_desc: 'Agregación bancaria cifrada con estándares bancarios.',
+    privacy_sec4_title: '4. Conservación de Datos y Derecho al Olvido',
+    privacy_sec4_desc: 'Sus datos se conservan mientras su cuenta permanezca activa. Conforme al derecho de supresión (Art. 17 RGPD), puede eliminar definitivamente todos sus datos desde Ajustes.',
+    privacy_sec5_title: '5. Sus Derechos y Autoridades (CNIL)',
+    privacy_sec5_desc: 'En virtud de los artículos 15 a 22 del RGPD, tiene derecho a acceder, rectificar, portar y eliminar sus datos personales.',
+    privacy_sec5_exercise_label: 'Para ejercer sus derechos',
+    privacy_sec5_exercise_val: 'Escriba a leandro.dasilva@bbox.fr (respuesta garantizada en menos de 30 días).',
+    privacy_sec5_cnil_info: 'En caso de litigio no resuelto, tiene derecho a presentar una reclamación ante la autoridad de protección de datos competente (CNIL - www.cnil.fr).',
 
     // Common
     cancel: 'Cancelar',
@@ -1290,7 +1429,7 @@ export const translations = {
     // Header & Layout
     secure_space: 'Espaço seguro',
     pro_badge: 'PRO',
-
+    
     // Sidebar
     nav_dashboard: 'Painel principal',
     nav_pricing: 'Subscrição',
@@ -1301,7 +1440,7 @@ export const translations = {
     sync_active: 'Banco Conectado',
     sync_inactive: 'Conectar banco',
     plaid_tooltip: 'Ligação 100% segura via Plaid (Apenas leitura)',
-
+    
     // Dashboard Page
     dashboard_title: 'Resumo Financeiro',
     dashboard_subtitle: 'Acompanhe as suas despesas e otimize o seu orçamento',
@@ -1312,10 +1451,9 @@ export const translations = {
 
     // Welcome State
     welcome_title: 'Bem-vindo ao Life-Track',
-    welcome_desc:
-      'O seu painel principal está pronto. Comece por adicionar as suas primeiras despesas para que a IA possa analisar o seu orçamento.',
+    welcome_desc: 'O seu painel principal está pronto. Comece por adicionar as suas primeiras despesas para que a IA possa analisar o seu orçamento.',
     bank_sync_pro: 'Sincro bancária (Pro)',
-
+    
     // Stats Cards & Dashboard
     total_spent: 'Despesas este mês',
     monthly_budget: 'Orçamento mensal',
@@ -1339,7 +1477,7 @@ export const translations = {
     activity_30d: 'Atividade (30D)',
     breakdown_title: 'Distribuição',
     by_category: 'Por categoria de despesas',
-
+    
     // AI & Advice
     ai_advisor_title: 'Conselheiro Financeiro IA',
     ai_advisor_badge: 'INTELIGÊNCIA ARTIFICIAL',
@@ -1350,24 +1488,19 @@ export const translations = {
     analyzing_transactions: 'A analisar as suas transações...',
     calculating_savings: 'A calcular poupanças potenciais via Gemini Flash',
     analysis_complete: 'Análise concluída!',
-    analysis_complete_desc:
-      'As suas novas dicas de poupança estão disponíveis abaixo.',
+    analysis_complete_desc: 'As suas novas dicas de poupança estão disponíveis abaixo.',
     info_label: 'Informação',
-    ai_ready_desc:
-      'A IA está pronta para identificar poupanças nos seus contratos.',
-    add_more_expenses_desc:
-      'Adicione mais algumas despesas para uma análise precisa.',
+    ai_ready_desc: 'A IA está pronta para identificar poupanças nos seus contratos.',
+    add_more_expenses_desc: 'Adicione mais algumas despesas para uma análise precisa.',
     calculating_btn: 'A calcular...',
     activate_pro_coach: 'Ativar Coach Pro',
     launch_ai_audit: 'Iniciar Auditoria IA',
-    ai_disclaimer:
-      'Recomendações geradas por IA apenas para fins informativos. Não constitui aconselhamento financeiro personalizado.',
+    ai_disclaimer: 'Recomendações geradas por IA apenas para fins informativos. Não constitui aconselhamento financeiro personalizado.',
 
     // Actions & Buttons & Forms
     expense_btn: 'Despesa',
     add_expense_dialog_title: 'Adicionar uma despesa',
-    add_expense_dialog_desc:
-      'Preencha os detalhes abaixo. Clique em guardar quando terminar.',
+    add_expense_dialog_desc: 'Preencha os detalhes abaixo. Clique em guardar quando terminar.',
     edit_expense: 'Editar despesa',
     new_expense: 'Nova despesa',
     description: 'Descrição',
@@ -1396,7 +1529,7 @@ export const translations = {
     syncing_btn: 'A sincronizar...',
     disconnect_btn: 'Desconectar',
     disconnecting_btn: 'A desligar...',
-
+    
     // Settings Page
     settings_title: 'Definições da conta',
     settings_subtitle: 'Gerencie a sua segurança e preferências',
@@ -1414,8 +1547,7 @@ export const translations = {
     two_factor_disabled_toast: '2FA desativado',
     two_factor_error_toast: 'Erro ao modificar',
     change_password_title: 'Alterar palavra-passe',
-    change_password_desc:
-      'Atualize a sua palavra-passe para proteger a sua conta',
+    change_password_desc: 'Atualize a sua palavra-passe para proteger a sua conta',
     current_password: 'Palavra-passe atual',
     current_password_placeholder: '••••••••',
     new_password: 'Nova palavra-passe',
@@ -1431,14 +1563,11 @@ export const translations = {
     danger_zone_title: 'Zona de perigo',
     danger_zone_desc: 'Ações irreversíveis na sua conta',
     delete_account_title: 'Eliminar a minha conta',
-    delete_account_desc:
-      'Elimina permanentemente a sua conta e todos os seus dados',
-    delete_account_warning:
-      'Esta ação é irreversível. Todas as suas despesas, auditorias de IA e ligações bancárias serão definitivamente eliminadas.',
+    delete_account_desc: 'Elimina permanentemente a sua conta e todos os seus dados',
+    delete_account_warning: 'Esta ação é irreversível. Todas as suas despesas, auditorias de IA e ligações bancárias serão definitivamente eliminadas.',
     delete_account_btn: 'Eliminar a minha conta',
     delete_account_confirm_title: 'Tem a certeza absoluta?',
-    delete_account_confirm_desc:
-      'Por favor, digite "ELIMINAR" abaixo para confirmar a eliminação definitiva.',
+    delete_account_confirm_desc: 'Por favor, digite "ELIMINAR" abaixo para confirmar a eliminação definitiva.',
     delete_account_confirm_input_placeholder: 'Digite ELIMINAR para confirmar',
     delete_account_confirm_keyword: 'ELIMINAR',
     deleting_account: 'A eliminar...',
@@ -1454,7 +1583,7 @@ export const translations = {
     contact_send_btn: 'Enviar mensagem',
     contact_success_toast: 'Mensagem enviada!',
     contact_error_toast: 'Falha ao enviar.',
-
+    
     // Pricing Page
     pricing_title: 'Passe para o nível seguinte',
     pricing_subtitle: 'Desbloqueie todo o potencial da sua gestão financeira',
@@ -1466,10 +1595,8 @@ export const translations = {
     current_plan: 'O seu plano atual',
     pro_member: 'Membro Pro',
     subscription_active: 'A sua subscrição está ativa',
-    active_desc:
-      'Atualmente desfruta de todas as funcionalidades ilimitadas do Life-Track.',
-    stripe_portal_desc:
-      'Para alterar o seu método de pagamento, consultar faturas ou gerir a sua subscrição, aceda à sua área segura do Stripe.',
+    active_desc: 'Atualmente desfruta de todas as funcionalidades ilimitadas do Life-Track.',
+    stripe_portal_desc: 'Para alterar o seu método de pagamento, consultar faturas ou gerir a sua subscrição, aceda à sua área segura do Stripe.',
     manage_subscription: 'Gerir a minha subscrição',
     monthly: 'Mensal',
     annual: 'Anual',
@@ -1482,47 +1609,43 @@ export const translations = {
     export_csv_pdf: 'Exportação CSV/PDF',
     priority_support: 'Suporte prioritário',
     best_value: 'Melhor oferta',
-
+    
     // Premium features list
     feature_bank_sync: 'Sincronização bancária automática e ilimitada',
     feature_ai_advice: 'Conselheiro financeiro IA personalizado',
-    feature_unlimited_export:
-      'Exportações CSV e relatórios detalhados ilimitados',
+    feature_unlimited_export: 'Exportações CSV e relatórios detalhados ilimitados',
     feature_multi_currency: 'Gestão multi-moeda e multi-conta',
     feature_priority_support: 'Apoio ao cliente prioritário 24/7',
-
+    
     // Landing Page
     landing_hero_title_1: 'O seu dinheiro merecia',
     landing_hero_title_2: 'uma melhor visão',
-    landing_hero_subtitle:
-      'O Life-Track utiliza IA para analisar os seus hábitos e identificar cada euro que pode poupar',
+    landing_hero_subtitle: 'O Life-Track utiliza IA para analisar os seus hábitos e identificar cada euro que pode poupar',
     landing_hero_cta: 'Começar a poupar',
     landing_login_btn: 'Iniciar sessão',
     landing_trust_title: 'Por que confiar em nós',
     landing_security_title: 'Segurança Bancária',
-    landing_security_desc:
-      'As suas credenciais nunca passam pelos nossos servidores. Utilizamos encriptação de nível militar (AES-256) para proteger os seus dados.',
+    landing_security_desc: 'As suas credenciais nunca passam pelos nossos servidores. Utilizamos encriptação de nível militar (AES-256) para proteger os seus dados.',
     landing_privacy_title: 'Privacidade',
-    landing_privacy_desc:
-      'Zero revenda de dados. A sua vida financeira é privada e continuará a sê-lo.',
+    landing_privacy_desc: 'Zero revenda de dados. A sua vida financeira é privada e continuará a sê-lo.',
     landing_sovereignty_title: 'Soberania Europeia',
-    landing_sovereignty_desc:
-      'Todos os seus dados são armazenados em servidores seguros na Europa. Conformidade total com o RGPD para absoluta tranquilidade.',
+    landing_sovereignty_desc: 'Todos os seus dados são armazenados em servidores seguros na Europa. Conformidade total com o RGPD para absoluta tranquilidade.',
     landing_faq_title: 'Perguntas frequentes',
     landing_faq_q_sync: 'Como funciona a sincronização com o meu banco?',
-    landing_faq_a_sync:
-      'O Life-Track utiliza o Plaid, o padrão global de segurança utilizado por milhões de utilizadores. A sua ligação é apenas de leitura: a IA analisa as transações para identificar poupanças, sendo tecnicamente impossível realizar transferências ou alterar as suas contas.',
+    landing_faq_a_sync: 'O Life-Track utiliza o Plaid, o padrão global de segurança utilizado por milhões de utilizadores. A sua ligação é apenas de leitura: a IA analisa as transações para identificar poupanças, sendo tecnicamente impossível realizar transferências ou alterar as suas contas.',
     landing_faq_q1: 'O Life-Track pode fazer transferências da minha conta?',
-    landing_faq_a1:
-      'De forma alguma. Utilizamos o Plaid, o padrão mundial de segurança bancária. A sua ligação é apenas de leitura: podemos ver as transações para as analisar, mas é tecnicamente impossível movimentar o seu dinheiro.',
+    landing_faq_a1: 'De forma alguma. Utilizamos o Plaid, o padrão mundial de segurança bancária. A sua ligação é apenas de leitura: podemos ver as transações para as analisar, mas é tecnicamente impossível movimentar o seu dinheiro.',
     landing_faq_q2: 'A IA tem acesso à minha identidade real?',
-    landing_faq_a2:
-      'Não. Antes de serem analisados pelo Gemini, os seus dados são anonimizados. A IA vê valores e descrições (ex: Starbucks 5€), mas nunca o seu nome, morada ou número de conta.',
+    landing_faq_a2: 'Não. Antes de serem analisados pelo Gemini, os seus dados são anonimizados. A IA vê valores e descrições (ex: Starbucks 5€), mas nunca o seu nome, morada ou número de conta.',
     landing_faq_q3: 'Posso cancelar a minha subscrição facilmente?',
-    landing_faq_a3:
-      'Sim, a qualquer momento e com um clique a partir do seu Painel. Não há fidelização. Após o cancelamento, mantém o acesso Premium até ao final do período pago.',
+    landing_faq_a3: 'Sim, a qualquer momento e com um clique a partir do seu Painel. Não há fidelização. Após o cancelamento, mantém o acesso Premium até ao final do período pago.',
     landing_footer_rights: 'Todos os direitos reservados.',
-    landing_footer_cgv: 'Termos e Aviso Legal',
+    landing_footer_cgv: 'CGV',
+    landing_footer_privacy: 'Privacidade',
+    landing_footer_legal: 'Aviso Legal',
+    nav_cgv: 'CGV',
+    nav_privacy: 'Privacidade',
+    nav_mentions_legales: 'Aviso Legal',
 
     // Authentication
     auth_login_title: 'Iniciar sessão',
@@ -1547,8 +1670,7 @@ export const translations = {
     auth_verifying_code: 'A verificar...',
     auth_code_sent_toast: 'Um código de segurança foi enviado por email.',
     auth_register_title: 'Criar uma conta',
-    auth_register_desc:
-      'Introduza as suas informações para se juntar ao Life-Track',
+    auth_register_desc: 'Introduza as suas informações para se juntar ao Life-Track',
     auth_name_label: 'Nome completo',
     auth_name_placeholder: 'João Silva',
     auth_register_btn: 'Registar',
@@ -1565,36 +1687,89 @@ export const translations = {
     auth_updating: 'A atualizar...',
 
     // Terms waiver & CGV
-    pricing_terms_agreement:
-      'Aceito os Termos e Condições e solicito o fornecimento imediato do serviço digital. Em conformidade com a regulamentação do consumidor (Diretiva 2011/83/UE), renuncio expressamente ao meu direito de livre resolução de 14 dias para aceder de imediato às funcionalidades Premium.',
+    pricing_terms_agreement: 'Aceito os Termos e Condições e solicito o fornecimento imediato do serviço digital. Em conformidade com a regulamentação do consumidor (Diretiva 2011/83/UE), renuncio expressamente ao meu direito de livre resolução de 14 dias para aceder de imediato às funcionalidades Premium.',
     cgv_title: 'Termos e Condições Gerais de Venda (CGV)',
     cgv_back: 'Voltar',
     cgv_legal_precedence_badge: 'Aviso Legal',
-    cgv_legal_precedence_text:
-      'Os presentes Termos e Condições Gerais são regidos pela legislação francesa. A versão em língua francesa constitui a versão contratual oficial e prevalece sobre qualquer tradução em caso de discrepância ou litígio.',
+    cgv_legal_precedence_text: 'Os presentes Termos e Condições Gerais são regidos pela legislação francesa. A versão em língua francesa constitui a versão contratual oficial e prevalece sobre qualquer tradução em caso de discrepância ou litígio.',
     cgv_section1_title: '1. Objeto',
-    cgv_section1_desc:
-      'As presentes CGV regulam a subscrição dos planos «Premium» da aplicação Life-Track, editada por DA SILVA COSTA Léandro José EI.',
+    cgv_section1_desc: 'As presentes CGV regulam a subscrição dos planos «Premium» da aplicação Life-Track, editada por DA SILVA COSTA Léandro José EI.',
     cgv_section2_title: '2. Serviços e Funcionalidades',
-    cgv_section2_desc:
-      'A subscrição Premium concede acesso a análises financeiras por Inteligência Artificial (Gemini), sincronização bancária automática e segura (Plaid), gráficos avançados, exportações ilimitadas e suporte prioritário.',
+    cgv_section2_desc: 'A subscrição Premium concede acesso a análises financeiras por Inteligência Artificial (Gemini), sincronização bancária automática e segura (Plaid), gráficos avançados, exportações ilimitadas e suporte prioritário.',
     cgv_section3_title: '3. Tarifas e Pagamento',
-    cgv_section3_desc:
-      'O valor é de 9,99 € c/ IVA por mês (sem fidelização) ou 99,00 € c/ IVA por ano. O processamento de pagamentos é seguro e certificado PCI-DSS através do Stripe.',
+    cgv_section3_desc: 'O valor é de 9,99 € c/ IVA por mês (sem fidelização) ou 99,00 € c/ IVA por ano. O processamento de pagamentos é seguro e certificado PCI-DSS através do Stripe.',
     cgv_section4_title: '4. Direito de livre resolução e Renúncia expressa',
-    cgv_section4_desc:
-      'De acordo com o artigo L.221-28 13° do Código do Consumo francês e a Diretiva europeia 2011/83/UE sobre conteúdos e serviços digitais, o cliente solicita expressamente a execução imediata do serviço após o pagamento e renuncia expressamente ao seu direito de livre resolução de 14 dias para aceder instantaneamente a todas as ferramentas e IA.',
+    cgv_section4_desc: 'De acordo com o artigo L.221-28 13° do Código do Consumo francês e a Diretiva europeia 2011/83/UE sobre conteúdos e serviços digitais, o cliente solicita expressamente a execução imediata do serviço após o pagamento e renuncia expressamente ao seu direito de livre resolução de 14 dias para aceder instantaneamente a todas as ferramentas e IA.',
     cgv_section5_title: '5. Responsabilidade e Isenção de IA',
-    cgv_section5_desc:
-      'O Life-Track fornece análises geradas por Inteligência Artificial a título meramente informativo. Não constituem aconselhamento financeiro, fiscal, jurídico ou contabilístico. O utilizador permanece o único responsável pelas suas decisões.',
-    cgv_section5_sub:
-      'O editor declina qualquer responsabilidade por eventuais perdas diretas ou indiretas decorrentes da interpretação das análises da IA.',
+    cgv_section5_desc: 'O Life-Track fornece análises geradas por Inteligência Artificial a título meramente informativo. Não constituem aconselhamento financeiro, fiscal, jurídico ou contabilístico. O utilizador permanece o único responsável pelas suas decisões.',
+    cgv_section5_sub: 'O editor declina qualquer responsabilidade por eventuais perdas diretas ou indiretas decorrentes da interpretação das análises da IA.',
     cgv_section6_title: '6. Proteção de Dados Pessoais (RGPD)',
-    cgv_section6_desc:
-      'Os seus dados são tratados em estrita conformidade com o RGPD. São encriptados (AES-256) e nunca são vendidos. Tem total direito de acesso, retificação e eliminação.',
+    cgv_section6_desc: 'Os seus dados são tratados em estrita conformidade com o RGPD. São encriptados (AES-256) e nunca são vendidos. Tem total direito de acesso, retificação e eliminação.',
     cgv_section7_title: '7. Legislação Aplicável e Jurisdição Competente',
-    cgv_section7_desc:
-      'As presentes condições são regidas exclusivamente pela legislação francesa. Na falta de resolução amigável, qualquer litígio será submetido aos tribunais franceses competentes.',
+    cgv_section7_desc: 'As presentes condições são regidas exclusivamente pela legislação francesa. Na falta de resolução amigável, qualquer litígio será submetido aos tribunais franceses competentes.',
+
+    // Legal Notices
+    legal_title: 'Aviso Legal',
+    legal_back: 'Volver',
+    legal_precedence_badge: 'Informação Jurídica',
+    legal_precedence_text: 'Este serviço é editado em França e está sujeito à legislação francesa. A versão em língua francesa do aviso legal prevalece.',
+    legal_section1_title: '1. Titular da aplicação',
+    legal_section1_name: 'Denominação / Titular',
+    legal_section1_name_val: 'DA SILVA COSTA Léandro José EI',
+    legal_section1_address: 'Sede social',
+    legal_section1_address_val: '3 B Rue de Bailly - 76190 Yvetot, França',
+    legal_section1_siret: 'Registo / SIRET',
+    legal_section1_siret_val: 'Em processo de registo / [PENDENTE]',
+    legal_section1_email: 'Contacto por email',
+    legal_section1_email_val: 'leandro.dasilva@bbox.fr',
+    legal_section1_dir: 'Diretor de publicação',
+    legal_section1_dir_val: 'DA SILVA COSTA Léandro José',
+    legal_section2_title: '2. Alojamento web',
+    legal_section2_host: 'Alojamento principal',
+    legal_section2_host_val: 'Vercel Inc.',
+    legal_section2_host_address: 'Endereço do alojamento',
+    legal_section2_host_address_val: '440 N Barranca Ave #4133, Covina, CA 91723, Estados Unidos',
+    legal_section2_host_site: 'Website do alojamento',
+    legal_section3_title: '3. Propriedade intelectual',
+    legal_section3_desc: 'A marca Life-Track, os logótipos, a identidade visual, os algoritmos e todos os conteúdos estão protegidos por direitos de autor e propriedade intelectual. Qualquer reprodução não autorizada é estritamente proibida.',
+    legal_section4_title: '4. Legislação Aplicável e Jurisdição',
+    legal_section4_desc: 'O presente aviso legal é regido pela legislação francesa. Qualquer litígio será submetido aos tribunais franceses competentes.',
+
+    // Privacidade
+    privacy_title: 'Política de Privacidade e RGPD',
+    privacy_back: 'Voltar',
+    privacy_legal_precedence_badge: 'Informação Legal',
+    privacy_legal_precedence_text: 'Esta política de proteção de dados está em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD). Em caso de litígio, prevalece a versão em francês.',
+    privacy_sec1_title: '1. Responsável pelo Tratamento',
+    privacy_sec1_desc: 'A proteção da sua privacidade é uma prioridade absoluta. Os seus dados pessoais são tratados em conformidade com o RGPD (Regulamento UE 2016/679).',
+    privacy_sec1_resp_label: 'Responsável',
+    privacy_sec1_resp_val: 'DA SILVA COSTA Léandro José EI',
+    privacy_sec1_contact_label: 'Contacto de Privacidade',
+    privacy_sec2_title: '2. Dados Recolhidos e Anonimização',
+    privacy_sec2_desc: 'Aplicamos o princípio da minimização de dados (Art. 5 RGPD): apenas os dados estritamente necessários para a gestão orçamental são tratados.',
+    privacy_sec2_item1_title: 'Identidade e Acesso',
+    privacy_sec2_item1_desc: 'Endereço de email e palavra-passe com hash criptográfico. As suas credenciais nunca são partilhadas com terceiros.',
+    privacy_sec2_item2_title: 'Despesas e Orçamentos',
+    privacy_sec2_item2_desc: 'Montantes, categorias, datas e descrições. Estes dados são armazenados em ambientes isolados e seguros.',
+    privacy_sec2_item3_title: 'Análise de IA (Gemini Flash)',
+    privacy_sec2_item3_desc: 'Os cálculos de otimização são realizados em dados estritamente anonimizados (sem identidades). A IA não armazena dados para treino.',
+    privacy_sec2_item4_title: 'Sincronização Bancária (Plaid)',
+    privacy_sec2_item4_desc: 'As suas credenciais bancárias nunca passam pelos nossos servidores. O Plaid opera em modo de leitura seguro (norma europeia DSP2).',
+    privacy_sec3_title: '3. Segurança e Subcontratantes Certificados',
+    privacy_sec3_desc: 'Todas as comunicações são encriptadas de ponta a ponta (TLS/SSL, AES-256). NUNCA venderemos os seus dados financeiros a terceiros.',
+    privacy_sec3_sub1_title: 'Vercel Inc.',
+    privacy_sec3_sub1_desc: 'Alojamento seguro para a aplicação e infraestrutura.',
+    privacy_sec3_sub2_title: 'Stripe Inc.',
+    privacy_sec3_sub2_desc: 'Processamento de pagamentos e subscrições certificado PCI-DSS.',
+    privacy_sec3_sub3_title: 'Plaid Inc.',
+    privacy_sec3_sub3_desc: 'Agregação bancária encriptada de padrão bancário.',
+    privacy_sec4_title: '4. Conservação de Dados e Direito ao Esquecimento',
+    privacy_sec4_desc: 'Os seus dados são mantidos enquanto a sua conta permanecer ativa. Sob o direito ao apagamento (Art. 17 RGPD), pode eliminar definitivamente todos os seus dados nas Definições.',
+    privacy_sec5_title: '5. Os Seus Direitos e Contacto (CNIL)',
+    privacy_sec5_desc: 'Nos termos dos artigos 15 a 22 do RGPD, tem o direito de aceder, retificar, transferir e eliminar os seus dados pessoais.',
+    privacy_sec5_exercise_label: 'Para exercer os seus direitos',
+    privacy_sec5_exercise_val: 'Envie um email para leandro.dasilva@bbox.fr (resposta garantida em até 30 dias).',
+    privacy_sec5_cnil_info: 'Em caso de litígio não resolvido, tem o direito de apresentar uma reclamação junto da autoridade de proteção de dados competente (CNIL - www.cnil.fr).',
 
     // Common
     cancel: 'Cancelar',
