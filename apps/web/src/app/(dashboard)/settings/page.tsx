@@ -4,6 +4,8 @@ import { SecurityCard } from '@/components/security-card';
 import { SettingsLanguageCard } from '@/components/settings-language-card';
 import { SettingsHeader } from '@/components/settings-header';
 import { SettingsProfileCard } from '@/components/settings-profile-card';
+import { ChangePasswordCard } from '@/components/change-password-card';
+import { DangerZoneCard } from '@/components/danger-zone-card';
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -21,8 +23,15 @@ export default async function SettingsPage() {
       {/* Bloc Langue */}
       <SettingsLanguageCard />
 
-      {/* Bloc Sécurité */}
+      {/* Bloc Sécurité (2FA) */}
       <SecurityCard initialValue={user?.isTwoFactorEnabled || false} />
+
+      {/* Bloc Changement de mot de passe */}
+      <ChangePasswordCard />
+
+      {/* Bloc Suppression de compte */}
+      <DangerZoneCard />
     </div>
   );
 }
+

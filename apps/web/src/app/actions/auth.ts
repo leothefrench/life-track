@@ -135,3 +135,67 @@ export async function toggleTwoFactor(enabled: boolean) {
 
   revalidatePath('/settings');
 }
+
+export async function changeUserPassword(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: 'Non autorisé' };
+  }
+
+  const currentPassword = formData.get('currentPassword') as string;
+  const newPassword = formData.get('newPassword') as string;
+  const confirmPassword = formData.get('confirmPassword') as string;
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return { error: 'Tous les champs sont requis.' };
+  }
+
+  if (newPassword.length < 8) {
+    return {
+      error: 'Le nouveau mot de passe doit comporter au moins 8 caractères.',
+    };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return { error: 'Les mots de passe ne correspondent pas.' };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+  });
+
+  if (!user || !user.password) {
+    return { error: 'Utilisateur introuvable.' };
+  }
+
+  const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!passwordMatch) {
+    return { error: 'Le mot de passe actuel est incorrect.' };
+  }
+
+  const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: { password: hashedNewPassword },
+  });
+
+  return { success: true };
+}
+
+export async function deleteUserAccount() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { error: 'Non autorisé' };
+  }
+
+  const userId = session.user.id;
+
+  // Supprimer toutes les données associées en cascade
+  await prisma.insight.deleteMany({ where: { userId } });
+  await prisma.expense.deleteMany({ where: { userId } });
+  await prisma.bankConnection.deleteMany({ where: { userId } });
+  await prisma.user.delete({ where: { id: userId } });
+
+  await signOut({ redirectTo: '/login?deleted=true' });
+  return { success: true };
+}
