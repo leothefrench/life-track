@@ -19,14 +19,28 @@ export async function createLinkToken(lang: string = 'fr') {
     return { error: 'Fonctionnalité réservée aux membres Pro.' };
   }
 
-  const validLanguages = ['fr', 'en', 'es', 'de', 'pt'];
-  const language = validLanguages.includes(lang) ? lang : 'fr';
+  // Plaid supporte nativement 'fr', 'en', 'es', 'de'.
+  // Pour le portugais ('pt') ou tout autre choix, Plaid bascule proprement sur 'en'.
+  const plaidLanguageMap: Record<string, string> = {
+    fr: 'fr',
+    en: 'en',
+    es: 'es',
+    de: 'de',
+  };
+
+  const language = plaidLanguageMap[lang] || 'en';
 
   const configs: LinkTokenCreateRequest = {
     user: { client_user_id: session.user.id },
     client_name: 'Life-Track',
     products: [Products.Transactions],
-    country_codes: [CountryCode.Fr],
+    country_codes: [
+      CountryCode.Fr,
+      CountryCode.Es,
+      CountryCode.Pt,
+      CountryCode.De,
+      CountryCode.Gb,
+    ],
     language,
   };
 
