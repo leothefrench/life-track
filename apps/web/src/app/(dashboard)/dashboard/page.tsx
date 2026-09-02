@@ -8,6 +8,7 @@ import { SyncButton } from '@/components/sync-button';
 import { InsightCards } from '@/components/insight-cards';
 import { WelcomeState } from '@/components/welcome-state';
 import { DashboardHeader } from '@/components/dashboard-header';
+import { BudgetProgressCard } from '@/components/budget-progress-card';
 
 interface CategoryResult {
   category:
@@ -150,6 +151,8 @@ export default async function DashboardPage() {
             isPremium={isPremium}
             expensesCount={expenses.length}
           />
+          {/* Jauge de suivi du budget mensuel */}
+          <BudgetProgressCard totalSpent={totalSpent} />
           <InsightCards insights={insights} />
           <ExpenseList expenses={expenses} />
         </>
