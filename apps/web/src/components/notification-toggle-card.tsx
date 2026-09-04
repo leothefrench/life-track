@@ -24,7 +24,124 @@ import {
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function NotificationToggleCard() {
-  const { currencySymbol } = useI18n();
+  const { currencySymbol, language } = useI18n();
+
+  // Dictionnaire local des 5 langues pour la carte de notifications
+  const dict = {
+    fr: {
+      title: 'Alertes & Notifications PWA',
+      desc: 'Configurez votre seuil budgétaire mensuel et vos alertes instantanées sur mobile & ordinateur.',
+      pushTitle: 'Notifications Push du navigateur',
+      pushGranted: 'Actives : votre appareil recevra les alertes instantanées.',
+      pushDenied: 'Bloquées dans les paramètres de votre navigateur.',
+      pushDefault:
+        'Autorisez les notifications pour recevoir les alertes même quand l’app est fermée.',
+      allowBtn: 'Autoriser les alertes',
+      activeBtn: 'Activé',
+      budgetLabel: `Budget mensuel cible (${currencySymbol})`,
+      saveBtn: 'Enregistrer le seuil',
+      savedBtn: 'Enregistré !',
+      thresholdsTitle: "Niveaux de paliers d'avertissement",
+      th80Title: 'Seuil 80%',
+      th80Desc: 'Premier avertissement préventif',
+      th90Title: 'Seuil 90%',
+      th90Desc: 'Alerte de vigilance renforcée',
+      th95Title: 'Seuil 95%',
+      th95Desc: 'Alerte critique avant dépassement',
+      testAlert: "Tester l'alerte",
+    },
+    en: {
+      title: 'PWA Alerts & Notifications',
+      desc: 'Configure your monthly budget ceiling and instant alerts on mobile & desktop.',
+      pushTitle: 'Browser Push Notifications',
+      pushGranted: 'Active: your device will receive instant alerts.',
+      pushDenied: 'Blocked in your browser settings.',
+      pushDefault:
+        'Enable notifications to receive alerts even when the app is closed.',
+      allowBtn: 'Enable alerts',
+      activeBtn: 'Enabled',
+      budgetLabel: `Monthly target budget (${currencySymbol})`,
+      saveBtn: 'Save threshold',
+      savedBtn: 'Saved!',
+      thresholdsTitle: 'Warning alert thresholds',
+      th80Title: '80% Threshold',
+      th80Desc: 'Early preventive warning',
+      th90Title: '90% Threshold',
+      th90Desc: 'Heightened vigilance alert',
+      th95Title: '95% Threshold',
+      th95Desc: 'Critical alert before limit reached',
+      testAlert: 'Test alert',
+    },
+    de: {
+      title: 'PWA-Warnungen & Benachrichtigungen',
+      desc: 'Konfigurieren Sie Ihr Monatsbudget und Sofortbenachrichtigungen auf Handy & PC.',
+      pushTitle: 'Browser-Push-Benachrichtigungen',
+      pushGranted: 'Aktiv: Ihr Gerät empfängt Sofortwarnungen.',
+      pushDenied: 'In Ihren Browser-Einstellungen blockiert.',
+      pushDefault:
+        'Erlauben Sie Benachrichtigungen, um Warnungen auch bei geschlossener App zu erhalten.',
+      allowBtn: 'Warnungen aktivieren',
+      activeBtn: 'Aktiviert',
+      budgetLabel: `Monatliches Zielbudget (${currencySymbol})`,
+      saveBtn: 'Schwellenwert speichern',
+      savedBtn: 'Gespeichert!',
+      thresholdsTitle: 'Warnschwellen-Stufen',
+      th80Title: '80% Schwelle',
+      th80Desc: 'Erste präventive Warnung',
+      th90Title: '90% Schwelle',
+      th90Desc: 'Erhöhte Wachsamkeitswarnung',
+      th95Title: '95% Schwelle',
+      th95Desc: 'Kritische Warnung vor Überschreitung',
+      testAlert: 'Warnung testen',
+    },
+    es: {
+      title: 'Alertas y Notificaciones PWA',
+      desc: 'Configure su límite presupuestario mensual y alertas instantáneas en móvil y PC.',
+      pushTitle: 'Notificaciones Push del navegador',
+      pushGranted: 'Activas: su dispositivo recibirá alertas instantáneas.',
+      pushDenied: 'Bloqueadas en la configuración de su navegador.',
+      pushDefault:
+        'Autorice las notificaciones para recibir alertas incluso con la app cerrada.',
+      allowBtn: 'Autorizar alertas',
+      activeBtn: 'Activado',
+      budgetLabel: `Presupuesto mensual objetivo (${currencySymbol})`,
+      saveBtn: 'Guardar umbral',
+      savedBtn: '¡Guardado!',
+      thresholdsTitle: 'Niveles de advertencia',
+      th80Title: 'Umbral 80%',
+      th80Desc: 'Primer aviso preventivo',
+      th90Title: 'Umbral 90%',
+      th90Desc: 'Alerta de vigilancia reforzada',
+      th95Title: 'Umbral 95%',
+      th95Desc: 'Alerta crítica antes de sobrepasar',
+      testAlert: 'Probar alerta',
+    },
+    pt: {
+      title: 'Alertas e Notificações PWA',
+      desc: 'Configure o seu teto orçamental mensal e alertas instantâneos no telemóvel e computador.',
+      pushTitle: 'Notificações Push do navegador',
+      pushGranted: 'Ativas: o seu dispositivo receberá alertas instantâneos.',
+      pushDenied: 'Bloqueadas nas definições do seu navegador.',
+      pushDefault:
+        'Autorize as notificações para receber alertas mesmo com a aplicação fechada.',
+      allowBtn: 'Autorizar alertas',
+      activeBtn: 'Ativado',
+      budgetLabel: `Orçamento mensal alvo (${currencySymbol})`,
+      saveBtn: 'Guardar limite',
+      savedBtn: 'Guardado!',
+      thresholdsTitle: 'Níveis de aviso',
+      th80Title: 'Limite 80%',
+      th80Desc: 'Primeiro aviso preventivo',
+      th90Title: 'Limite 90%',
+      th90Desc: 'Alerta de vigilância reforçada',
+      th95Title: 'Limite 95%',
+      th95Desc: 'Alerta crítico antes do limite',
+      testAlert: 'Testar alerta',
+    },
+  };
+
+  const tCard = dict[(language as keyof typeof dict) || 'fr'] || dict.fr;
+
   const [permission, setPermission] = useState<NotificationPermission>(() => {
     if (typeof window !== 'undefined' && 'Notification' in window) {
       return Notification.permission;
@@ -65,8 +182,8 @@ export function NotificationToggleCard() {
     const res = await requestNotificationPermission();
     setPermission(res);
     if (res === 'granted') {
-      sendBrowserNotification('🎉 Notifications Life-Track activées', {
-        body: 'Vous recevrez des alertes en temps réel lors du franchissement de vos seuils budgétaires.',
+      sendBrowserNotification('🎉 Life-Track', {
+        body: tCard.pushGranted,
       });
     }
   };
@@ -98,11 +215,10 @@ export function NotificationToggleCard() {
   };
 
   const handleTestNotification = (pct: number) => {
-    sendBrowserNotification(`⚠️ Alerte Budget Life-Track (${pct}%)`, {
-      body: `Test de notification : vous avez atteint ${pct}% de votre budget mensuel (${(
-        parseFloat(budget || '1500') *
-        (pct / 100)
-      ).toFixed(0)} ${currencySymbol}).`,
+    sendBrowserNotification(`⚠️ Life-Track (${pct}%)`, {
+      body: `${(parseFloat(budget || '1500') * (pct / 100)).toFixed(
+        0,
+      )} ${currencySymbol}`,
     });
   };
 
@@ -114,14 +230,9 @@ export function NotificationToggleCard() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <Bell className="w-5 h-5 text-blue-500" />
-          <CardTitle className="text-base">
-            Alertes & Notifications PWA
-          </CardTitle>
+          <CardTitle className="text-base">{tCard.title}</CardTitle>
         </div>
-        <CardDescription>
-          Configurez votre seuil budgétaire mensuel et vos alertes instantanées
-          sur mobile & ordinateur.
-        </CardDescription>
+        <CardDescription>{tCard.desc}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Autorisation Push */}
@@ -129,15 +240,13 @@ export function NotificationToggleCard() {
           <div className="flex items-start gap-3">
             <Smartphone className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-semibold">
-                Notifications Push du navigateur
-              </p>
+              <p className="text-sm font-semibold">{tCard.pushTitle}</p>
               <p className="text-xs text-muted-foreground">
                 {permission === 'granted'
-                  ? 'Actives : votre appareil recevra les alertes instantanées.'
+                  ? tCard.pushGranted
                   : permission === 'denied'
-                  ? 'Bloquées dans les paramètres de votre navigateur.'
-                  : 'Autorisez les notifications pour recevoir les alertes même quand l’app est fermée.'}
+                  ? tCard.pushDenied
+                  : tCard.pushDefault}
               </p>
             </div>
           </div>
@@ -146,12 +255,12 @@ export function NotificationToggleCard() {
               onClick={handleRequestPermission}
               className="bg-blue-600 hover:bg-blue-700 text-white text-xs h-9 px-4 shrink-0 rounded-lg"
             >
-              Autoriser les alertes
+              {tCard.allowBtn}
             </Button>
           ) : (
             <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-semibold px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 shrink-0">
               <Check className="w-3.5 h-3.5" />
-              Activé
+              {tCard.activeBtn}
             </div>
           )}
         </div>
@@ -159,7 +268,7 @@ export function NotificationToggleCard() {
         {/* Configuration du plafond budgétaire */}
         <form onSubmit={handleSaveBudget} className="space-y-3">
           <label className="text-sm font-semibold text-foreground">
-            Budget mensuel cible ({currencySymbol})
+            {tCard.budgetLabel}
           </label>
           <div className="flex gap-2">
             <Input
@@ -175,7 +284,7 @@ export function NotificationToggleCard() {
               variant="secondary"
               className="h-10 text-xs px-4"
             >
-              {savedBudgetSuccess ? 'Enregistré !' : 'Enregistrer le seuil'}
+              {savedBudgetSuccess ? tCard.savedBtn : tCard.saveBtn}
             </Button>
           </div>
         </form>
@@ -183,14 +292,14 @@ export function NotificationToggleCard() {
         {/* Seuils d'alertes 80%, 90%, 95% */}
         <div className="space-y-3">
           <p className="text-sm font-semibold text-foreground">
-            Niveaux de paliers d'avertissement
+            {tCard.thresholdsTitle}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* 80% */}
             <div className="p-3 rounded-lg border border-border/50 bg-card/30 flex flex-col justify-between gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-yellow-500 flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Seuil 80%
+                  <AlertTriangle className="w-3.5 h-3.5" /> {tCard.th80Title}
                 </span>
                 <input
                   type="checkbox"
@@ -200,7 +309,7 @@ export function NotificationToggleCard() {
                 />
               </div>
               <p className="text-[11px] text-muted-foreground">
-                Premier avertissement préventif
+                {tCard.th80Desc}
               </p>
               {permission === 'granted' && (
                 <button
@@ -208,7 +317,7 @@ export function NotificationToggleCard() {
                   onClick={() => handleTestNotification(80)}
                   className="text-[10px] text-yellow-500/80 hover:text-yellow-500 underline text-left mt-1"
                 >
-                  Tester l'alerte
+                  {tCard.testAlert}
                 </button>
               )}
             </div>
@@ -217,7 +326,7 @@ export function NotificationToggleCard() {
             <div className="p-3 rounded-lg border border-border/50 bg-card/30 flex flex-col justify-between gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-amber-500 flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Seuil 90%
+                  <AlertTriangle className="w-3.5 h-3.5" /> {tCard.th90Title}
                 </span>
                 <input
                   type="checkbox"
@@ -227,7 +336,7 @@ export function NotificationToggleCard() {
                 />
               </div>
               <p className="text-[11px] text-muted-foreground">
-                Alerte de vigilance renforcée
+                {tCard.th90Desc}
               </p>
               {permission === 'granted' && (
                 <button
@@ -235,7 +344,7 @@ export function NotificationToggleCard() {
                   onClick={() => handleTestNotification(90)}
                   className="text-[10px] text-amber-500/80 hover:text-amber-500 underline text-left mt-1"
                 >
-                  Tester l'alerte
+                  {tCard.testAlert}
                 </button>
               )}
             </div>
@@ -244,7 +353,7 @@ export function NotificationToggleCard() {
             <div className="p-3 rounded-lg border border-border/50 bg-card/30 flex flex-col justify-between gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-rose-500 flex items-center gap-1">
-                  <ShieldAlert className="w-3.5 h-3.5" /> Seuil 95%
+                  <ShieldAlert className="w-3.5 h-3.5" /> {tCard.th95Title}
                 </span>
                 <input
                   type="checkbox"
@@ -254,7 +363,7 @@ export function NotificationToggleCard() {
                 />
               </div>
               <p className="text-[11px] text-muted-foreground">
-                Alerte critique avant dépassement
+                {tCard.th95Desc}
               </p>
               {permission === 'granted' && (
                 <button
@@ -262,7 +371,7 @@ export function NotificationToggleCard() {
                   onClick={() => handleTestNotification(95)}
                   className="text-[10px] text-rose-500/80 hover:text-rose-500 underline text-left mt-1"
                 >
-                  Tester l'alerte
+                  {tCard.testAlert}
                 </button>
               )}
             </div>
