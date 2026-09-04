@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { I18nProvider } from '@/lib/i18n/i18n-context';
 import { CookieBanner } from '@/components/cookie-banner';
+import { Analytics } from '@vercel/analytics/next';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({
           >
             <TooltipProvider>
               {children}
+              <Analytics />
               <CookieBanner />
               <Toaster
                 position="bottom-right"
