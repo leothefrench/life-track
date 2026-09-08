@@ -68,3 +68,36 @@ export async function getSubscriptionStatus() {
   });
   return user?.isPremium || false;
 }
+
+export async function getUserSettingsData() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {
+      isTwoFactorEnabled: false,
+      hasActiveSubscription: false,
+      subscriptionEndDate: null,
+    };
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      isPremium: true,
+      stripeCurrentPeriodEnd: true,
+      isTwoFactorEnabled: true,
+    },
+  });
+
+  const hasPaidPeriodRemaining = Boolean(
+    user?.stripeCurrentPeriodEnd &&
+      new Date(user.stripeCurrentPeriodEnd) > new Date(),
+  );
+
+  return {
+    isTwoFactorEnabled: Boolean(user?.isTwoFactorEnabled),
+    hasActiveSubscription: Boolean(user?.isPremium || hasPaidPeriodRemaining),
+    subscriptionEndDate: user?.stripeCurrentPeriodEnd
+      ? user.stripeCurrentPeriodEnd.toISOString()
+      : null,
+  };
+}

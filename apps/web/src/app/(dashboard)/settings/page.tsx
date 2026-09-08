@@ -12,7 +12,9 @@ import {
 import { TwoFactorSwitch } from '@/components/two-factor-switch';
 import { NotificationToggleCard } from '@/components/notification-toggle-card';
 import { ChangePasswordCard } from '@/components/change-password-card';
+import { BillingInvoicesCard } from '@/components/billing-invoices-card';
 import { DangerZoneCard } from '@/components/danger-zone-card';
+import { getUserSettingsData } from '@/app/actions/stripe';
 import { useEffect, useState } from 'react';
 
 export default function SettingsPage() {
@@ -27,25 +29,11 @@ export default function SettingsPage() {
     subscriptionEndDate: null,
   });
 
-  // Récupération sécurisée des infos utilisateur
   useEffect(() => {
     async function loadUserData() {
       try {
-        const res = await fetch('/api/user/me');
-        if (res.ok) {
-          const data = await res.json();
-          const hasPaidPeriodRemaining = Boolean(
-            data.stripeCurrentPeriodEnd &&
-              new Date(data.stripeCurrentPeriodEnd) > new Date(),
-          );
-          setUserData({
-            isTwoFactorEnabled: Boolean(data.isTwoFactorEnabled),
-            hasActiveSubscription: Boolean(
-              data.isPremium || hasPaidPeriodRemaining,
-            ),
-            subscriptionEndDate: data.stripeCurrentPeriodEnd || null,
-          });
-        }
+        const data = await getUserSettingsData();
+        setUserData(data);
       } catch (err) {
         console.error('Erreur chargement utilisateur', err);
       }
@@ -55,7 +43,6 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
-      {/* Bouton retour avec le vrai libellé nav_dashboard */}
       <div className="flex flex-col gap-3">
         <div>
           <Link
@@ -82,10 +69,8 @@ export default function SettingsPage() {
       </div>
 
       <section aria-labelledby="settings-heading" className="space-y-6">
-        {/* Notifications */}
         <NotificationToggleCard />
 
-        {/* 2FA avec les vraies clés exactes */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
             <div className="space-y-1 pr-4">
@@ -102,8 +87,12 @@ export default function SettingsPage() {
           </CardHeader>
         </Card>
 
-        {/* Mot de passe */}
         <ChangePasswordCard />
+
+        {/* Bloc Factures Stripe */}
+        <BillingInvoicesCard
+          hasActiveSubscription={userData.hasActiveSubscription}
+        />
 
         {/* Danger zone avec Stripe */}
         <DangerZoneCard
