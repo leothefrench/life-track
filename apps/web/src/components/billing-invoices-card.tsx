@@ -18,26 +18,38 @@ const LABELS = {
     title: 'Facturation & Factures',
     desc: 'Consultez et téléchargez vos reçus et factures d’abonnement Stripe.',
     btn: 'Accéder aux factures Stripe',
+    ariaBtn:
+      'Accéder à vos factures et reçus sur Stripe, ouvre le portail externe',
+    loading: 'Redirection vers Stripe en cours...',
   },
   en: {
     title: 'Billing & Invoices',
     desc: 'View and download your Stripe subscription receipts and invoices.',
     btn: 'Manage Stripe Invoices',
+    ariaBtn:
+      'Access your invoices and receipts on Stripe, opens external portal',
+    loading: 'Redirecting to Stripe...',
   },
   de: {
     title: 'Abrechnung & Rechnungen',
     desc: 'Sehen Sie Ihre Rechnungen ein und laden Sie diese über Stripe herunter.',
     btn: 'Zu den Stripe-Rechnungen',
+    ariaBtn: 'Ihre Rechnungen auf Stripe einsehen, öffnet externes Portal',
+    loading: 'Weiterleitung zu Stripe...',
   },
   es: {
     title: 'Facturación y Facturas',
     desc: 'Consulte y descargue sus recibos y facturas de suscripción en Stripe.',
     btn: 'Acceder a las facturas',
+    ariaBtn: 'Acceder a sus facturas en Stripe, abre el portal externo',
+    loading: 'Redirigiendo a Stripe...',
   },
   pt: {
     title: 'Faturação e Faturas',
     desc: 'Consulte e transfira os seus recibos e faturas de subscrição Stripe.',
     btn: 'Aceder às faturas',
+    ariaBtn: 'Aceder às suas faturas no Stripe, abre o portal externo',
+    loading: 'A redirecionar para o Stripe...',
   },
 };
 
@@ -66,7 +78,10 @@ export function BillingInvoicesCard({
     <Card>
       <CardHeader>
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <FileText className="h-4 w-4 text-emerald-500 shrink-0" />
+          <FileText
+            className="h-4 w-4 text-emerald-500 shrink-0"
+            aria-hidden="true"
+          />
           <span>{text.title}</span>
         </CardTitle>
         <CardDescription>{text.desc}</CardDescription>
@@ -76,15 +91,25 @@ export function BillingInvoicesCard({
           onClick={handleOpenPortal}
           disabled={loading}
           variant="outline"
-          className="gap-2 border-white/10 hover:bg-white/10 text-sm"
+          aria-label={text.ariaBtn}
+          aria-busy={loading}
+          className="w-full sm:w-auto min-h-11 justify-center gap-2 border-white/10 hover:bg-white/10 text-sm whitespace-normal sm:whitespace-nowrap px-4 py-2"
         >
           {loading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2
+              className="h-4 w-4 animate-spin shrink-0"
+              aria-hidden="true"
+            />
           ) : (
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
           )}
-          {text.btn}
+          <span>{text.btn}</span>
         </Button>
+
+        {/* Annonceur vocal accessible en direct pendant le chargement */}
+        <span className="sr-only" aria-live="polite">
+          {loading ? text.loading : ''}
+        </span>
       </CardContent>
     </Card>
   );

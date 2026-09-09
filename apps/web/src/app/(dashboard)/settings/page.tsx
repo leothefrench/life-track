@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 
 export default function SettingsPage() {
   const { t } = useI18n();
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<{
     isTwoFactorEnabled: boolean;
     hasActiveSubscription: boolean;
@@ -30,15 +31,23 @@ export default function SettingsPage() {
   });
 
   useEffect(() => {
+    let isMounted = true;
     async function loadUserData() {
       try {
         const data = await getUserSettingsData();
-        setUserData(data);
+        if (isMounted) {
+          setUserData(data);
+          setLoading(false);
+        }
       } catch (err) {
         console.error('Erreur chargement utilisateur', err);
+        if (isMounted) setLoading(false);
       }
     }
     loadUserData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -69,8 +78,10 @@ export default function SettingsPage() {
       </div>
 
       <section aria-labelledby="settings-heading" className="space-y-6">
+        {/* Notifications */}
         <NotificationToggleCard />
 
+        {/* 2FA */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
             <div className="space-y-1 pr-4">
@@ -83,22 +94,29 @@ export default function SettingsPage() {
               </CardTitle>
               <CardDescription>{t('two_factor_desc')}</CardDescription>
             </div>
-            <TwoFactorSwitch initialValue={userData.isTwoFactorEnabled} />
+            {!loading && (
+              <TwoFactorSwitch initialValue={userData.isTwoFactorEnabled} />
+            )}
           </CardHeader>
         </Card>
 
+        {/* Mot de passe */}
         <ChangePasswordCard />
 
-        {/* Bloc Factures Stripe */}
-        <BillingInvoicesCard
-          hasActiveSubscription={userData.hasActiveSubscription}
-        />
+        {/* Bloc Factures Stripe (chargé immédiatement sans flash) */}
+        {!loading && (
+          <BillingInvoicesCard
+            hasActiveSubscription={userData.hasActiveSubscription}
+          />
+        )}
 
         {/* Danger zone avec Stripe */}
-        <DangerZoneCard
-          hasActiveSubscription={userData.hasActiveSubscription}
-          subscriptionEndDate={userData.subscriptionEndDate}
-        />
+        {!loading && (
+          <DangerZoneCard
+            hasActiveSubscription={userData.hasActiveSubscription}
+            subscriptionEndDate={userData.subscriptionEndDate}
+          />
+        )}
       </section>
     </div>
   );
