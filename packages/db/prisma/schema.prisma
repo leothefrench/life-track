@@ -25,6 +25,7 @@ model User {
   planType               String    @default("FREE")
 
   isTwoFactorEnabled Boolean @default(true)
+  language           String  @default("fr")
 
   // Relations
   accounts      Account[]

@@ -84,3 +84,19 @@ export async function deleteUserAccount(): Promise<DeleteAccountResult> {
     };
   }
 }
+
+export async function updateUserLanguage(lang: string) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false };
+
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { language: lang },
+    });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
