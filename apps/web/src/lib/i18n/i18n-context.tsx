@@ -120,7 +120,10 @@ function getServerSnapshotCurrency(): Currency {
 }
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const { data: session } = useSession();
+
+  const sessionContext = useSession();
+  const session = sessionContext?.data;
+
   const language = useSyncExternalStore(
     subscribeLang,
     getLanguageSnapshot,
