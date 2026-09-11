@@ -37,9 +37,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.language = (user as { language?: string }).language || 'fr';
+      }
+      if (trigger === 'update' && session?.user?.language) {
+        token.language = session.user.language;
+      }
+      return token;
+    },
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
+      }
+      if (token.language && session.user) {
+        (session.user as { language?: string }).language = token.language as string;
       }
       return session;
     },
