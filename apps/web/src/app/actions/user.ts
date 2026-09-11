@@ -88,15 +88,23 @@ export async function deleteUserAccount(): Promise<DeleteAccountResult> {
 export async function updateUserLanguage(lang: string) {
   try {
     const session = await auth();
-    if (!session?.user?.id) return { success: false };
+    console.log('[i18n] updateUserLanguage appelé avec lang:', lang, 'session user:', session?.user);
 
-    await prisma.user.update({
+    if (!session?.user?.id) {
+      console.warn('[i18n] Impossible de sauvegarder : session.user.id absent');
+      return { success: false, error: 'Non authentifié' };
+    }
+
+    const updated = await prisma.user.update({
       where: { id: session.user.id },
       data: { language: lang },
+      select: { id: true, language: true },
     });
 
+    console.log('[i18n] Langue mise à jour avec succès dans PostgreSQL :', updated);
     return { success: true };
   } catch (error) {
+    console.error('[i18n] Erreur Prisma updateUserLanguage :', error);
     return { success: false };
   }
 }

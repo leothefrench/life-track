@@ -39,6 +39,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (user) {
+        token.sub = user.id;
         token.language = (user as { language?: string }).language || 'fr';
       }
       if (trigger === 'update' && session?.user?.language) {
@@ -49,9 +50,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
-      }
-      if (token.language && session.user) {
-        (session.user as { language?: string }).language = token.language as string;
+
+        // Lire la langue fraîche directement en base si nécessaire
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.sub },
+            select: { language: true },
+          });
+          if (dbUser?.language) {
+            (session.user as { language?: string }).language = dbUser.language;
+          }
+        } catch {
+          (session.user as { language?: string }).language =
+            (token.language as string) || 'fr';
+        }
       }
       return session;
     },
