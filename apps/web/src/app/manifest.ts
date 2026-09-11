@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Life-Track',
     short_name: 'Life-Track',
     description: 'Gestion financière intelligente',
-    start_url: '/dashboard',
+    start_url: '/',
     display: 'standalone', // Supprime la barre d'adresse
     background_color: '#000000',
     theme_color: '#000000',
