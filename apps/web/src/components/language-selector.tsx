@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useSyncExternalStore } from 'react';
+import { updateUserLanguage } from '@/app/actions/user';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { Language, LANGUAGE_NAMES } from '@/lib/i18n/translations';
 import {
@@ -75,7 +76,10 @@ export function LanguageSelector({
           return (
             <DropdownMenuItem
               key={lang}
-              onClick={() => setLanguage(lang)}
+              onClick={() => {
+                setLanguage(lang);
+                updateUserLanguage(lang).catch((err) => console.error(err));
+              }}
               className={`flex items-center justify-between text-xs cursor-pointer ${
                 isSelected
                   ? 'bg-white/10 font-bold text-foreground'

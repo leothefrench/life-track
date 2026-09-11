@@ -6,9 +6,7 @@ import React, {
   useSyncExternalStore,
   useEffect,
 } from 'react';
-import { useSession } from 'next-auth/react';
 import { translations, Language, TranslationKey } from './translations';
-import { updateUserLanguage } from '@/app/actions/user';
 
 export type Currency = 'EUR' | 'USD' | 'GBP' | 'CHF' | 'CAD' | 'BRL';
 
@@ -106,7 +104,7 @@ function getCurrencySnapshot(): Currency {
       return DEFAULT_CURRENCY_BY_LANG[currentLang];
     }
   } catch {
-    // Ignorer si localStorage inaccessible
+    // Ignorer
   }
   return 'EUR';
 }
@@ -119,11 +117,13 @@ function getServerSnapshotCurrency(): Currency {
   return 'EUR';
 }
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-
-  const sessionContext = useSession();
-  const session = sessionContext?.data;
-
+export function I18nProvider({
+  children,
+  initialLanguage,
+}: {
+  children: React.ReactNode;
+  initialLanguage?: Language;
+}) {
   const language = useSyncExternalStore(
     subscribeLang,
     getLanguageSnapshot,
@@ -135,26 +135,25 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     getServerSnapshotCurrency,
   );
 
-  // Synchronisation avec la langue du compte de l'utilisateur connecté
+  // Si le serveur fournit une langue initiale (venant de la base ou session), on l'applique
   useEffect(() => {
-      const userLang = (session?.user as { language?: string } | undefined)?.language as Language | undefined;
-      
-      // Si l'utilisateur est connecté et a une langue définie dans son profil
-      if (userLang && ['fr', 'en', 'de', 'es', 'pt'].includes(userLang)) {
-        if (userLang !== language) {
-          if (typeof window !== 'undefined') {
-            try {
-              localStorage.setItem('life_track_lang', userLang);
-              document.cookie = `life_track_lang=${userLang}; path=/; max-age=31536000; SameSite=Lax`;
-            } catch {
-              // Ignorer
-            }
-            // FORCE tous les composants de l'application à basculer sur userLang
-            langListeners.forEach((listener) => listener());
+    if (
+      initialLanguage &&
+      ['fr', 'en', 'de', 'es', 'pt'].includes(initialLanguage)
+    ) {
+      if (initialLanguage !== language) {
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('life_track_lang', initialLanguage);
+            document.cookie = `life_track_lang=${initialLanguage}; path=/; max-age=31536000; SameSite=Lax`;
+          } catch {
+            // Ignorer
           }
+          langListeners.forEach((l) => l());
         }
       }
-    }, [session, language]);
+    }
+  }, [initialLanguage, language]);
 
   const setLanguage = (lang: Language) => {
     if (typeof window !== 'undefined') {
@@ -169,10 +168,6 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
             DEFAULT_CURRENCY_BY_LANG[lang],
           );
           currencyListeners.forEach((listener) => listener());
-        }
-
-        if (session?.user) {
-          updateUserLanguage(lang);
         }
       } catch {
         // Ignorer
