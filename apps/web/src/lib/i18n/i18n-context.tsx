@@ -137,32 +137,24 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   // Synchronisation avec la langue du compte de l'utilisateur connecté
   useEffect(() => {
-    const userLang = (session?.user as { language?: string } | undefined)
-      ?.language as Language | undefined;
-    if (
-      userLang &&
-      ['fr', 'en', 'de', 'es', 'pt'].includes(userLang) &&
-      userLang !== language
-    ) {
-      if (typeof window !== 'undefined') {
-        try {
-          localStorage.setItem('life_track_lang', userLang);
-          document.cookie = `life_track_lang=${userLang}; path=/; max-age=31536000; SameSite=Lax`;
-          const hasCustomCurrency = localStorage.getItem('life_track_currency');
-          if (!hasCustomCurrency && DEFAULT_CURRENCY_BY_LANG[userLang]) {
-            localStorage.setItem(
-              'life_track_currency',
-              DEFAULT_CURRENCY_BY_LANG[userLang],
-            );
-            currencyListeners.forEach((listener) => listener());
+      const userLang = (session?.user as { language?: string } | undefined)?.language as Language | undefined;
+      
+      // Si l'utilisateur est connecté et a une langue définie dans son profil
+      if (userLang && ['fr', 'en', 'de', 'es', 'pt'].includes(userLang)) {
+        if (userLang !== language) {
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('life_track_lang', userLang);
+              document.cookie = `life_track_lang=${userLang}; path=/; max-age=31536000; SameSite=Lax`;
+            } catch {
+              // Ignorer
+            }
+            // FORCE tous les composants de l'application à basculer sur userLang
+            langListeners.forEach((listener) => listener());
           }
-        } catch {
-          // Ignorer
         }
-        langListeners.forEach((listener) => listener());
       }
-    }
-  }, [session, language]);
+    }, [session, language]);
 
   const setLanguage = (lang: Language) => {
     if (typeof window !== 'undefined') {
