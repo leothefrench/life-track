@@ -41,12 +41,15 @@ export default async function DashboardPage() {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const expenses = userId
-    ? await prisma.expense.findMany({
-        where: { userId },
-        orderBy: { date: 'desc' },
-      })
-    : [];
+const expenses = userId
+  ? await prisma.expense.findMany({
+      where: {
+        userId,
+        ...(isPremium ? {} : { date: { gte: thirtyDaysAgo } }),
+      },
+      orderBy: { date: 'desc' },
+    })
+  : [];
   const totalStats = userId
     ? await prisma.expense.aggregate({
         where: { userId, date: { gte: thirtyDaysAgo } },
