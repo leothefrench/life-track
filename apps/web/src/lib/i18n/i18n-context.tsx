@@ -27,7 +27,7 @@ export const currencies: CurrencyConfig[] = [
 
 const DEFAULT_CURRENCY_BY_LANG: Record<Language, Currency> = {
   fr: 'EUR',
-  en: 'USD',
+  en: 'EUR',
   de: 'EUR',
   es: 'EUR',
   pt: 'EUR',
@@ -225,15 +225,13 @@ export function I18nProvider({
     }
   };
 
-  const t = (
-    key: TranslationKey | string,
+const t = (
+    key: TranslationKey,
     params?: Record<string, string | number>,
   ): string => {
-    const langDict = translations[language] as
-      | Record<string, string>
-      | undefined;
-    const frDict = translations.fr as Record<string, string>;
-    let text = (langDict && langDict[key]) || frDict[key] || key;
+    const langDict = translations[language];
+    const frDict = translations.fr;
+    let text = (langDict && (langDict as any)[key]) || (frDict as any)[key] || key;
 
     if (params) {
       Object.entries(params).forEach(([paramKey, paramValue]) => {

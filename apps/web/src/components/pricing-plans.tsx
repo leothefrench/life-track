@@ -70,7 +70,7 @@ export function PricingPlans({ isSubscribed }: PricingPlansProps) {
           <CardTitle>{t('pricing_premium')}</CardTitle>
           <CardDescription>{t('pricing_premium_desc')}</CardDescription>
           <div className="mt-4">
-            <span className="text-4xl font-bold">{formatCurrency(4.99)}</span>
+            <span className="text-4xl font-bold">{formatCurrency(9.99, 'EUR')}</span>
             <span className="text-muted-foreground">
               {' '}
               / {t('this_month').toLowerCase()}
