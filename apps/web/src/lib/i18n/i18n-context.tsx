@@ -226,12 +226,12 @@ export function I18nProvider({
   };
 
 const t = (
-    key: TranslationKey,
+    key: TranslationKey | string,
     params?: Record<string, string | number>,
   ): string => {
-    const langDict = translations[language];
-    const frDict = translations.fr;
-    let text = (langDict && (langDict as any)[key]) || (frDict as any)[key] || key;
+    const langDict = translations[language] as Record<string, string> | undefined;
+    const frDict = translations.fr as Record<string, string>;
+    let text = (langDict && langDict[key]) || frDict[key] || String(key);
 
     if (params) {
       Object.entries(params).forEach(([paramKey, paramValue]) => {
