@@ -33,7 +33,7 @@ export function ContactModal({ children }: { children?: React.ReactNode }) {
           </button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-black border-white/10 text-white">
+      <DialogContent className="sm:max-w-106.25 bg-black border-white/10 text-white">
         <DialogHeader>
           <DialogTitle>{t('contact_modal_title')}</DialogTitle>
         </DialogHeader>
@@ -55,7 +55,7 @@ export function ContactModal({ children }: { children?: React.ReactNode }) {
             name="message"
             placeholder={t('contact_message_placeholder')}
             required
-            className="min-h-[150px] bg-white/5 border-white/10"
+            className="min-h-37.5 bg-white/5 border-white/10"
           />
           <Button
             type="submit"

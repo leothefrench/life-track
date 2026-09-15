@@ -63,7 +63,7 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
     <Card className="border-blue-500/20 bg-blue-500/5 shadow-none flex flex-col h-full overflow-hidden relative">
       {/* EFFET DE BALAYAGE PENDANT LE CHARGEMENT */}
       {loading && (
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/10 to-transparent h-1/2 w-full animate-scan z-0" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-blue-500/10 to-transparent h-1/2 w-full animate-scan z-0" />
       )}
 
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 z-10">
@@ -89,7 +89,7 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
       </CardHeader>
 
       <CardContent className="space-y-4 flex-1 flex flex-col justify-between z-10">
-        <div className="text-[11px] leading-relaxed min-h-[40px]">
+        <div className="text-[11px] leading-relaxed min-h-10">
           {loading ? (
             <div className="flex flex-col gap-2 animate-pulse">
               <p className="text-blue-400/80 italic">

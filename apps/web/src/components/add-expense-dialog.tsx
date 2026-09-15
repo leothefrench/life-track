@@ -26,7 +26,7 @@ export function AddExpenseDialog() {
           <span>{t('add_expense')}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle>{t('add_expense_dialog_title')}</DialogTitle>
           <DialogDescription>

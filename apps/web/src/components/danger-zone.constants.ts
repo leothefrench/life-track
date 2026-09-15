@@ -1,0 +1,55 @@
+export const STRIPE_LOCK_DICT = {
+  fr: {
+    subActive: 'Abonnement Pro actuellement actif',
+    subCancelled: 'Renouvellement résilié — Période payée en cours',
+    descPrefix: 'Vous avez réglé votre abonnement jusqu’au',
+    descSuffix: 'Afin de garantir que vous profitiez de l’intégralité du temps payé, la suppression de compte est temporairement indisponible.',
+    manageBilling: 'Gérer la facturation dans Stripe',
+    lockedBtn: 'Suppression verrouillée pendant l’abonnement',
+    confirmKeyword: 'SUPPRIMER',
+  },
+  en: {
+    subActive: 'Pro subscription currently active',
+    subCancelled: 'Renewal cancelled — Paid period in progress',
+    descPrefix: 'Your subscription is paid until',
+    descSuffix: 'To ensure you enjoy the full duration of your paid plan, account deletion is temporarily disabled.',
+    manageBilling: 'Manage billing in Stripe',
+    lockedBtn: 'Deletion locked during subscription',
+    confirmKeyword: 'DELETE',
+  },
+  de: {
+    subActive: 'Pro-Abonnement derzeit aktiv',
+    subCancelled: 'Verlängerung gekündigt — Bezahlter Zeitraum läuft',
+    descPrefix: 'Sie haben Ihr Abonnement bezahlt bis zum',
+    descSuffix: 'Damit Sie die bezahlte Zeit voll nutzen können, ist die Kontolöschung vorübergehend deaktiviert.',
+    manageBilling: 'Abrechnung in Stripe verwalten',
+    lockedBtn: 'Löschung während des Abonnements gesperrt',
+    confirmKeyword: 'LÖSCHEN',
+  },
+  es: {
+    subActive: 'Suscripción Pro actualmente activa',
+    subCancelled: 'Renovación cancelada — Periodo pagado en curso',
+    descPrefix: 'Ha pagado su suscripción hasta el',
+    descSuffix: 'Para garantizar que disfrute de todo el tiempo pagado, la eliminación de cuenta está temporalmente deshabilitada.',
+    manageBilling: 'Gestionar facturación en Stripe',
+    lockedBtn: 'Eliminación bloqueada durante la suscripción',
+    confirmKeyword: 'ELIMINAR',
+  },
+  pt: {
+    subActive: 'Subscrição Pro atualmente ativa',
+    subCancelled: 'Renovação cancelada — Período pago em curso',
+    descPrefix: 'Pagou a sua subscrição até',
+    descSuffix: 'Para garantir que aproveita todo o período pago, a eliminação da conta está temporariamente indisponível.',
+    manageBilling: 'Gerir faturação no Stripe',
+    lockedBtn: 'Eliminação bloqueada durante a subscrição',
+    confirmKeyword: 'ELIMINAR',
+  },
+};
+
+export const LOCALE_DATE_MAP: Record<string, string> = {
+  en: 'en-US',
+  de: 'de-DE',
+  es: 'es-ES',
+  pt: 'pt-PT',
+  fr: 'fr-FR',
+};
