@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Sparkles, BrainCircuit, Loader2 } from 'lucide-react';
@@ -18,9 +18,11 @@ interface AIAdvisorProps {
 export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
   const router = useRouter();
   const { t, language } = useI18n();
-  const [advice, setAdvice] = useState<{ isSuccess: boolean; text: string } | null>(null);
+  const [advice, setAdvice] = useState<{
+    isSuccess: boolean;
+    text: string;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
-  const prevLangRef = useRef<string | null>(null);
 
   const hasEnoughData = expensesCount >= 3;
   const progress = Math.min((expensesCount / 3) * 100, 100);
@@ -46,18 +48,8 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
     [language, router, t],
   );
 
-  useEffect(() => {
-    if (prevLangRef.current === null) {
-      prevLangRef.current = language;
-      return;
-    }
-    if (prevLangRef.current !== language) {
-      prevLangRef.current = language;
-      if (hasEnoughData) {
-        handleAnalyze(language);
-      }
-    }
-  }, [language, hasEnoughData, handleAnalyze]);
+  // Le useEffect automatique au changement de langue a été retiré.
+  // L'audit se déclenche désormais UNIQUEMENT au clic sur le bouton "Lancer l'Audit IA".
 
   return (
     <Card className="border-blue-500/20 bg-blue-500/5 shadow-none flex flex-col h-full overflow-hidden relative">
@@ -74,7 +66,9 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
 
         <div className="flex flex-col items-end gap-1">
           <span className="text-[9px] font-bold text-white/40 uppercase">
-            {hasEnoughData ? t('ready_status') : `${t('data_progress')} : ${expensesCount}/3`}
+            {hasEnoughData
+              ? t('ready_status')
+              : `${t('data_progress')} : ${expensesCount}/3`}
           </span>
           {/* MICRO BARRE DE PROGRESSION */}
           {!hasEnoughData && (
@@ -121,9 +115,7 @@ export function AIAdvisor({ isPremium, expensesCount }: AIAdvisorProps) {
             </div>
           ) : (
             <p className="text-white/40 italic">
-              {hasEnoughData
-                ? t('ai_ready_desc')
-                : t('add_more_expenses_desc')}
+              {hasEnoughData ? t('ai_ready_desc') : t('add_more_expenses_desc')}
             </p>
           )}
         </div>

@@ -15,12 +15,11 @@ import { Globe } from 'lucide-react';
 
 const emptySubscribe = () => () => {};
 
-// Hook natif React pour vérifier si le composant est monté dans le navigateur
 function useHasMounted() {
   return useSyncExternalStore(
     emptySubscribe,
-    () => true, // Côté navigateur (Client)
-    () => false, // Côté serveur (SSR)
+    () => true,
+    () => false,
   );
 }
 
@@ -34,7 +33,15 @@ export function LanguageSelector({
   const { language, setLanguage } = useI18n();
   const mounted = useHasMounted();
 
-  const current = LANGUAGE_NAMES[language];
+  const current = LANGUAGE_NAMES[language] || LANGUAGE_NAMES.fr;
+
+  const handleSelectLanguage = (lang: Language) => {
+    setLanguage(lang);
+    // On met à jour en base de données sans bloquer ni réinitialiser si non connecté
+    updateUserLanguage(lang).catch(() => {
+      // Normal sur la landing page (aucun compte connecté)
+    });
+  };
 
   if (!mounted) {
     return (
@@ -76,10 +83,7 @@ export function LanguageSelector({
           return (
             <DropdownMenuItem
               key={lang}
-              onClick={() => {
-                setLanguage(lang);
-                updateUserLanguage(lang).catch((err) => console.error(err));
-              }}
+              onClick={() => handleSelectLanguage(lang)}
               className={`flex items-center justify-between text-xs cursor-pointer ${
                 isSelected
                   ? 'bg-white/10 font-bold text-foreground'

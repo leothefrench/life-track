@@ -3,6 +3,7 @@
 import { auth } from '@/auth';
 import { prisma } from '@life-track/db';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 export type DeleteAccountResult = {
   success: boolean;
@@ -28,7 +29,6 @@ export async function deleteUserAccount(): Promise<DeleteAccountResult> {
 
     const userId = session.user.id;
 
-    // Récupération de l'utilisateur avec ses informations d'abonnement Stripe
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -49,11 +49,9 @@ export async function deleteUserAccount(): Promise<DeleteAccountResult> {
 
     const now = new Date();
 
-    // RÈGLE MÉTIER : Vérification de la période payée restante
-    // Même si l'utilisateur a cliqué sur "Annuler" dans Stripe (cancel_at_period_end = true),
-    // stripeCurrentPeriodEnd indique la fin des droits payés.
     const isPaidPeriodActive = Boolean(
-      user.stripeCurrentPeriodEnd && new Date(user.stripeCurrentPeriodEnd) > now
+      user.stripeCurrentPeriodEnd &&
+        new Date(user.stripeCurrentPeriodEnd) > now,
     );
 
     if (isPaidPeriodActive) {
@@ -69,7 +67,6 @@ export async function deleteUserAccount(): Promise<DeleteAccountResult> {
       };
     }
 
-    // Si aucune période payée n'est active, suppression définitive en cascade
     await prisma.user.delete({
       where: { id: userId },
     });
@@ -80,19 +77,30 @@ export async function deleteUserAccount(): Promise<DeleteAccountResult> {
     console.error('Erreur lors de la suppression du compte:', error);
     return {
       success: false,
-      error: 'Une erreur technique est survenue lors de la suppression. Veuillez réessayer ou contacter le support.',
+      error:
+        'Une erreur technique est survenue lors de la suppression. Veuillez réessayer ou contacter le support.',
     };
   }
 }
 
+/**
+ * Met à jour la langue de l'utilisateur :
+ * 1. Dans PostgreSQL pour que la PWA mobile et toutes les sessions futures soient immédiatement synchronisées.
+ * 2. Dans le cookie 'life_track_lang' pour que le rendu HTML soit instantané.
+ */
 export async function updateUserLanguage(lang: string) {
   try {
+    const cookieStore = await cookies();
+    cookieStore.set('life_track_lang', lang, {
+      path: '/',
+      maxAge: 31536000,
+      sameSite: 'lax',
+    });
+
     const session = await auth();
-    console.log('[i18n] updateUserLanguage appelé avec lang:', lang, 'session user:', session?.user);
 
     if (!session?.user?.id) {
-      console.warn('[i18n] Impossible de sauvegarder : session.user.id absent');
-      return { success: false, error: 'Non authentifié' };
+      return { success: true };
     }
 
     const updated = await prisma.user.update({
@@ -101,7 +109,10 @@ export async function updateUserLanguage(lang: string) {
       select: { id: true, language: true },
     });
 
-    console.log('[i18n] Langue mise à jour avec succès dans PostgreSQL :', updated);
+    console.log(
+      '[i18n] Langue mise à jour avec succès dans PostgreSQL :',
+      updated.language,
+    );
     return { success: true };
   } catch (error) {
     console.error('[i18n] Erreur Prisma updateUserLanguage :', error);
