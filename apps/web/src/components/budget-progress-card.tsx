@@ -1,55 +1,37 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useI18n } from '@/lib/i18n/i18n-context';
-import {
-  AlertTriangle,
-  Bell,
-  CheckCircle2,
-  Edit2,
-  ShieldAlert,
-  Sparkles,
-} from 'lucide-react';
-import {
-  requestNotificationPermission,
-  sendBrowserNotification,
-} from '@/lib/notifications';
+import { AlertTriangle, CheckCircle2, Edit2, ShieldAlert } from 'lucide-react';
+import { updateUserMonthlyBudget } from '@/app/actions/user';
 import { BUDGET_CARD_DICT } from './budget-progress-card.i18n';
+import { BudgetNotifications } from './budget-notifications';
 
 interface BudgetProgressCardProps {
   totalSpent: number;
+  initialBudget?: number;
 }
 
-export function BudgetProgressCard({ totalSpent }: BudgetProgressCardProps) {
+export function BudgetProgressCard({
+  totalSpent,
+  initialBudget = 1500,
+}: BudgetProgressCardProps) {
   const { t, currencySymbol, language } = useI18n();
   const tCard =
     BUDGET_CARD_DICT[(language as keyof typeof BUDGET_CARD_DICT) || 'fr'] ||
     BUDGET_CARD_DICT.fr;
 
-  const [budget, setBudget] = useState<number>(1500);
+  const [budget, setBudget] = useState<number>(initialBudget);
   const [isEditing, setIsEditing] = useState(false);
-  const [tempBudget, setTempBudget] = useState('1500');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [tempBudget, setTempBudget] = useState(initialBudget.toString());
 
-  // Synchronisation côté client uniquement (évite les erreurs d'hydratation SSR)
   useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem('life_track_monthly_budget');
-    if (saved) {
-      const parsed = parseFloat(saved);
-      if (!isNaN(parsed) && parsed > 0) {
-        setBudget(parsed);
-        setTempBudget(saved);
-      }
-    }
-    if ('Notification' in window) {
-      setNotificationsEnabled(Notification.permission === 'granted');
-    }
-  }, []);
+    setBudget(initialBudget);
+    setTempBudget(initialBudget.toString());
+  }, [initialBudget]);
 
   const percentage = Math.min(Math.round((totalSpent / budget) * 100), 100);
   const rawPercentage = (totalSpent / budget) * 100;
@@ -59,52 +41,13 @@ export function BudgetProgressCard({ totalSpent }: BudgetProgressCardProps) {
   const isThreshold90 = rawPercentage >= 90 && rawPercentage < 95;
   const isThreshold80 = rawPercentage >= 80 && rawPercentage < 90;
 
-  useEffect(() => {
-    if (notificationsEnabled && mounted) {
-      const last = localStorage.getItem('life_track_last_notified_threshold');
-      let current = '';
-      if (rawPercentage >= 95) current = '95';
-      else if (rawPercentage >= 90) current = '90';
-      else if (rawPercentage >= 80) current = '80';
-
-      if (current && current !== last) {
-        sendBrowserNotification(tCard.notifWarningTitle(current), {
-          body: tCard.notifWarningBody(
-            Math.round(rawPercentage),
-            totalSpent.toFixed(2),
-            budget.toFixed(2),
-            currencySymbol,
-          ),
-        });
-        localStorage.setItem('life_track_last_notified_threshold', current);
-      }
-    }
-  }, [
-    rawPercentage,
-    totalSpent,
-    budget,
-    currencySymbol,
-    notificationsEnabled,
-    mounted,
-    tCard,
-  ]);
-
-  const handleSaveBudget = () => {
+  // Sauvegarde instantanée Multi-appareils dans PostgreSQL
+  const handleSaveBudget = async () => {
     const val = parseFloat(tempBudget);
     if (!isNaN(val) && val > 0) {
       setBudget(val);
-      localStorage.setItem('life_track_monthly_budget', val.toString());
       setIsEditing(false);
-    }
-  };
-
-  const handleEnableNotifications = async () => {
-    const perm = await requestNotificationPermission();
-    if (perm === 'granted') {
-      setNotificationsEnabled(true);
-      sendBrowserNotification(tCard.notifEnabledTitle, {
-        body: tCard.notifEnabledBody,
-      });
+      await updateUserMonthlyBudget(val);
     }
   };
 
@@ -241,34 +184,14 @@ export function BudgetProgressCard({ totalSpent }: BudgetProgressCardProps) {
           </div>
         </div>
 
-        {/* Notifications */}
-        {mounted && !notificationsEnabled ? (
-          <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between gap-3 text-xs">
-            <span className="text-muted-foreground flex items-center gap-1.5">
-              <Bell className="w-3.5 h-3.5 text-blue-500" />
-              {tCard.enableAlerts}
-            </span>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={handleEnableNotifications}
-              className="h-7 text-xs px-2.5 rounded-full"
-            >
-              {tCard.activateBtn}
-            </Button>
-          </div>
-        ) : mounted && (isThreshold80 || isThreshold90 || isThreshold95) ? (
-          <div className="mt-3 p-2.5 rounded-lg bg-card/60 border border-border/60 text-xs flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-            <p className="text-muted-foreground">
-              {isThreshold95
-                ? tCard.alert95
-                : isThreshold90
-                ? tCard.alert90
-                : tCard.alert80}
-            </p>
-          </div>
-        ) : null}
+        {/* Sous-composant Notifications */}
+        <BudgetNotifications
+          rawPercentage={rawPercentage}
+          totalSpent={totalSpent}
+          budget={budget}
+          currencySymbol={currencySymbol}
+          tCard={tCard}
+        />
       </CardContent>
     </Card>
   );

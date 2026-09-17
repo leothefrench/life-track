@@ -155,7 +155,10 @@ const expenses = userId
             expensesCount={expenses.length}
           />
           {/* Jauge de suivi du budget mensuel */}
-          <BudgetProgressCard totalSpent={totalSpent} />
+          <BudgetProgressCard
+            totalSpent={totalSpent}
+            initialBudget={user?.monthlyBudget || 1500}
+          />
           <InsightCards insights={insights} />
           <ExpenseList expenses={expenses} />
         </>

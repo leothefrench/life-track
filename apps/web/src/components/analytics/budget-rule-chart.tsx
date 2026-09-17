@@ -51,7 +51,7 @@ export function BudgetRuleChart({
                       return (
                         <div className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 shadow-xl">
                           <span className="text-xs font-bold text-white">
-                            {value} {currencySymbol}
+                            {Number(value).toFixed(2)} {currencySymbol}
                           </span>
                         </div>
                       );
@@ -64,36 +64,44 @@ export function BudgetRuleChart({
           </div>
 
           <div className="space-y-3">
-            {data.map((item) => (
-              <div key={item.name} className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+            {data.map((item) => {
+              const isExceeded = item.percentage > item.targetPercent;
+              return (
+                <div key={item.name} className="space-y-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="font-semibold text-foreground flex items-center gap-1.5">
+                      <span
+                        className="h-2 w-2 rounded-full"
+                        style={{ backgroundColor: item.color }}
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </span>
                     <span
-                      className="h-2 w-2 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                      aria-hidden="true"
+                      className={`font-mono font-bold ${
+                        isExceeded ? 'text-rose-500' : 'text-muted-foreground'
+                      }`}
+                    >
+                      {item.percentage}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        isExceeded ? 'bg-rose-500' : ''
+                      }`}
+                      style={{
+                        width: `${Math.min(
+                          100,
+                          (item.percentage / item.targetPercent) * 100,
+                        )}%`,
+                        backgroundColor: isExceeded ? undefined : item.color,
+                      }}
                     />
-                    {item.name}
-                  </span>
-                  <span className="text-muted-foreground font-mono">
-                    {item.percentage}% ({t('target_label')}:{' '}
-                    {item.targetPercent}%)
-                  </span>
+                  </div>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min(
-                        100,
-                        (item.percentage / item.targetPercent) * 100,
-                      )}%`,
-                      backgroundColor: item.color,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </CardContent>

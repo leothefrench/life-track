@@ -26,6 +26,7 @@ model User {
 
   isTwoFactorEnabled Boolean @default(true)
   language           String  @default("fr")
+  monthlyBudget          Float?    @default(1500)
 
   // Relations
   accounts      Account[]

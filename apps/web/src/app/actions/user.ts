@@ -119,3 +119,31 @@ export async function updateUserLanguage(lang: string) {
     return { success: false };
   }
 }
+
+/**
+ * Met à jour le budget mensuel de l'utilisateur dans PostgreSQL.
+ * Synchronisé instantanément sur tous ses appareils (PC, Mobile PWA, Tablette).
+ */
+export async function updateUserMonthlyBudget(amount: number) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return { success: false, error: 'Non authentifié' };
+    }
+
+    if (isNaN(amount) || amount <= 0) {
+      return { success: false, error: 'Montant invalide' };
+    }
+
+    const updated = await prisma.user.update({
+      where: { id: session.user.id },
+      data: { monthlyBudget: amount },
+      select: { id: true, monthlyBudget: true },
+    });
+
+    return { success: true, monthlyBudget: updated.monthlyBudget };
+  } catch (error) {
+    console.error('Erreur Prisma updateUserMonthlyBudget :', error);
+    return { success: false, error: 'Erreur lors de la sauvegarde du budget' };
+  }
+}
