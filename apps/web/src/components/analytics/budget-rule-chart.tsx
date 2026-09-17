@@ -1,101 +1,102 @@
 'use client';
 
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart as PieIcon } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { BudgetRuleSplit } from './analytics.types';
-import type {
-  ValueType,
-  NameType,
-} from 'recharts/types/component/DefaultTooltipContent';
-
-interface BudgetRuleChartProps {
-  data: BudgetRuleSplit[];
-  currencySymbol: string;
-}
 
 export function BudgetRuleChart({
   data,
-  currencySymbol,
-}: BudgetRuleChartProps) {
+  currencySymbol = '€',
+}: {
+  data: BudgetRuleSplit[];
+  currencySymbol?: string;
+}) {
+  const { t } = useI18n();
+
   return (
-    <div
-      role="region"
-      aria-label="Répartition du budget 50/30/20"
-      className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
-    >
-      <div className="mb-2">
-        <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-          Structure Financière (Règle 50 / 30 / 20)
-        </h3>
-        <p className="text-xs text-zinc-600 dark:text-zinc-300">
-          Équilibre entre vos Besoins, Envies et Épargne
-        </p>
-      </div>
-
-      <div className="flex flex-col items-center sm:flex-row sm:items-center sm:justify-between">
-        <div className="h-52 w-52 shrink-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={55}
-                outerRadius={75}
-                paddingAngle={4}
-                dataKey="value"
-              >
-                {data.map((entry) => (
-                  <Cell
-                    key={entry.name}
-                    fill={entry.color}
-                    stroke="transparent"
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#090d16',
-                  borderColor: '#1e293b',
-                  borderRadius: '12px',
-                  color: '#f8fafc',
-                  fontSize: '12px',
-                }}
-                formatter={(value: ValueType) => [
-                  `${Number(value || 0).toFixed(2)} ${currencySymbol}`,
-                  'Montant',
-                ]}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+    <Card className="border-border/60 bg-card/60 backdrop-blur-sm shadow-sm">
+      <CardContent className="p-6 space-y-4">
+        <div className="flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-2">
+            <PieIcon className="h-4 w-4 text-emerald-500" aria-hidden="true" />
+            <h3 className="text-sm font-bold text-foreground">
+              {t('budget_rule_title')}
+            </h3>
+          </div>
         </div>
 
-        {/* Légende détaillée et comparatif avec la cible idéale */}
-        <div className="mt-4 w-full space-y-2.5 sm:mt-0 sm:pl-4">
-          {data.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-center justify-between text-xs"
-            >
-              <div className="flex items-center gap-2">
-                <span
-                  className="h-2.5 w-2.5 rounded-full"
-                  style={{ backgroundColor: item.color }}
-                  aria-hidden="true"
+        <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4">
+          <div className="h-56 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={75}
+                  paddingAngle={4}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const value = payload[0].value;
+                      return (
+                        <div className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 shadow-xl">
+                          <span className="text-xs font-bold text-white">
+                            {value} {currencySymbol}
+                          </span>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
                 />
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                  {item.name}
-                </span>
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                  ({item.targetPercent}% visé)
-                </span>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="space-y-3">
+            {data.map((item) => (
+              <div key={item.name} className="space-y-1">
+                <div className="flex justify-between text-xs">
+                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: item.color }}
+                      aria-hidden="true"
+                    />
+                    {item.name}
+                  </span>
+                  <span className="text-muted-foreground font-mono">
+                    {item.percentage}% ({t('target_label')}:{' '}
+                    {item.targetPercent}%)
+                  </span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min(
+                        100,
+                        (item.percentage / item.targetPercent) * 100,
+                      )}%`,
+                      backgroundColor: item.color,
+                    }}
+                  />
+                </div>
               </div>
-              <div className="text-right font-bold text-zinc-900 dark:text-zinc-100">
-                {item.percentage}% ({item.value.toFixed(0)} {currencySymbol})
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -441,6 +441,22 @@ export const translations = {
     loading: 'Chargement...',
     success: 'Succès',
     error: 'Une erreur est survenue',
+
+    // Analytics Pro
+    burn_rate_title: 'Rythme de dépenses',
+    daily_average: 'Moyenne quotidienne',
+    projected_month_end: 'Projection fin de mois',
+    budget_limit: 'Plafond budgétaire',
+    projected_savings: 'Épargne estimée',
+    days_remaining: '{days} jours restants',
+    monthly_trend_title: 'Tendance mensuelle comparative',
+    current_month: 'Mois en cours',
+    previous_month: 'Mois précédent',
+    budget_rule_title: 'Règle budgétaire 50 / 30 / 20',
+    budget_needs: 'Besoins fixes (50%)',
+    budget_wants: 'Envies & Loisirs (30%)',
+    budget_savings: 'Épargne & Avenir (20%)',
+    target_label: 'Cible',
   },
 
   en: {
@@ -866,6 +882,22 @@ export const translations = {
     loading: 'Loading...',
     success: 'Success',
     error: 'An error occurred',
+
+    // Analytics Pro
+    burn_rate_title: 'Burn Rate & Pace',
+    daily_average: 'Daily Average',
+    projected_month_end: 'Month-end Projection',
+    budget_limit: 'Budget Cap',
+    projected_savings: 'Projected Savings',
+    days_remaining: '{days} days remaining',
+    monthly_trend_title: 'Monthly Comparative Trend',
+    current_month: 'Current Month',
+    previous_month: 'Previous Month',
+    budget_rule_title: '50 / 30 / 20 Budget Rule',
+    budget_needs: 'Needs (50%)',
+    budget_wants: 'Wants (30%)',
+    budget_savings: 'Savings (20%)',
+    target_label: 'Target',
   },
 
   de: {
@@ -1297,6 +1329,22 @@ export const translations = {
     loading: 'Laden...',
     success: 'Erfolg',
     error: 'Ein Fehler ist aufgetreten',
+
+    // Analytics Pro
+    burn_rate_title: 'Ausgabenrate & Tempo',
+    daily_average: 'Tagesdurchschnitt',
+    projected_month_end: 'Monatsend-Prognose',
+    budget_limit: 'Budgetgrenze',
+    projected_savings: 'Geschätzte Ersparnisse',
+    days_remaining: 'Noch {days} Tage',
+    monthly_trend_title: 'Monatlicher Vergleichstrend',
+    current_month: 'Aktueller Monat',
+    previous_month: 'Vorheriger Monat',
+    budget_rule_title: '50 / 30 / 20 Budgetregel',
+    budget_needs: 'Grundbedürfnisse (50%)',
+    budget_wants: 'Wünsche & Freizeit (30%)',
+    budget_savings: 'Sparen & Zukunft (20%)',
+    target_label: 'Ziel',
   },
 
   es: {
@@ -1730,6 +1778,21 @@ export const translations = {
     loading: 'Cargando...',
     success: 'Éxito',
     error: 'Ocurrió un error',
+
+    burn_rate_title: 'Ritmo de gasto',
+    daily_average: 'Promedio diario',
+    projected_month_end: 'Proyección fin de mes',
+    budget_limit: 'Límite presupuestario',
+    projected_savings: 'Ahorro estimado',
+    days_remaining: '{days} días restantes',
+    monthly_trend_title: 'Tendencia mensual comparativa',
+    current_month: 'Mes actual',
+    previous_month: 'Mes anterior',
+    budget_rule_title: 'Regla 50 / 30 / 20',
+    budget_needs: 'Necesidades (50%)',
+    budget_wants: 'Deseos (30%)',
+    budget_savings: 'Ahorro (20%)',
+    target_label: 'Objetivo',
   },
 
   pt: {
@@ -2160,6 +2223,21 @@ export const translations = {
     loading: 'A carregar...',
     success: 'Sucesso',
     error: 'Ocorreu um erro',
+
+    burn_rate_title: 'Ritmo de gastos',
+    daily_average: 'Média diária',
+    projected_month_end: 'Projeção fim do mês',
+    budget_limit: 'Teto orçamentário',
+    projected_savings: 'Poupança estimada',
+    days_remaining: '{days} dias restantes',
+    monthly_trend_title: 'Tendência comparativa mensal',
+    current_month: 'Mês atual',
+    previous_month: 'Mês anterior',
+    budget_rule_title: 'Regra 50 / 30 / 20',
+    budget_needs: 'Necessidades (50%)',
+    budget_wants: 'Desejos (30%)',
+    budget_savings: 'Poupança (20%)',
+    target_label: 'Meta',
   },
 } as const;
 

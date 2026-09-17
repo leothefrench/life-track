@@ -39,21 +39,21 @@ export default function AnalyticsPage() {
 
   const sampleRuleSplit: BudgetRuleSplit[] = [
     {
-      name: t('cat_housing') || 'Besoins',
+      name: t('budget_needs'),
       value: 850,
       percentage: 52,
       color: CHART_COLORS.needs,
       targetPercent: 50,
     },
     {
-      name: t('cat_leisure') || 'Envies',
+      name: t('budget_wants'),
       value: 430,
       percentage: 26,
       color: CHART_COLORS.wants,
       targetPercent: 30,
     },
     {
-      name: t('dashboard_title') || 'Épargne',
+      name: t('budget_savings'),
       value: 360,
       percentage: 22,
       color: CHART_COLORS.savings,
