@@ -63,9 +63,15 @@ export function BudgetRuleChart({
             </ResponsiveContainer>
           </div>
 
-          <div className="space-y-3">
+<div className="space-y-3">
             {data.map((item) => {
-              const isExceeded = item.percentage > item.targetPercent;
+              // L'épargne (cible 20%) est un plancher minimum : en alerte SEULEMENT si < 20%
+              const isSavings = item.targetPercent === 20;
+              const isWarning = isSavings
+                ? item.percentage < item.targetPercent
+                : item.percentage > item.targetPercent;
+              const isGoodSavings = isSavings && item.percentage >= item.targetPercent;
+
               return (
                 <div key={item.name} className="space-y-1">
                   <div className="flex justify-between text-xs">
@@ -79,7 +85,11 @@ export function BudgetRuleChart({
                     </span>
                     <span
                       className={`font-mono font-bold ${
-                        isExceeded ? 'text-rose-500' : 'text-muted-foreground'
+                        isWarning
+                          ? 'text-rose-500'
+                          : isGoodSavings
+                          ? 'text-emerald-500'
+                          : 'text-muted-foreground'
                       }`}
                     >
                       {item.percentage}%
@@ -88,14 +98,18 @@ export function BudgetRuleChart({
                   <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        isExceeded ? 'bg-rose-500' : ''
+                        isWarning
+                          ? 'bg-rose-500'
+                          : isGoodSavings
+                          ? 'bg-emerald-500'
+                          : ''
                       }`}
                       style={{
                         width: `${Math.min(
                           100,
                           (item.percentage / item.targetPercent) * 100,
                         )}%`,
-                        backgroundColor: isExceeded ? undefined : item.color,
+                        backgroundColor: isWarning || isGoodSavings ? undefined : item.color,
                       }}
                     />
                   </div>

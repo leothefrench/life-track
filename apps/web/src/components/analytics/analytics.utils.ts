@@ -131,9 +131,12 @@ export function calculateMonthlyTrends(
 }
 
 /**
- * Calcule la répartition 50/30/20 basée sur les catégories de dépenses
+ * Calcule la répartition 50/30/20 basée sur le vrai budget mensuel de l'utilisateur
  */
-export function calculateBudgetRuleSplit(expenses: RawExpense[]) {
+export function calculateBudgetRuleSplit(
+  expenses: RawExpense[],
+  monthlyBudget: number = 1500,
+) {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth();
@@ -143,13 +146,7 @@ export function calculateBudgetRuleSplit(expenses: RawExpense[]) {
     return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
   });
 
-  const NEEDS_CATEGORIES = [
-    'LOGEMENT',
-    'ENERGIE',
-    'ALIMENTATION',
-    'TRANSPORT',
-    'SANTE',
-  ];
+  const NEEDS_CATEGORIES = ['LOGEMENT', 'ENERGIE', 'ALIMENTATION', 'TRANSPORT', 'SANTE'];
   const WANTS_CATEGORIES = ['LOISIRS', 'ABONNEMENTS', 'AUTRE'];
 
   let needsTotal = 0;
@@ -165,18 +162,15 @@ export function calculateBudgetRuleSplit(expenses: RawExpense[]) {
     }
   });
 
-  const totalSpent = needsTotal + wantsTotal;
-  // Estimation de l'épargne (par défaut 20% ou le reste)
-  const savingsTotal =
-    totalSpent > 0 ? Math.round((totalSpent / 0.8) * 0.2) : 0;
-  const grandTotal = totalSpent + savingsTotal;
+  const baseBudget = monthlyBudget > 0 ? monthlyBudget : 1500;
 
-  const needsPercent =
-    grandTotal > 0 ? Math.round((needsTotal / grandTotal) * 100) : 50;
-  const wantsPercent =
-    grandTotal > 0 ? Math.round((wantsTotal / grandTotal) * 100) : 30;
-  const savingsPercent =
-    grandTotal > 0 ? Math.max(0, 100 - needsPercent - wantsPercent) : 20;
+  // Calcul des vrais pourcentages par rapport au budget mensuel global (ex: 3050 €)
+  const needsPercent = Math.round((needsTotal / baseBudget) * 100);
+  const wantsPercent = Math.round((wantsTotal / baseBudget) * 100);
+
+  // Ce qu'il reste du budget pour l'épargne (ou 0 si dépassement total)
+  const remainingForSavings = Math.max(0, baseBudget - (needsTotal + wantsTotal));
+  const savingsPercent = Math.max(0, 100 - needsPercent - wantsPercent);
 
   return {
     needs: {
@@ -192,7 +186,7 @@ export function calculateBudgetRuleSplit(expenses: RawExpense[]) {
       targetPercent: 30,
     },
     savings: {
-      value: Number(savingsTotal.toFixed(2)),
+      value: Number(remainingForSavings.toFixed(2)),
       percentage: savingsPercent,
       color: CHART_COLORS.savings,
       targetPercent: 20,

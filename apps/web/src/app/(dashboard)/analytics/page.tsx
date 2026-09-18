@@ -52,7 +52,7 @@ export default async function AnalyticsPage() {
   // 3. Calculs financiers réels basés sur le budget PostgreSQL de l'utilisateur
   const burnRateData = calculateBurnRate(rawExpenses, monthlyBudget);
   const trendData = calculateMonthlyTrends(rawExpenses);
-  const ruleSplitRaw = calculateBudgetRuleSplit(rawExpenses);
+ const ruleSplitRaw = calculateBudgetRuleSplit(rawExpenses, monthlyBudget);
 
   return (
     <AnalyticsView
