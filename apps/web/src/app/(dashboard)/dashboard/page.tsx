@@ -9,6 +9,7 @@ import { InsightCards } from '@/components/insight-cards';
 import { WelcomeState } from '@/components/welcome-state';
 import { DashboardHeader } from '@/components/dashboard-header';
 import { BudgetProgressCard } from '@/components/budget-progress-card';
+import { syncRecurringExpenses } from '@/app/actions/recurring-expenses';
 
 interface CategoryResult {
   category:
@@ -38,18 +39,24 @@ export default async function DashboardPage() {
   const isPremium = user?.isPremium || false;
   const isBankConnected = (user?.bankConnections?.length || 0) > 0;
 
+  // Auto-reconduction silencieuse des récurrentes
+  if (userId) {
+    await syncRecurringExpenses(userId);
+  }
+
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-const expenses = userId
-  ? await prisma.expense.findMany({
-      where: {
-        userId,
-        ...(isPremium ? {} : { date: { gte: thirtyDaysAgo } }),
-      },
-      orderBy: { date: 'desc' },
-    })
-  : [];
+  const expenses = userId
+    ? await prisma.expense.findMany({
+        where: {
+          userId,
+          ...(isPremium ? {} : { date: { gte: thirtyDaysAgo } }),
+        },
+        orderBy: { date: 'desc' },
+      })
+    : [];
+
   const totalStats = userId
     ? await prisma.expense.aggregate({
         where: { userId, date: { gte: thirtyDaysAgo } },

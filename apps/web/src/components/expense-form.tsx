@@ -102,6 +102,21 @@ export function ExpenseForm({ onSuccess, initialData }: ExpenseformProps) {
               </SelectContent>
             </Select>
           </div>
+          <div className="flex items-center space-x-2 pt-2 pb-1">
+            <input
+              type="checkbox"
+              id="isSubscription"
+              name="isSubscription"
+              defaultChecked={initialData?.isSubscription}
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+            />
+            <Label
+              htmlFor="isSubscription"
+              className="text-sm font-medium cursor-pointer"
+            >
+              {t('recurring_expense_label')}
+            </Label>
+          </div>
 
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? t('saving') : initialData ? t('save') : t('add_expense')}

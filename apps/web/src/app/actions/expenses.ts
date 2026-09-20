@@ -6,7 +6,6 @@ import { DeleteExpenseSchema, ExpenseSchema } from '@life-track/shared';
 import { revalidatePath } from 'next/cache';
 
 export async function createExpense(formData: FormData) {
-
   const session = await auth();
   if (!session?.user?.id) throw new Error('Non autorisé');
 
@@ -14,6 +13,9 @@ export async function createExpense(formData: FormData) {
     title: formData.get('title'),
     amount: Number(formData.get('amount')),
     category: formData.get('category'),
+    isSubscription:
+      formData.get('isSubscription') === 'on' ||
+      formData.get('isSubscription') === 'true',
     date: new Date(),
   };
 
@@ -27,6 +29,7 @@ export async function createExpense(formData: FormData) {
   });
 
   revalidatePath('/');
+  revalidatePath('/dashboard');
 }
 
 export async function deleteExpense(formData: FormData) {
@@ -49,27 +52,31 @@ export async function deleteExpense(formData: FormData) {
 
 export async function updateExpense(id: string, formData: FormData) {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Non autorisé");
+  if (!session?.user?.id) throw new Error('Non autorisé');
 
   const rawData = {
-    title: formData.get("title"),
-    amount: Number(formData.get("amount")),
-    category: formData.get("category"),
+    title: formData.get('title'),
+    amount: Number(formData.get('amount')),
+    category: formData.get('category'),
+    isSubscription:
+      formData.get('isSubscription') === 'on' ||
+      formData.get('isSubscription') === 'true',
     date: new Date(),
   };
 
   const validatedData = ExpenseSchema.parse(rawData);
 
   await prisma.expense.update({
-    where: { 
+    where: {
       id: id,
       userId: session.user.id,
     },
     data: validatedData,
   });
 
-  revalidatePath("/dashboard");
+  revalidatePath('/dashboard');
 }
+
 import { Parser } from 'json2csv';
 
 export async function exportExpensesAction() {

@@ -457,6 +457,18 @@ export const translations = {
     budget_wants: 'Envies & Loisirs (30%)',
     budget_savings: 'Épargne & Avenir (20%)',
     target_label: 'Cible',
+
+    // Dépenses récurrentes & suppression
+    recurring: 'Récurrent',
+    recurring_expense_label:
+      'Dépense récurrente mensuelle (Loyer, Abonnement, etc.)',
+    delete_expense_title: 'Supprimer « {title} » ?',
+    delete_expense_desc:
+      'Cette action est irréversible et supprimera la dépense de votre historique.',
+    delete_recurring_desc:
+      "Attention : cette dépense est marquée comme récurrente mensuelle. Sa suppression l'enlèvera de votre historique et arrêtera sa reconduction automatique.",
+    confirm_delete: 'Confirmer la suppression',
+    deleting: 'Suppression...',
   },
 
   en: {
@@ -898,6 +910,17 @@ export const translations = {
     budget_wants: 'Wants (30%)',
     budget_savings: 'Savings (20%)',
     target_label: 'Target',
+    // Recurring expenses & deletion
+    recurring: 'Recurring',
+    recurring_expense_label:
+      'Monthly recurring expense (Rent, Subscription, etc.)',
+    delete_expense_title: 'Delete "{title}"?',
+    delete_expense_desc:
+      'This action is irreversible and will remove the expense from your history.',
+    delete_recurring_desc:
+      'Warning: this expense is marked as monthly recurring. Deleting it will remove it from your history and stop its automatic renewal.',
+    confirm_delete: 'Confirm delete',
+    deleting: 'Deleting...',
   },
 
   de: {
@@ -1345,6 +1368,17 @@ export const translations = {
     budget_wants: 'Wünsche & Freizeit (30%)',
     budget_savings: 'Sparen & Zukunft (20%)',
     target_label: 'Ziel',
+    // Wiederkehrende Ausgaben & Löschen
+    recurring: 'Wiederkehrend',
+    recurring_expense_label:
+      'Monatlich wiederkehrende Ausgabe (Miete, Abo usw.)',
+    delete_expense_title: '„{title}“ löschen?',
+    delete_expense_desc:
+      'Diese Aktion kann nicht rückgängig gemacht werden und entfernt die Ausgabe aus Ihrem Verlauf.',
+    delete_recurring_desc:
+      'Achtung: Diese Ausgabe ist als monatlich wiederkehrend markiert. Durch das Löschen wird sie aus Ihrem Verlauf entfernt und die automatische Verlängerung gestoppt.',
+    confirm_delete: 'Löschen bestätigen',
+    deleting: 'Wird gelöscht...',
   },
 
   es: {
@@ -1793,6 +1827,17 @@ export const translations = {
     budget_wants: 'Deseos (30%)',
     budget_savings: 'Ahorro (20%)',
     target_label: 'Objetivo',
+    // Gastos recurrentes y eliminación
+    recurring: 'Recurrente',
+    recurring_expense_label:
+      'Gasto mensual recurrente (Alquiler, Suscripción, etc.)',
+    delete_expense_title: '¿Eliminar « {title} »?',
+    delete_expense_desc:
+      'Esta acción es irreversible y eliminará el gasto de su historial.',
+    delete_recurring_desc:
+      'Atención: este gasto está marcado como recurrente mensual. Eliminarlo lo borrará de su historial y detendrá su renovación automática.',
+       confirm_delete: 'Confirmar eliminación',
+    deleting: 'Eliminando...',
   },
 
   pt: {
@@ -2238,6 +2283,14 @@ export const translations = {
     budget_wants: 'Desejos (30%)',
     budget_savings: 'Poupança (20%)',
     target_label: 'Meta',
+    // Despesas recorrentes e exclusão
+    recurring: 'Recorrente',
+    recurring_expense_label: 'Despesa mensal recorrente (Aluguel, Assinatura, etc.)',
+    delete_expense_title: 'Excluir "{title}"?',
+    delete_expense_desc: 'Esta ação é irreversível e removerá a despesa do seu histórico.',
+    delete_recurring_desc: 'Atenção: esta despesa está marcada como recorrente mensal. A sua eliminação irá removê-la do seu histórico e interromper a sua renovação automática.',
+       confirm_delete: 'Confirmar eliminação',
+    deleting: 'A eliminar...',
   },
 } as const;
 

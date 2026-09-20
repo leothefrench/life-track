@@ -1,5 +1,6 @@
 'use client';
 
+import { Repeat } from 'lucide-react';
 import { Expense } from '@life-track/shared';
 import { ExpenseActions } from './expense-actions';
 import { ExportButton } from './export-button';
@@ -63,7 +64,18 @@ export function ExpenseList({ expenses }: { expenses: any[] }) {
               className="flex justify-between items-center p-3 hover:bg-card/40 transition-colors"
             >
               <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium">{expense.title}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium">{expense.title}</p>
+                  {Boolean(expense.isSubscription) && (
+                    <span
+                      title={t('recurring_expense_label')}
+                      className="inline-flex items-center gap-1 text-[10px] text-blue-400 font-semibold px-1.5 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded-md"
+                    >
+                      <Repeat className="h-2.5 w-2.5" />
+                      {t('recurring')}
+                    </span>
+                  )}
+                </div>
                 <span
                   className={`text-[8px] px-1.5 py-0.5 rounded uppercase font-extrabold w-fit border ${
                     CATEGORY_STYLES[expense.category] || CATEGORY_STYLES.AUTRE

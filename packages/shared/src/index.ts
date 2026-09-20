@@ -1,10 +1,8 @@
-import {z} from 'zod';
-import { isCuid } from '@paralleldrive/cuid2';
+import { z } from 'zod';
 
 export const ExpenseSchema = z.object({
-  title: z.string().min(1, "La description est requise"),
-  amount: z.coerce.number().positive("Le montant doit être supérieur à 0"),
-  // MISE À JOUR ICI :
+  title: z.string().min(1, 'La description est requise'),
+  amount: z.coerce.number().positive('Le montant doit être supérieur à 0'),
   category: z.enum([
     'LOGEMENT',
     'ENERGIE',
@@ -16,6 +14,7 @@ export const ExpenseSchema = z.object({
     'AUTRE',
   ]),
   date: z.coerce.date().optional(),
+  isSubscription: z.boolean().optional().default(false),
 });
 
 export const DeleteExpenseSchema = z.object({
