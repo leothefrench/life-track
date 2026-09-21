@@ -2,14 +2,13 @@ import { prisma } from '@life-track/db';
 import { auth } from '@/auth';
 import { AddExpenseDialog } from '@/components/add-expense-dialog';
 import { DashboardStats } from '@/components/dashboard-stats';
-import { ExpenseList } from '@/components/expense-list';
 import { PlaidLink } from '@/components/plaid-link';
 import { SyncButton } from '@/components/sync-button';
 import { InsightCards } from '@/components/insight-cards';
 import { WelcomeState } from '@/components/welcome-state';
 import { DashboardHeader } from '@/components/dashboard-header';
-import { BudgetProgressCard } from '@/components/budget-progress-card';
 import { syncRecurringExpenses } from '@/app/actions/recurring-expenses';
+import { DashboardExpensesView } from '@/components/dashboard-expenses-view';
 
 interface CategoryResult {
   category:
@@ -44,14 +43,18 @@ export default async function DashboardPage() {
     await syncRecurringExpenses(userId);
   }
 
+  // Calcul des bornes de dates
+  const now = new Date();
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
+  // On récupère jusqu'au début du mois précédent pour permettre le filtrage « Mois précédent »
   const expenses = userId
     ? await prisma.expense.findMany({
         where: {
           userId,
-          ...(isPremium ? {} : { date: { gte: thirtyDaysAgo } }),
+          ...(isPremium ? {} : { date: { gte: startOfLastMonth } }),
         },
         orderBy: { date: 'desc' },
       })
@@ -161,13 +164,14 @@ export default async function DashboardPage() {
             isPremium={isPremium}
             expensesCount={expenses.length}
           />
-          {/* Jauge de suivi du budget mensuel */}
-          <BudgetProgressCard
-            totalSpent={totalSpent}
-            initialBudget={user?.monthlyBudget || 1500}
-          />
+
           <InsightCards insights={insights} />
-          <ExpenseList expenses={expenses} />
+
+          {/* Vue interactive avec sélecteur de période, jauge budget et liste synchronisées */}
+          <DashboardExpensesView
+            expenses={expenses}
+            monthlyBudget={user?.monthlyBudget || 1500}
+          />
         </>
       ) : (
         <WelcomeState isPremium={isPremium} isBankConnected={isBankConnected} />

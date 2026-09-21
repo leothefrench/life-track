@@ -17,6 +17,10 @@ export const BUDGET_CARD_DICT = {
     notifWarningTitle: (pct: string) => `⚠️ Alerte Budget Life-Track (${pct}%)`,
     notifWarningBody: (pct: number, spent: string, b: string, sym: string) =>
       `Attention, vous avez atteint ${pct}% de votre budget mensuel (${spent} / ${b} ${sym}).`,
+    dailyAllowance: 'Reste par jour',
+    weeklyAllowance: 'Reste par semaine',
+    daysLeft: 'jours restants',
+    todayDayLeft: 'dernier jour',
   },
   en: {
     used: 'used',
@@ -34,6 +38,10 @@ export const BUDGET_CARD_DICT = {
     notifWarningTitle: (pct: string) => `⚠️ Life-Track Budget Alert (${pct}%)`,
     notifWarningBody: (pct: number, spent: string, b: string, sym: string) =>
       `Warning, you have reached ${pct}% of your monthly budget (${spent} / ${b} ${sym}).`,
+    dailyAllowance: 'Left per day',
+    weeklyAllowance: 'Left per week',
+    daysLeft: 'days left',
+    todayDayLeft: 'last day',
   },
   de: {
     used: 'verbraucht',
@@ -52,6 +60,10 @@ export const BUDGET_CARD_DICT = {
     notifWarningTitle: (pct: string) => `⚠️ Life-Track Budgetwarnung (${pct}%)`,
     notifWarningBody: (pct: number, spent: string, b: string, sym: string) =>
       `Achtung, Sie haben ${pct}% Ihres Monatsbudgets erreicht (${spent} / ${b} ${sym}).`,
+    dailyAllowance: 'Übrig pro Tag',
+    weeklyAllowance: 'Übrig pro Woche',
+    daysLeft: 'Tage übrig',
+    todayDayLeft: 'letzter Tag',
   },
   es: {
     used: 'consumido',
@@ -70,6 +82,10 @@ export const BUDGET_CARD_DICT = {
       `⚠️ Alerta Presupuesto Life-Track (${pct}%)`,
     notifWarningBody: (pct: number, spent: string, b: string, sym: string) =>
       `Atención, ha alcanzado el ${pct}% de su presupuesto mensual (${spent} / ${b} ${sym}).`,
+    dailyAllowance: 'Restante por día',
+    weeklyAllowance: 'Restante por semana',
+    daysLeft: 'días restantes',
+    todayDayLeft: 'último día',
   },
   pt: {
     used: 'consumido',
@@ -89,5 +105,9 @@ export const BUDGET_CARD_DICT = {
       `⚠️ Alerta Orçamento Life-Track (${pct}%)`,
     notifWarningBody: (pct: number, spent: string, b: string, sym: string) =>
       `Atenção, atingiu ${pct}% do seu orçamento mensal (${spent} / ${b} ${sym}).`,
+    dailyAllowance: 'Restante por dia',
+    weeklyAllowance: 'Restante por semana',
+    daysLeft: 'dias restantes',
+    todayDayLeft: 'último dia',
   },
 };

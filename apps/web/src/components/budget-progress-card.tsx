@@ -36,6 +36,22 @@ export function BudgetProgressCard({
   const percentage = Math.min(Math.round((totalSpent / budget) * 100), 100);
   const rawPercentage = (totalSpent / budget) * 100;
   const remaining = Math.max(budget - totalSpent, 0);
+  // Calcul dynamique des jours restants dans le mois en cours
+  const now = new Date();
+  const lastDayOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    0,
+  ).getDate();
+  const currentDay = now.getDate();
+  // Jours restants en comptant aujourd'hui (minimum 1 jour pour éviter toute division par 0)
+  const remainingDays = Math.max(lastDayOfMonth - currentDay + 1, 1);
+
+  const dailyBudget = remaining > 0 ? remaining / remainingDays : 0;
+  const weeklyBudget =
+    remaining > 0
+      ? (remaining / remainingDays) * Math.min(7, remainingDays)
+      : 0;
 
   const isThreshold95 = rawPercentage >= 95;
   const isThreshold90 = rawPercentage >= 90 && rawPercentage < 95;
@@ -183,6 +199,27 @@ export function BudgetProgressCard({
             </span>
           </div>
         </div>
+        {/* Anti-stress: Reste à dépenser quotidien / hebdomadaire */}
+        {remaining > 0 && (
+          <div className="mt-3.5 pt-3 border-t border-border/30 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">
+                {tCard.dailyAllowance} :
+              </span>
+              <span className="font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                ~{dailyBudget.toFixed(2)} {currencySymbol} / j
+              </span>
+              <span className="text-[10px] text-muted-foreground">
+                ({weeklyBudget.toFixed(2)} {currencySymbol} / sem.)
+              </span>
+            </div>
+            <span className="text-[11px] text-muted-foreground/80 italic">
+              {remainingDays > 1
+                ? `${remainingDays} ${tCard.daysLeft}`
+                : tCard.todayDayLeft}
+            </span>
+          </div>
+        )}
 
         {/* Sous-composant Notifications */}
         <BudgetNotifications

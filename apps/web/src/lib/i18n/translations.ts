@@ -469,6 +469,10 @@ export const translations = {
       "Attention : cette dépense est marquée comme récurrente mensuelle. Sa suppression l'enlèvera de votre historique et arrêtera sa reconduction automatique.",
     confirm_delete: 'Confirmer la suppression',
     deleting: 'Suppression...',
+
+    period_current_month: 'Ce mois-ci',
+    period_last_30_days: '30 derniers jours',
+    period_last_month: 'Mois précédent',
   },
 
   en: {
@@ -921,6 +925,10 @@ export const translations = {
       'Warning: this expense is marked as monthly recurring. Deleting it will remove it from your history and stop its automatic renewal.',
     confirm_delete: 'Confirm delete',
     deleting: 'Deleting...',
+
+    period_current_month: 'This month',
+    period_last_30_days: 'Last 30 days',
+    period_last_month: 'Previous month',
   },
 
   de: {
@@ -1379,6 +1387,10 @@ export const translations = {
       'Achtung: Diese Ausgabe ist als monatlich wiederkehrend markiert. Durch das Löschen wird sie aus Ihrem Verlauf entfernt und die automatische Verlängerung gestoppt.',
     confirm_delete: 'Löschen bestätigen',
     deleting: 'Wird gelöscht...',
+
+    period_current_month: 'Diesen Monat',
+    period_last_30_days: 'Letzte 30 Tage',
+    period_last_month: 'Letzter Monat',
   },
 
   es: {
@@ -1836,8 +1848,12 @@ export const translations = {
       'Esta acción es irreversible y eliminará el gasto de su historial.',
     delete_recurring_desc:
       'Atención: este gasto está marcado como recurrente mensual. Eliminarlo lo borrará de su historial y detendrá su renovación automática.',
-       confirm_delete: 'Confirmar eliminación',
+    confirm_delete: 'Confirmar eliminación',
     deleting: 'Eliminando...',
+
+    period_current_month: 'Este mes',
+    period_last_30_days: 'Últimos 30 días',
+    period_last_month: 'Mes anterior',
   },
 
   pt: {
@@ -2285,12 +2301,19 @@ export const translations = {
     target_label: 'Meta',
     // Despesas recorrentes e exclusão
     recurring: 'Recorrente',
-    recurring_expense_label: 'Despesa mensal recorrente (Aluguel, Assinatura, etc.)',
+    recurring_expense_label:
+      'Despesa mensal recorrente (Aluguel, Assinatura, etc.)',
     delete_expense_title: 'Excluir "{title}"?',
-    delete_expense_desc: 'Esta ação é irreversível e removerá a despesa do seu histórico.',
-    delete_recurring_desc: 'Atenção: esta despesa está marcada como recorrente mensal. A sua eliminação irá removê-la do seu histórico e interromper a sua renovação automática.',
-       confirm_delete: 'Confirmar eliminação',
+    delete_expense_desc:
+      'Esta ação é irreversível e removerá a despesa do seu histórico.',
+    delete_recurring_desc:
+      'Atenção: esta despesa está marcada como recorrente mensal. A sua eliminação irá removê-la do seu histórico e interromper a sua renovação automática.',
+    confirm_delete: 'Confirmar eliminação',
     deleting: 'A eliminar...',
+
+    period_current_month: 'Este mês',
+    period_last_30_days: 'Últimos 30 dias',
+    period_last_month: 'Mês anterior',
   },
 } as const;
 
