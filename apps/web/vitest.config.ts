@@ -8,6 +8,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true, // Permet d'utiliser describe, test, etc. sans les importer
     setupFiles: './src/lib/setupTests.ts', // On va le créer
+    include: ['src/__tests__/**/*.test.ts'],
+    exclude: ['e2e/**', 'node_modules/**'],
   },
   resolve: {
     alias: {
