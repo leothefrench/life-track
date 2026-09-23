@@ -1,6 +1,9 @@
 export type Language = 'fr' | 'en' | 'de' | 'es' | 'pt';
 
-export const LANGUAGE_NAMES: Record<Language, { name: string; flag: string; label: string }> = {
+export const LANGUAGE_NAMES: Record<
+  Language,
+  { name: string; flag: string; label: string }
+> = {
   fr: { name: 'Français', flag: '🇫🇷', label: 'FR' },
   en: { name: 'English', flag: '🇬🇧', label: 'EN' },
   de: { name: 'Deutsch', flag: '🇩🇪', label: 'DE' },
@@ -2370,15 +2373,19 @@ export const translations = {
     period_last_30_days: 'Últimos 30 dias',
     period_last_month: 'Mês anterior',
 
-    paywall_badge: "Funcionalidade Premium",
-paywall_title: "Desbloqueie as suas Análises Avançadas",
-paywall_desc: "Assuma o controlo total das suas finanças com ferramentas avançadas de previsão.",
-paywall_feature_burn_rate: "Curvas comparativas e acompanhamento do seu ritmo de gastos",
-paywall_feature_split: "Divisão 50/30/20 para equilibrar necessidades, desejos e poupança",
-paywall_feature_forecast: "Previsões de fim de mês para antecipar e evitar saldos negativos",
-paywall_back_dashboard: "Voltar ao Painel",
-paywall_cta: "Mudar para Life-Track Pro",
-close: "Fechar",
+    paywall_badge: 'Funcionalidade Premium',
+    paywall_title: 'Desbloqueie as suas Análises Avançadas',
+    paywall_desc:
+      'Assuma o controlo total das suas finanças com ferramentas avançadas de previsão.',
+    paywall_feature_burn_rate:
+      'Curvas comparativas e acompanhamento do seu ritmo de gastos',
+    paywall_feature_split:
+      'Divisão 50/30/20 para equilibrar necessidades, desejos e poupança',
+    paywall_feature_forecast:
+      'Previsões de fim de mês para antecipar e evitar saldos negativos',
+    paywall_back_dashboard: 'Voltar ao Painel',
+    paywall_cta: 'Mudar para Life-Track Pro',
+    close: 'Fechar',
   },
 } as const;
 
