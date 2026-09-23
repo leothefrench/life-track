@@ -1,83 +1,77 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  Sparkles,
-  ArrowRight,
-  TrendingUp,
-  PieChart,
-  ShieldCheck,
-} from 'lucide-react';
+import { X } from 'lucide-react';
+import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function AnalyticsPaywallModal() {
+  const { t } = useI18n();
+
   return (
     <div
       role="dialog"
       aria-labelledby="paywall-title"
       aria-describedby="paywall-desc"
-      className="absolute inset-0 z-20 flex items-center justify-center bg-zinc-950/40 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/60 p-4 backdrop-blur-md"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-blue-500/20 bg-white/95 p-6 shadow-2xl backdrop-blur-xl dark:border-blue-500/30 dark:bg-zinc-900/95 sm:p-8">
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-blue-600/10 p-2.5 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400">
-            <Sparkles className="h-6 w-6" aria-hidden="true" />
-          </div>
-          <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-              Fonctionnalité Premium
-            </span>
-            <h3
-              id="paywall-title"
-              className="text-lg font-bold text-zinc-900 dark:text-zinc-100"
-            >
-              Débloquez vos Analyses Avancées
-            </h3>
-          </div>
+      <div className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-zinc-900/95 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+        {/* Croix de fermeture pour revenir au dashboard sans la flèche du navigateur */}
+        <Link
+          href="/dashboard"
+          className="absolute top-5 right-5 p-2 text-zinc-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+          aria-label={t('close')}
+        >
+          <X className="h-5 w-5" />
+        </Link>
+
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
+            {t('paywall_badge')}
+          </span>
+          <h3
+            id="paywall-title"
+            className="text-xl font-bold text-zinc-100 mt-1"
+          >
+            {t('paywall_title')}
+          </h3>
         </div>
 
         <p
           id="paywall-desc"
-          className="mt-3 text-sm text-zinc-700 dark:text-zinc-200 leading-relaxed"
+          className="mt-3 text-sm text-zinc-300 leading-relaxed"
         >
-          Prenez le contrôle total de vos finances avec des outils réservés aux
-          membres Pro.
+          {t('paywall_desc')}
         </p>
 
-        <ul className="mt-4 space-y-2.5 text-xs text-zinc-700 dark:text-zinc-200">
-          <li className="flex items-center gap-2">
-            <TrendingUp
-              className="h-4 w-4 text-emerald-500 shrink-0"
-              aria-hidden="true"
-            />
-            <span>
-              Courbes comparatives et suivi de votre vitesse de dépense
-            </span>
+        {/* Liste épurée sans icônes gadget */}
+        <ul className="mt-5 space-y-3 text-sm text-zinc-300">
+          <li className="flex items-start gap-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
+            <span>{t('paywall_feature_burn_rate')}</span>
           </li>
-          <li className="flex items-center gap-2">
-            <PieChart
-              className="h-4 w-4 text-blue-500 shrink-0"
-              aria-hidden="true"
-            />
-            <span>
-              Répartition 50/30/20 pour équilibrer besoins, envies et épargne
-            </span>
+          <li className="flex items-start gap-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
+            <span>{t('paywall_feature_split')}</span>
           </li>
-          <li className="flex items-center gap-2">
-            <ShieldCheck
-              className="h-4 w-4 text-amber-500 shrink-0"
-              aria-hidden="true"
-            />
-            <span>Prévisions de fin de mois pour éviter les découverts</span>
+          <li className="flex items-start gap-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
+            <span>{t('paywall_feature_forecast')}</span>
           </li>
         </ul>
 
-        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+        {/* Boutons d'action : Retour au Dashboard ou Passer à Pro */}
+        <div className="mt-8 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-xs font-semibold text-zinc-400 hover:text-white hover:bg-white/5 transition"
+          >
+            {t('paywall_back_dashboard')}
+          </Link>
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500"
+            className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-500"
           >
-            <span>Passer à Life-Track Pro</span>
-            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            {t('paywall_cta')}
           </Link>
         </div>
       </div>

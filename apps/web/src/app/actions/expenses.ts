@@ -17,7 +17,7 @@ export async function createExpense(formData: FormData) {
   const recentCount = await prisma.expense.count({
     where: {
       userId,
-      createdAt: { gte: oneMinuteAgo },
+      date: { gte: oneMinuteAgo },
     },
   });
 

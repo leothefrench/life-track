@@ -473,6 +473,20 @@ export const translations = {
     period_current_month: 'Ce mois-ci',
     period_last_30_days: '30 derniers jours',
     period_last_month: 'Mois précédent',
+
+    paywall_badge: 'Fonctionnalité Premium',
+    paywall_title: 'Débloquez vos Analyses Avancées',
+    paywall_desc:
+      'Prenez le contrôle total de vos finances avec des outils de prévision avancés.',
+    paywall_feature_burn_rate:
+      'Courbes comparatives et suivi de votre vitesse de dépense',
+    paywall_feature_split:
+      'Répartition 50/30/20 pour équilibrer besoins, envies et épargne',
+    paywall_feature_forecast:
+      'Prévisions de fin de mois pour anticiper et éviter les découverts',
+    paywall_back_dashboard: 'Retour au tableau de bord',
+    paywall_cta: 'Passer à Life-Track Pro',
+    close: 'Fermer',
   },
 
   en: {
@@ -929,6 +943,20 @@ export const translations = {
     period_current_month: 'This month',
     period_last_30_days: 'Last 30 days',
     period_last_month: 'Previous month',
+
+    paywall_badge: 'Premium Feature',
+    paywall_title: 'Unlock Advanced Analytics',
+    paywall_desc:
+      'Take full control of your finances with advanced forecasting and tracking tools.',
+    paywall_feature_burn_rate:
+      'Comparative trends and real-time burn rate monitoring',
+    paywall_feature_split:
+      '50/30/20 breakdown to balance needs, wants, and savings',
+    paywall_feature_forecast:
+      'Month-end projections to anticipate cash flow and prevent overdrafts',
+    paywall_back_dashboard: 'Back to Dashboard',
+    paywall_cta: 'Upgrade to Life-Track Pro',
+    close: 'Close',
   },
 
   de: {
@@ -1391,6 +1419,19 @@ export const translations = {
     period_current_month: 'Diesen Monat',
     period_last_30_days: 'Letzte 30 Tage',
     period_last_month: 'Letzter Monat',
+    paywall_badge: 'Premium-Funktion',
+    paywall_title: 'Erweiterte Analysen freischalten',
+    paywall_desc:
+      'Übernehmen Sie die volle Kontrolle über Ihre Finanzen mit modernen Prognosetools.',
+    paywall_feature_burn_rate:
+      'Vergleichskurven und Überwachung Ihrer Ausgabengeschwindigkeit',
+    paywall_feature_split:
+      '50/30/20-Aufteilung für Grundbedürfnisse, Wünsche und Ersparnisse',
+    paywall_feature_forecast:
+      'Monatsend-Prognosen zur Vermeidung von Überziehungen',
+    paywall_back_dashboard: 'Zurück zum Dashboard',
+    paywall_cta: 'Auf Life-Track Pro upgraden',
+    close: 'Schließen',
   },
 
   es: {
@@ -1854,6 +1895,20 @@ export const translations = {
     period_current_month: 'Este mes',
     period_last_30_days: 'Últimos 30 días',
     period_last_month: 'Mes anterior',
+
+    paywall_badge: 'Función Premium',
+    paywall_title: 'Desbloquea tus Análisis Avanzados',
+    paywall_desc:
+      'Toma el control total de tus finanzas con herramientas de previsión avanzadas.',
+    paywall_feature_burn_rate:
+      'Curvas comparativas y seguimiento de tu ritmo de gasto',
+    paywall_feature_split:
+      'Distribución 50/30/20 para equilibrar necesidades, deseos y ahorros',
+    paywall_feature_forecast:
+      'Previsiones de fin de mes para anticipar y evitar descubiertos',
+    paywall_back_dashboard: 'Volver al Panel',
+    paywall_cta: 'Mejorar a Life-Track Pro',
+    close: 'Cerrar',
   },
 
   pt: {
@@ -2314,6 +2369,16 @@ export const translations = {
     period_current_month: 'Este mês',
     period_last_30_days: 'Últimos 30 dias',
     period_last_month: 'Mês anterior',
+
+    paywall_badge: "Funcionalidade Premium",
+paywall_title: "Desbloqueie as suas Análises Avançadas",
+paywall_desc: "Assuma o controlo total das suas finanças com ferramentas avançadas de previsão.",
+paywall_feature_burn_rate: "Curvas comparativas e acompanhamento do seu ritmo de gastos",
+paywall_feature_split: "Divisão 50/30/20 para equilibrar necessidades, desejos e poupança",
+paywall_feature_forecast: "Previsões de fim de mês para antecipar e evitar saldos negativos",
+paywall_back_dashboard: "Voltar ao Painel",
+paywall_cta: "Mudar para Life-Track Pro",
+close: "Fechar",
   },
 } as const;
 
