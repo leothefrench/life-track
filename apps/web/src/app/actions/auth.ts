@@ -21,7 +21,6 @@ export async function registerUser(formData: FormData) {
 
   const validation = RegisterSchema.safeParse({ name, email, password });
 
-  // AU LIEU DE THROW, ON FAIT UN RETURN
   if (!validation.success) {
     return { error: validation.error.issues[0].message };
   }
@@ -51,24 +50,18 @@ export async function registerUser(formData: FormData) {
     await sendWelcomeEmail(validatedData.email, validatedData.name);
   } catch (error) {
     console.error('Erreur envoi mail bienvenue:', error);
-    // On ne bloque pas l'inscription si le mail échoue
   }
 
-  // Le redirect doit toujours être à la fin, hors de tout bloc logique
   redirect('/login?registered=true');
 }
 
 export async function loginUser(formData: FormData) {
   const email = (formData.get('email') as string).trim().toLowerCase();
   const password = formData.get('password') as string;
-  const code = formData.get('code') as string; // Le code 2FA (optionnel au début)
+  const code = formData.get('code') as string;
 
   // 1. Vérifier si l'utilisateur existe
   const user = await prisma.user.findUnique({ where: { email } });
-
-  // MOUCHARD SERVER 2
-  console.log('UTILISATEUR TROUVÉ:', !!user);
-  console.log('STATUT 2FA DANS LA DB:', user?.isTwoFactorEnabled);
 
   if (!user || !user.password) return { error: 'Identifiants invalides' };
 
@@ -79,6 +72,28 @@ export async function loginUser(formData: FormData) {
   // 3. LOGIQUE 2FA
   if (user.isTwoFactorEnabled) {
     if (!code) {
+      const existingToken = await prisma.twoFactorToken.findFirst({
+        where: { email },
+      });
+
+      // RÈGLE FREEMIUM : Obligation d'attendre 60 secondes entre deux demandes
+      // RÈGLE PREMIUM : Aucun délai d'attente (immédiat)
+      if (!user.isPremium && existingToken) {
+        // Le token a été créé à : expires - 7 minutes
+        const tokenCreatedAt =
+          new Date(existingToken.expires).getTime() - 7 * 60 * 1000;
+        const secondsSinceLastRequest = Math.floor(
+          (Date.now() - tokenCreatedAt) / 1000,
+        );
+
+        if (secondsSinceLastRequest < 60) {
+          const remainingSeconds = 60 - secondsSinceLastRequest;
+          return {
+            error: `Veuillez patienter ${remainingSeconds}s avant de demander un nouveau code.`,
+          };
+        }
+      }
+
       const twoFactorToken = await generateTwoFactorToken(user.email!);
       try {
         await sendTwoFactorTokenEmail(
@@ -86,11 +101,7 @@ export async function loginUser(formData: FormData) {
           twoFactorToken.token,
         );
       } catch (error) {
-        console.error(
-          "Erreur d'envoi d'email 2FA (Resend non configuré) :",
-          error,
-        );
-        // On ne bloque pas pour permettre l'utilisation du code de test bypass '123456'
+        console.error("Erreur d'envoi d'email 2FA (Resend) :", error);
       }
       return { twoFactor: true };
     }
@@ -112,7 +123,6 @@ export async function loginUser(formData: FormData) {
 
   // 4. CONNEXION FINALE
   try {
-    // On appelle NextAuth pour créer la session
     await signIn('credentials', {
       email,
       password,

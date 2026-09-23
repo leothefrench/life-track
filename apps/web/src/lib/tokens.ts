@@ -3,9 +3,7 @@ import crypto from 'crypto';
 import { prisma } from '@life-track/db';
 
 export const generatePasswordResetToken = async (email: string) => {
-
   const token = uuidv4();
-
   const expires = new Date(new Date().getTime() + 3600 * 1000);
 
   const existingToken = await prisma.passwordResetToken.findFirst({
@@ -29,15 +27,15 @@ export const generateTwoFactorToken = async (email: string) => {
   // 1. On génère 6 chiffres aléatoires de façon sécurisée
   const token = crypto.randomInt(100_000, 1_000_000).toString();
 
-  // 2. Le code expire dans 5 minutes (très court pour la sécurité)
-  const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
+  // 2. Le code expire dans 7 minutes (comme convenu)
+  const expires = new Date(new Date().getTime() + 7 * 60 * 1000);
 
   // 3. On vérifie s'il existe déjà un code pour cet email
   const existingToken = await prisma.twoFactorToken.findFirst({
     where: { email },
   });
 
-  // 4. Si oui, on le supprime (nettoyage)
+  // 4. Si oui, on le supprime (invalidation de l'ancien code)
   if (existingToken) {
     await prisma.twoFactorToken.delete({
       where: { id: existingToken.id },
