@@ -108,7 +108,7 @@ Reply only with valid JSON.`;
 
     const ai = getGeminiClient();
     const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
+      model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -164,7 +164,10 @@ Reply only with valid JSON.`;
       };
     }
 
-    if (rawMessage.includes('429') || rawMessage.includes('RESOURCE_EXHAUSTED')) {
+    if (
+      rawMessage.includes('429') ||
+      rawMessage.includes('RESOURCE_EXHAUSTED')
+    ) {
       return {
         message:
           "Quota d'appels Gemini dépassé. Veuillez patienter une minute.",
@@ -178,16 +181,115 @@ Reply only with valid JSON.`;
   }
 }
 
+// Fallback par règles locales si l'IA est indisponible ou hors quota
+function getLocalFallbackCategory(title: string): string {
+  const t = title.toLowerCase();
+  if (
+    t.includes('loyer') ||
+    t.includes('rent') ||
+    t.includes('immo') ||
+    t.includes('housing')
+  ) {
+    return 'LOGEMENT';
+  }
+  if (
+    t.includes('edf') ||
+    t.includes('engie') ||
+    t.includes('totalenergies') ||
+    t.includes('electricité') ||
+    t.includes('gaz') ||
+    t.includes('energy')
+  ) {
+    return 'ENERGIE';
+  }
+  if (
+    t.includes('carrefour') ||
+    t.includes('auchan') ||
+    t.includes('leclerc') ||
+    t.includes('lidl') ||
+    t.includes('starbucks') ||
+    t.includes('uber eats') ||
+    t.includes('restaurant') ||
+    t.includes('food') ||
+    t.includes('monoprix') ||
+    t.includes('coffee')
+  ) {
+    return 'ALIMENTATION';
+  }
+  if (
+    t.includes('uber') ||
+    t.includes('sncf') ||
+    t.includes('ratp') ||
+    t.includes('total') ||
+    t.includes('essence') ||
+    t.includes('train') ||
+    t.includes('taxi') ||
+    t.includes('flight') ||
+    t.includes('airline')
+  ) {
+    return 'TRANSPORT';
+  }
+  if (
+    t.includes('netflix') ||
+    t.includes('spotify') ||
+    t.includes('apple') ||
+    t.includes('prime') ||
+    t.includes('free mobile') ||
+    t.includes('orange') ||
+    t.includes('sfr') ||
+    t.includes('bouygues') ||
+    t.includes('subscription')
+  ) {
+    return 'ABONNEMENTS';
+  }
+  if (
+    t.includes('cinema') ||
+    t.includes('ugc') ||
+    t.includes('pathe') ||
+    t.includes('theatre') ||
+    t.includes('concert') ||
+    t.includes('steam') ||
+    t.includes('playstation') ||
+    t.includes('sparkfun')
+  ) {
+    return 'LOISIRS';
+  }
+  if (
+    t.includes('pharma') ||
+    t.includes('doctolib') ||
+    t.includes('medecin') ||
+    t.includes('hopital') ||
+    t.includes('dentiste') ||
+    t.includes('health')
+  ) {
+    return 'SANTE';
+  }
+  return 'AUTRE';
+}
+
 export async function categorizeTransactions(titles: string[]) {
+  if (!titles || titles.length === 0) return {};
+
   try {
     const ai = getGeminiClient();
 
-    const prompt = `Classe ces libellés de transactions bancaires : ${JSON.stringify(titles)}. 
-Réponds en JSON uniquement sous forme d'objet associatif clé-valeur: {"Libellé exact": "CATEGORIE"}. 
-Catégories autorisées exclusivement : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.`;
+    const prompt = `Classifie rigoureusement ces libellés bancaires : ${JSON.stringify(
+      titles,
+    )}.
+Pour chaque libellé, attribue l'une de ces 8 catégories obligatoires :
+- LOGEMENT (loyer, charges, agence)
+- ENERGIE (électricité, gaz, eau)
+- ALIMENTATION (supermarchés, restaurants, boulangerie, café, Uber Eats)
+- TRANSPORT (essence, péage, train, métro, taxi, Uber, bus)
+- ABONNEMENTS (forfait internet, téléphone, streaming Netflix/Spotify/Apple/Amazon)
+- LOISIRS (cinéma, jeux, sorties, musées, loisirs créatifs)
+- SANTE (pharmacie, médecin, optique, dentiste)
+- AUTRE (retraits distributeurs ou inclassables)
+
+Réponds STRICTEMENT sous forme d'objet JSON associatif : {"Libellé exact": "CATEGORIE"}`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
+      model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -195,9 +297,22 @@ Catégories autorisées exclusivement : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPO
     });
 
     const responseText = response.text || '';
-    return extractJsonFromResponse(responseText) || {};
+    const parsed = extractJsonFromResponse(responseText) || {};
+
+    const result: Record<string, string> = {};
+    for (const title of titles) {
+      result[title] = parsed[title] || getLocalFallbackCategory(title);
+    }
+    return result;
   } catch (error) {
-    console.error('Erreur catégorisation IA Gemini:', error);
-    return {};
+    console.warn(
+      'IA indisponible pour la catégorisation, bascule sur le fallback local:',
+      error,
+    );
+    const fallback: Record<string, string> = {};
+    for (const title of titles) {
+      fallback[title] = getLocalFallbackCategory(title);
+    }
+    return fallback;
   }
 }
