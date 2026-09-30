@@ -5,6 +5,94 @@ import { plaidClient } from '@/lib/plaid';
 import { prisma } from '@life-track/db';
 import { Products, CountryCode, LinkTokenCreateRequest } from 'plaid';
 import { categorizeTransactions } from './ai';
+import { getLocalFallbackCategory } from '@/lib/categorizer';
+import { revalidatePath } from 'next/cache';
+
+// Table de correspondance officielle Plaid -> Life-Track
+function mapPlaidToCategory(trx: any): string | null {
+  const pfc = trx.personal_finance_category?.primary?.toUpperCase() || '';
+  const legacyCat = (trx.category || []).join(' ').toUpperCase();
+  const fullPlaid = `${pfc} ${legacyCat}`;
+
+  // ALIMENTATION
+  if (
+    fullPlaid.includes('FOOD') ||
+    fullPlaid.includes('DRINK') ||
+    fullPlaid.includes('RESTAURANT') ||
+    fullPlaid.includes('GROCERIES') ||
+    fullPlaid.includes('SUPERMARKET') ||
+    fullPlaid.includes('FAST_FOOD')
+  ) {
+    return 'ALIMENTATION';
+  }
+
+  // TRANSPORT
+  if (
+    fullPlaid.includes('TRANSPORT') ||
+    fullPlaid.includes('TRAVEL') ||
+    fullPlaid.includes('GAS') ||
+    fullPlaid.includes('TAXI') ||
+    fullPlaid.includes('AIRLINES') ||
+    fullPlaid.includes('TOLLS') ||
+    fullPlaid.includes('PARKING')
+  ) {
+    return 'TRANSPORT';
+  }
+
+  // ENERGIE & CHARGES
+  if (
+    fullPlaid.includes('UTILITIES') ||
+    fullPlaid.includes('ELECTRIC') ||
+    fullPlaid.includes('GAS_POWER') ||
+    fullPlaid.includes('WATER')
+  ) {
+    return 'ENERGIE';
+  }
+
+  // LOGEMENT
+  if (
+    fullPlaid.includes('RENT') ||
+    fullPlaid.includes('MORTGAGE') ||
+    fullPlaid.includes('HOUSING') ||
+    fullPlaid.includes('REAL_ESTATE')
+  ) {
+    return 'LOGEMENT';
+  }
+
+  // ABONNEMENTS
+  if (
+    fullPlaid.includes('SUBSCRIPTION') ||
+    fullPlaid.includes('TELECOM') ||
+    fullPlaid.includes('CABLE') ||
+    fullPlaid.includes('INTERNET') ||
+    fullPlaid.includes('PHONE')
+  ) {
+    return 'ABONNEMENTS';
+  }
+
+  // SANTE
+  if (
+    fullPlaid.includes('MEDICAL') ||
+    fullPlaid.includes('HEALTH') ||
+    fullPlaid.includes('PHARMACY') ||
+    fullPlaid.includes('DENTAL')
+  ) {
+    return 'SANTE';
+  }
+
+  // LOISIRS
+  if (
+    fullPlaid.includes('ENTERTAINMENT') ||
+    fullPlaid.includes('RECREATION') ||
+    fullPlaid.includes('SPORT') ||
+    fullPlaid.includes('THEATER') ||
+    fullPlaid.includes('GAMES')
+  ) {
+    return 'LOISIRS';
+  }
+
+  return null;
+}
 
 export async function createLinkToken(lang: string = 'fr') {
   const session = await auth();
@@ -19,8 +107,6 @@ export async function createLinkToken(lang: string = 'fr') {
     return { error: 'Fonctionnalité réservée aux membres Pro.' };
   }
 
-  // Plaid supporte nativement 'fr', 'en', 'es', 'de'.
-  // Pour le portugais ('pt') ou tout autre choix, Plaid bascule proprement sur 'en'.
   const plaidLanguageMap: Record<string, string> = {
     fr: 'fr',
     en: 'en',
@@ -70,7 +156,6 @@ export async function exchangePublicToken(
   }
 
   try {
-    // 1. On demande à Plaid d'échanger le jeton public contre un Access Token permanent
     const response = await plaidClient.itemPublicTokenExchange({
       public_token: publicToken,
     });
@@ -78,7 +163,6 @@ export async function exchangePublicToken(
     const accessToken = response.data.access_token;
     const itemId = response.data.item_id;
 
-    // 2. On enregistre cette connexion dans Neon pour ce User
     await prisma.bankConnection.create({
       data: {
         userId: session.user.id,
@@ -94,8 +178,6 @@ export async function exchangePublicToken(
     return { error: 'Échec de la liaison bancaire.' };
   }
 }
-
-import { revalidatePath } from 'next/cache';
 
 export async function syncTransactions() {
   const session = await auth();
@@ -131,47 +213,63 @@ export async function syncTransactions() {
 
     const transactions = response.data.transactions;
 
-    // 1. On demande à l'IA de classer les noms
-    const titlesToCategorize = transactions.map((t) => t.name);
-    const categoriesMap = await categorizeTransactions(titlesToCategorize);
-
-    // 2. On enregistre avec la catégorie intelligente
+    // Détection des transactions nécessitant l'IA
+    const ambiguousTitles: string[] = [];
     for (const trx of transactions) {
+      const plaidMatch = mapPlaidToCategory(trx);
+      const textMatch = getLocalFallbackCategory(trx.merchant_name || trx.name);
+      if (!plaidMatch && textMatch === 'AUTRE') {
+        ambiguousTitles.push(trx.merchant_name || trx.name);
+      }
+    }
+
+    const aiCategoriesMap =
+      ambiguousTitles.length > 0
+        ? await categorizeTransactions(ambiguousTitles)
+        : {};
+
+    const validCategories = [
+      'LOGEMENT',
+      'ENERGIE',
+      'ALIMENTATION',
+      'TRANSPORT',
+      'ABONNEMENTS',
+      'LOISIRS',
+      'SANTE',
+      'AUTRE',
+    ];
+
+    for (const trx of transactions) {
+      const displayName = trx.merchant_name || trx.name;
+
       const existing = await prisma.expense.findFirst({
         where: {
           userId: session.user.id,
-          title: trx.name,
+          title: displayName,
           date: new Date(trx.date),
         },
       });
 
       if (!existing) {
-        // SÉCURITÉ : On vérifie que la catégorie de l'IA appartient bien à notre liste autorisée
-        const validCategories = [
-          'LOGEMENT',
-          'ENERGIE',
-          'ALIMENTATION',
-          'TRANSPORT',
-          'ABONNEMENTS',
-          'LOISIRS',
-          'SANTE',
-          'AUTRE',
-        ];
-        let suggestedCategory = (
-          categoriesMap[trx.name] || 'AUTRE'
-        ).toUpperCase();
+        // Ordre de priorité : 1. Catégorie native Plaid -> 2. Dictionnaire local -> 3. IA -> 4. AUTRE
+        let finalCategory =
+          mapPlaidToCategory(trx) || getLocalFallbackCategory(displayName);
 
-        // Si l'IA renvoie n'importe quoi, on reset à AUTRE pour éviter le crash DB
-        if (!validCategories.includes(suggestedCategory)) {
-          suggestedCategory = 'AUTRE';
+        if (finalCategory === 'AUTRE' && aiCategoriesMap[displayName]) {
+          finalCategory = aiCategoriesMap[displayName];
+        }
+
+        finalCategory = (finalCategory || 'AUTRE').toUpperCase();
+        if (!validCategories.includes(finalCategory)) {
+          finalCategory = 'AUTRE';
         }
 
         await prisma.expense.create({
           data: {
             userId: session.user.id,
-            title: trx.name,
+            title: displayName,
             amount: Math.abs(trx.amount),
-            category: suggestedCategory as any,
+            category: finalCategory as any,
             date: new Date(trx.date),
           },
         });
