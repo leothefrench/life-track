@@ -7,34 +7,31 @@ import { revalidatePath } from 'next/cache';
 import { getAffiliateLink } from '@/lib/affiliates';
 import { extractJsonFromResponse } from '@/lib/ai-parser';
 import { getLocalFallbackCategory } from '@/lib/categorizer';
+import { generateLocalAudit, FallbackInsight } from '@/lib/audit-fallback';
 
 function getGeminiClient() {
   const apiKey = process.env.GEMINI_API_KEY || '';
-  if (!apiKey) {
-    throw new Error(
-      'Clé API Gemini non configurée (variable GEMINI_API_KEY manquante dans Vercel/.env).',
-    );
-  }
+  if (!apiKey) throw new Error('Clé API Gemini non configurée.');
   return new GoogleGenAI({ apiKey });
 }
 
-// Fonction de réessai automatique anti-503 (2 tentatives transparentes)
 async function callGeminiWithRetry<T>(
   fn: () => Promise<T>,
-  retries = 2,
-  delayMs = 1000,
+  retries = 1,
+  delayMs = 800,
 ): Promise<T> {
   try {
     return await fn();
   } catch (error: any) {
-    const errorStr = String(error);
-    const isOverloaded =
-      errorStr.includes('503') ||
-      errorStr.includes('UNAVAILABLE') ||
-      errorStr.includes('high demand') ||
-      errorStr.includes('Resource has been exhausted');
+    const err = String(error);
+    const retryable =
+      err.includes('503') ||
+      err.includes('UNAVAILABLE') ||
+      err.includes('high demand') ||
+      err.includes('RESOURCE_EXHAUSTED') ||
+      err.includes('429');
 
-    if (retries > 0 && isOverloaded) {
+    if (retries > 0 && retryable) {
       await new Promise((res) => setTimeout(res, delayMs));
       return callGeminiWithRetry(fn, retries - 1, delayMs * 1.5);
     }
@@ -43,77 +40,46 @@ async function callGeminiWithRetry<T>(
 }
 
 export async function runSmartAudit(language: string = 'fr') {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) throw new Error('Non autorisé');
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Non autorisé');
 
-    const userId = session.user.id;
-    const ninetyDaysAgo = new Date();
-    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  const userId = session.user.id;
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
 
-    const expenses = await prisma.expense.findMany({
-      where: { userId: userId, date: { gte: ninetyDaysAgo } },
-      orderBy: { date: 'desc' },
-    });
+  const expenses = await prisma.expense.findMany({
+    where: { userId: userId, date: { gte: ninetyDaysAgo } },
+    orderBy: { date: 'desc' },
+  });
 
-    const LANG_PROMPTS: Record<
-      string,
-      {
-        langName: string;
-        defaultTitle: string;
-        notEnoughData: string;
-        jsonError: string;
-      }
-    > = {
-      fr: {
-        langName: 'Français',
-        defaultTitle: 'Conseil IA',
-        notEnoughData:
-          'Pas assez de données (minimum 3 dépenses sur 90 jours requises).',
-        jsonError: "Erreur lors de l'analyse. Veuillez réessayer.",
-      },
-      en: {
-        langName: 'English',
-        defaultTitle: 'AI Insight',
-        notEnoughData:
-          'Not enough data (minimum 3 expenses over 90 days required).',
-        jsonError: 'Error processing analysis. Please try again.',
-      },
-      de: {
-        langName: 'Deutsch',
-        defaultTitle: 'KI-Ratschlag',
-        notEnoughData:
-          'Nicht genügend Daten (mindestens 3 Ausgaben in 90 Tagen erforderlich).',
-        jsonError: 'Fehler bei der Analyse. Bitte versuchen Sie es erneut.',
-      },
-      es: {
-        langName: 'Español',
-        defaultTitle: 'Consejo IA',
-        notEnoughData:
-          'Insuficientes datos (mínimo 3 gastos en 90 días requeridos).',
-        jsonError: 'Error al procesar el análisis. Inténtelo de nuevo.',
-      },
-      pt: {
-        langName: 'Português',
-        defaultTitle: 'Conselho IA',
-        notEnoughData:
-          'Dados insuficientes (mínimo de 3 despesas em 90 dias necessárias).',
-        jsonError: 'Erro ao processar a análise. Tente novamente.',
-      },
+  const LANG_NAMES: Record<string, string> = {
+    fr: 'Français',
+    en: 'English',
+    de: 'Deutsch',
+    es: 'Español',
+    pt: 'Português',
+  };
+
+  if (expenses.length < 3) {
+    const notEnough: Record<string, string> = {
+      fr: 'Pas assez de données (minimum 3 dépenses sur 90 jours requises).',
+      en: 'Not enough data (minimum 3 expenses over 90 days required).',
+      de: 'Nicht genügend Daten (mindestens 3 Ausgaben erforderlich).',
+      es: 'Insuficientes datos (mínimo 3 gastos requeridos).',
+      pt: 'Dados insuficientes (mínimo de 3 despesas necessárias).',
     };
+    return { success: false, message: notEnough[language] || notEnough.fr };
+  }
 
-    const config = LANG_PROMPTS[language] || LANG_PROMPTS.fr;
-    if (expenses.length < 3) {
-      return { success: false, message: config.notEnoughData };
-    }
+  let insights: FallbackInsight[] | null = null;
 
+  // 1. Tentative IA
+  try {
     const prompt = `Analyze these expenses: ${JSON.stringify(expenses)}. 
 Identify saving opportunities and anomalies.
-IMPORTANT: Write all titles and descriptions in ${config.langName}.
-
-PRIORITY RULE: Select up to 5 events with the highest financial impact:
-1. Exceptionally high single expenses.
-2. Recurring bills where savings are possible.
+IMPORTANT: Write all titles and descriptions in ${
+      LANG_NAMES[language] || 'Français'
+    }.
 
 Generate a JSON array of up to 5 objects:
 [{ 
@@ -135,68 +101,46 @@ Reply only with valid JSON.`;
       }),
     );
 
-    const responseText = response.text || '';
-    const insights = extractJsonFromResponse(responseText);
-
-    if (!insights || !Array.isArray(insights)) {
-      return { success: false, message: config.jsonError };
+    const parsed = extractJsonFromResponse(response.text || '');
+    if (parsed && Array.isArray(parsed) && parsed.length > 0) {
+      insights = parsed;
     }
-
-    await prisma.insight.deleteMany({ where: { userId: userId } });
-
-    const insightPromises = insights.map((insight) => {
-      const linkSource =
-        insight.category || `${insight.title} ${insight.description}`;
-      const link =
-        insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
-
-      return prisma.insight.create({
-        data: {
-          userId: userId,
-          type: insight.type || 'INFO',
-          title: insight.title || config.defaultTitle,
-          description: insight.description || '',
-          potentialSaving:
-            typeof insight.potentialSaving === 'number'
-              ? insight.potentialSaving
-              : null,
-          affiliateUrl: link,
-        },
-      });
-    });
-
-    await Promise.all(insightPromises);
-    revalidatePath('/dashboard');
-    return { success: true, message: 'audit_success' };
   } catch (error) {
-    console.error('Erreur audit IA Gemini:', error);
-    const rawMessage = error instanceof Error ? error.message : String(error);
-
-    // Messages professionnels pour l'utilisateur sans aucun code d'erreur brut
-    if (rawMessage.includes('401') || rawMessage.includes('API_KEY_INVALID')) {
-      return {
-        message:
-          "Service d'analyse en maintenance temporaire. Veuillez réessayer plus tard.",
-      };
-    }
-
-    if (
-      rawMessage.includes('503') ||
-      rawMessage.includes('UNAVAILABLE') ||
-      rawMessage.includes('429') ||
-      rawMessage.includes('RESOURCE_EXHAUSTED')
-    ) {
-      return {
-        message:
-          "Le conseiller IA finalise ses calculs. Veuillez relancer l'audit dans un instant.",
-      };
-    }
-
-    return {
-      message:
-        'Une erreur est survenue lors de votre audit. Veuillez réessayer.',
-    };
+    console.warn('Gemini indisponible : bascule sur l’algorithme local.');
   }
+
+  // 2. Filet de secours local garanti
+  if (!insights || insights.length === 0) {
+    insights = generateLocalAudit(expenses, language);
+  }
+
+  // 3. Enregistrement en base de données
+  await prisma.insight.deleteMany({ where: { userId: userId } });
+
+  const insightPromises = insights.map((insight) => {
+    const linkSource =
+      insight.category || `${insight.title} ${insight.description}`;
+    const link =
+      insight.type === 'SAVING' ? getAffiliateLink(linkSource) : null;
+
+    return prisma.insight.create({
+      data: {
+        userId: userId,
+        type: insight.type || 'INFO',
+        title: insight.title || 'Conseil financier',
+        description: insight.description || '',
+        potentialSaving:
+          typeof insight.potentialSaving === 'number'
+            ? insight.potentialSaving
+            : null,
+        affiliateUrl: link,
+      },
+    });
+  });
+
+  await Promise.all(insightPromises);
+  revalidatePath('/dashboard');
+  return { success: true, message: 'audit_success' };
 }
 
 export async function categorizeTransactions(titles: string[]) {
@@ -207,17 +151,8 @@ export async function categorizeTransactions(titles: string[]) {
     const prompt = `Classifie rigoureusement ces libellés bancaires : ${JSON.stringify(
       titles,
     )}.
-Pour chaque libellé, attribue l'une de ces 8 catégories obligatoires :
-- LOGEMENT (loyer, charges, agence)
-- ENERGIE (électricité, gaz, eau)
-- ALIMENTATION (supermarchés, restaurants, boulangerie, café, fast food, Uber Eats)
-- TRANSPORT (essence, péage, train, métro, taxi, Uber, bus)
-- ABONNEMENTS (forfait internet, téléphone, streaming Netflix/Spotify/Apple/Amazon)
-- LOISIRS (cinéma, jeux, sorties, musées, loisirs créatifs)
-- SANTE (pharmacie, médecin, optique, dentiste)
-- AUTRE (retraits distributeurs ou inclassables)
-
-Réponds STRICTEMENT sous forme d'objet JSON associatif : {"Libellé exact": "CATEGORIE"}`;
+Catégories autorisées exclusivement : LOGEMENT, ENERGIE, ALIMENTATION, TRANSPORT, ABONNEMENTS, LOISIRS, SANTE, AUTRE.
+Réponds STRICTEMENT en JSON : {"Libellé exact": "CATEGORIE"}`;
 
     const response = await callGeminiWithRetry(() =>
       ai.models.generateContent({
@@ -227,19 +162,14 @@ Réponds STRICTEMENT sous forme d'objet JSON associatif : {"Libellé exact": "CA
       }),
     );
 
-    const responseText = response.text || '';
-    const parsed = extractJsonFromResponse(responseText) || {};
-
+    const parsed = extractJsonFromResponse(response.text || '') || {};
     const result: Record<string, string> = {};
     for (const title of titles) {
       result[title] = parsed[title] || getLocalFallbackCategory(title);
     }
     return result;
   } catch (error) {
-    console.warn(
-      'Bascule transparente sur le moteur de classification local:',
-      error,
-    );
+    console.warn('Bascule sur le moteur de classification local.');
     const fallback: Record<string, string> = {};
     for (const title of titles) {
       fallback[title] = getLocalFallbackCategory(title);
