@@ -140,7 +140,6 @@ export default function PricingPage() {
           {t('pricing_terms_agreement')}{' '}
           <Link
             href="/cgv"
-            target="_blank"
             className="text-blue-400 hover:text-blue-300 underline font-medium ml-1 inline"
             onClick={(e) => e.stopPropagation()}
           >
